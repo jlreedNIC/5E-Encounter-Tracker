@@ -5,5 +5,6 @@
 #include <string>
 
 void createButton(sf::RectangleShape &buttonShape, sf::Text &buttonText, sf::Font &buttonFont, std::string &buttonString);
+void initiativeGameLoop(sf::RenderWindow &window);
 
 #endif

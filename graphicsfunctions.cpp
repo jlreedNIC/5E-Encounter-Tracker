@@ -15,3 +15,43 @@ void createButton(sf::RectangleShape &buttonShape, sf::Text &buttonText, sf::Fon
     buttonShape.setOutlineThickness(2.f);
     buttonShape.setOutlineColor(sf::Color::Red);
 }
+
+void initiativeGameLoop(sf::RenderWindow &window)
+{
+    sf::RectangleShape exitButton;
+    sf::Text exitText;
+    sf::Font buttonFont;
+    buttonFont.loadFromFile("Fonts/Roboto-Thin.ttf");
+    std::string exitString = "Exit";
+    createButton(exitButton, exitText, buttonFont, exitString);
+    exitButton.setPosition(50, 700);
+    exitText.setPosition(100, 715);
+    sf::FloatRect exitBound = exitButton.getGlobalBounds();
+    while(window.isOpen())
+    {
+        sf::Event event;
+        while(window.pollEvent(event))
+        {
+            if(event.type == sf::Event::Closed)
+            {
+                window.close();
+            }
+
+            if(event.type == sf::Event::MouseButtonPressed)
+            {
+                float posX = event.mouseButton.x;
+                float posY = event.mouseButton.y;
+                sf::Vector2f mouseClick = {posX, posY};
+                if(exitBound.contains(mouseClick))
+                {
+                    return;
+                }
+            }
+
+            window.clear(sf::Color::White);
+            window.draw(exitButton);
+            window.draw(exitText);
+            window.display();
+        }
+    }
+}

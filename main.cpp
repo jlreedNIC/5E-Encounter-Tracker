@@ -21,50 +21,38 @@ int main()
         //error
     }
     //create header
-    sf::Text textHeader;
-    textHeader.setFont(fontHeader);
-    textHeader.setString("Initiative Tracker");
+    sf::Text textHeader("Encounter Tracker", fontHeader, 80);
     textHeader.setFillColor(sf::Color::Black);
-    textHeader.setCharacterSize(80);
     textHeader.setPosition(120,50);
 
     //creating buttons on main menu
+
+    //new encounter button
     sf::Text newButtonText;
-    // newButtonText.setFont(fontButton);
-    // newButtonText.setString("New Initiative");
-    // newButtonText.setFillColor(sf::Color::White);
-    // newButtonText.setCharacterSize(25);
-    // newButtonText.setStyle(sf::Text::Bold);
-    // newButtonText.setPosition(300, 315);
-
-    sf::RectangleShape newButton(sf::Vector2f(210.f, 60.f));
-    // newButton.setFillColor(sf::Color::Black);
-    // newButton.setOutlineThickness(2.f);
-    // newButton.setOutlineColor(sf::Color::Red);
-    // newButton.setPosition(275, 300);
-
-    string buttonText = "New Initiative";
+    sf::RectangleShape newButton;
+    string buttonText = "New Encounter";
     createButton(newButton, newButtonText, fontButton, buttonText);
-    newButtonText.setPosition(300, 315);
-    newButton.setPosition(275, 300);
+    newButtonText.setPosition(480, 315);
+    newButton.setPosition(475, 300);
 
-    buttonText = "Existing Initiative";
+    //existing encounter button
+    buttonText = "Existing Encounter";
     sf::Text existingButtonText;
-    // existingButtonText.setFont(fontButton);
-    // existingButtonText.setString("Existing Initiative");
-    // existingButtonText.setFillColor(sf::Color::White);
-    // existingButtonText.setCharacterSize(25);
-    // existingButtonText.setStyle(sf::Text::Bold);
-    // 
-
-    sf::RectangleShape existingButton(sf::Vector2f(210.f, 60.f));
-    // existingButton.setFillColor(sf::Color::Black);
-    // existingButton.setPosition(275, 400);
-    // existingButton.setOutlineThickness(2.f);
-    // existingButton.setOutlineColor(sf::Color::Red);
+    sf::RectangleShape existingButton;
     createButton(existingButton, existingButtonText, fontButton, buttonText);
-    existingButtonText.setPosition(280, 415);
-    existingButton.setPosition(275, 400);
+    existingButtonText.setPosition(480, 415);
+    existingButton.setPosition(475, 400);
+
+    //initiative button
+    buttonText = "Initiative Order";
+    sf::Text initiativeButtonText;
+    sf::RectangleShape initiativeButton;
+    createButton(initiativeButton, initiativeButtonText, fontButton, buttonText);
+    initiativeButtonText.setPosition(180, 315);
+    initiativeButton.setPosition(160, 300);
+    sf::FloatRect initBound = initiativeButton.getGlobalBounds();
+
+    bool clickedButton = false;
 
     //event loop
     while(window.isOpen())
@@ -76,6 +64,17 @@ int main()
             {
                 window.close();
             }
+            if(event.type == sf::Event::MouseButtonPressed)
+            {
+                float posX = event.mouseButton.x;
+                float posY = event.mouseButton.y;
+                sf::Vector2f mouseClick = {posX, posY};
+                if(initBound.contains(mouseClick))
+                {
+                    //run initiative loop
+                    initiativeGameLoop(window);
+                }
+            }
         }
 
         //draw
@@ -85,6 +84,8 @@ int main()
         window.draw(newButtonText);
         window.draw(existingButton);
         window.draw(existingButtonText);
+        window.draw(initiativeButton);
+        window.draw(initiativeButtonText);
         window.display();
     }
     return 0;
