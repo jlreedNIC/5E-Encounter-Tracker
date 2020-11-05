@@ -2,6 +2,7 @@
 #include <iostream>
 #include "diceroll.h"
 #include "graphicsfunctions.h"
+#include "button.h"
 #include <SFML/Graphics.hpp>
 
 int main()
@@ -23,42 +24,25 @@ int main()
     //create header
     sf::Text textHeader("Encounter Tracker", fontHeader, 80);
     textHeader.setFillColor(sf::Color::Black);
-    textHeader.setPosition(120,50);
+    textHeader.setPosition(140,50);
 
     //creating buttons on main menu
 
     //new encounter button
-    sf::Text newButtonText;
-    sf::RectangleShape newButton;
-    string buttonText = "New Encounter";
-    createButton(newButton, newButtonText, fontButton, buttonText);
-    newButtonText.setPosition(480, 315);
-    newButton.setPosition(475, 300);
+    Button newEButton("New Encounter");
+    newEButton.setButtonPosition(480, 315);
 
-    //existing encounter button
-    buttonText = "Existing Encounter";
-    sf::Text existingButtonText;
-    sf::RectangleShape existingButton;
-    createButton(existingButton, existingButtonText, fontButton, buttonText);
-    existingButtonText.setPosition(480, 415);
-    existingButton.setPosition(475, 400);
+    // load encounter button
+    Button existingEButton;
+    existingEButton.setButtonString("Load Encounter");
+    existingEButton.setButtonPosition(480, 415);
 
     //initiative button
-    buttonText = "Initiative Order";
-    sf::Text initiativeButtonText;
-    sf::RectangleShape initiativeButton;
-    createButton(initiativeButton, initiativeButtonText, fontButton, buttonText);
-    initiativeButtonText.setPosition(180, 315);
-    initiativeButton.setPosition(160, 300);
+    Button initiativeButton("Initiative Order");
+    initiativeButton.setButtonPosition(180, 315);
+
+
     sf::FloatRect initBound = initiativeButton.getGlobalBounds();
-
-    sf::Texture buttonTexture;
-    buttonTexture.loadFromFile("Textures/button.png");
-    initiativeButton.setTexture(&buttonTexture);
-    existingButton.setTexture(&buttonTexture);
-    newButton.setTexture(&buttonTexture);
-
-    bool clickedButton = false;
 
     //event loop
     while(window.isOpen())
@@ -72,13 +56,18 @@ int main()
             }
             if(event.type == sf::Event::MouseButtonPressed)
             {
-                float posX = event.mouseButton.x;
-                float posY = event.mouseButton.y;
-                sf::Vector2f mouseClick = {posX, posY};
-                if(initBound.contains(mouseClick))
+                if(initiativeButton.isClicked(event.mouseButton.x, event.mouseButton.y))
                 {
                     //run initiative loop
                     initiativeGameLoop(window);
+                }
+                if(newEButton.isClicked(event.mouseButton.x, event.mouseButton.y))
+                {
+                    std::cout << "New Encounter\n";
+                }
+                if(existingEButton.isClicked(event.mouseButton.x, event.mouseButton.y))
+                {
+                    std::cout << "Load Encounter\n";
                 }
             }
         }
@@ -86,12 +75,12 @@ int main()
         //draw
         window.clear(sf::Color::White);
         window.draw(textHeader);
-        window.draw(newButton);
-        window.draw(newButtonText);
-        window.draw(existingButton);
-        window.draw(existingButtonText);
+        window.draw(newEButton);
+        window.draw(newEButton.getText());
+        window.draw(existingEButton);
+        window.draw(existingEButton.getText());
         window.draw(initiativeButton);
-        window.draw(initiativeButtonText);
+        window.draw(initiativeButton.getText());
         window.display();
     }
     return 0;
