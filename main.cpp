@@ -52,6 +52,12 @@ int main()
     initiativeButton.setPosition(160, 300);
     sf::FloatRect initBound = initiativeButton.getGlobalBounds();
 
+    sf::Texture buttonTexture;
+    buttonTexture.loadFromFile("Textures/button.png");
+    initiativeButton.setTexture(&buttonTexture);
+    existingButton.setTexture(&buttonTexture);
+    newButton.setTexture(&buttonTexture);
+
     bool clickedButton = false;
 
     //event loop

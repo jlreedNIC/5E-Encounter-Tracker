@@ -5,15 +5,21 @@ void createButton(sf::RectangleShape &buttonShape, sf::Text &buttonText, sf::Fon
     //set text
     buttonText.setFont(buttonFont);
     buttonText.setString(buttonString);
-    buttonText.setFillColor(sf::Color::White);
+    buttonText.setFillColor(sf::Color::Black);
     buttonText.setCharacterSize(25);
     buttonText.setStyle(sf::Text::Bold);
 
     //set shape
     buttonShape.setSize(sf::Vector2f(210.f, 60.f));
-    buttonShape.setFillColor(sf::Color::Black);
-    buttonShape.setOutlineThickness(2.f);
-    buttonShape.setOutlineColor(sf::Color::Red);
+    // buttonShape.setFillColor(sf::Color::Black);
+    // buttonShape.setOutlineThickness(2.f);
+    // buttonShape.setOutlineColor(sf::Color::Red);
+
+    // sf::Texture buttonTexture;
+    // buttonTexture.loadFromFile("Sprites/button.png");
+    // // sf::Sprite buttonSprite;
+    // // buttonSprite.loadFromFile("Sprites/button.png");
+    // buttonShape.setTexture(&buttonTexture);
 }
 
 void initiativeGameLoop(sf::RenderWindow &window)
