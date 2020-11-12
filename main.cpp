@@ -30,19 +30,16 @@ int main()
 
     //new encounter button
     Button newEButton("New Encounter");
-    newEButton.setButtonPosition(480, 315);
+    newEButton.setButtonPosition(300, 365);
 
     // load encounter button
     Button existingEButton;
     existingEButton.setButtonString("Load Encounter");
-    existingEButton.setButtonPosition(480, 415);
+    existingEButton.setButtonPosition(300, 465);
 
     //initiative button
     Button initiativeButton("Initiative Order");
-    initiativeButton.setButtonPosition(180, 315);
-
-
-    sf::FloatRect initBound = initiativeButton.getGlobalBounds();
+    initiativeButton.setButtonPosition(300, 265);
 
     //event loop
     while(window.isOpen())
