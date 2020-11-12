@@ -18,8 +18,7 @@ Button::Button() : RectangleShape()
     {
         //error loading font
     }
-    buttonString = "";
-    buttonText.setString(buttonString);
+    buttonText.setString("");
     buttonText.setFont(buttonFont);
     buttonText.setCharacterSize(25);
     buttonText.setFillColor(sf::Color::Black);
@@ -48,7 +47,6 @@ Button::Button(const std::string &buttonString) : RectangleShape()
     {
         //error loading font
     }
-    this->buttonString = buttonString;
     buttonText.setString(buttonString);
     buttonText.setFont(buttonFont);
     buttonText.setCharacterSize(25);
@@ -80,9 +78,9 @@ Button::~Button()
  * 
  * @return std::string& A reference to the string for the button
  */
-std::string& Button::getString()
+const std::string& Button::getString()
 {
-    return buttonString;
+    return buttonText.getString();
 }
 
 /**
@@ -102,7 +100,6 @@ sf::Text& Button::getText()
  */
 void Button::setButtonString(const std::string &buttonString)
 {
-    this->buttonString = buttonString;
     buttonText.setString(buttonString);
     setButtonSize();
     setTextPosition();
@@ -116,7 +113,7 @@ void Button::setButtonSize()
 {
     sf::FloatRect textBound = buttonText.getGlobalBounds();
     sf::Vector2f textSize = {textBound.width + 20, textBound.height + 30};
-    // textSize.x = std::max(textBound.width + 20, 100.f);
+    textSize.x = std::max(textBound.width + 20, 100.f);
     textSize.y = std::max(textBound.height + 30, 55.f);
     setSize(textSize);
 }
