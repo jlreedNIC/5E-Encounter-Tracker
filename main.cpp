@@ -34,7 +34,7 @@ int main()
 
     // load encounter button
     Button existingEButton;
-    existingEButton.setButtonString("Load Encounter");
+    existingEButton.setString("Load Encounter");
     existingEButton.setButtonPosition(300, 465);
 
     //initiative button

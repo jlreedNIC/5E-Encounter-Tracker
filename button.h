@@ -22,10 +22,9 @@ class Button : public sf::RectangleShape
         const std::string& getString();           // returns a reference to string for button
         sf::Text& getText();                // returns a reference to text object for button
 
-        void setButtonString(const std::string &buttonString);  // sets the string for the button
-        void setButtonSize();                                   // sets the size of the button relative to the string
+        void setString(const std::string &buttonString);  // sets the string for the button
+        void setFont(const std::string &fileName);
         void setButtonSize(const sf::Vector2f &size);           // sets the minimum size of the button
-        void setTextPosition();                                 // sets the position of the text relative to the button
 
         //want to overwrite setPosition
         void setButtonPosition(float x, float y);               // sets the position of both button and text
@@ -37,11 +36,14 @@ class Button : public sf::RectangleShape
 
         
         
-    private:
-        sf::Font buttonFont;
-        sf::Text buttonText;
+    protected:
+        void setTextPositionMiddle();                                 // sets the position of the text relative to the button
+        void setButtonSize();                                   // sets the size of the button relative to the string
 
-        sf::Texture buttonTexture;
+        sf::Font font;
+        sf::Text text;
+
+        sf::Texture texture;
 };
 
 #endif

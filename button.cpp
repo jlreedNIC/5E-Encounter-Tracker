@@ -14,25 +14,25 @@
 Button::Button() : RectangleShape()	
 {
     //font and text
-    if(!buttonFont.loadFromFile("Fonts/Roboto-Thin.ttf"))
+    if(!font.loadFromFile("Fonts/Roboto-Thin.ttf"))
     {
         //error loading font
     }
-    buttonText.setString("");
-    buttonText.setFont(buttonFont);
-    buttonText.setCharacterSize(25);
-    buttonText.setFillColor(sf::Color::Black);
-    buttonText.setStyle(sf::Text::Bold);
+    text.setString("");
+    text.setFont(font);
+    text.setCharacterSize(25);
+    text.setFillColor(sf::Color::Black);
+    text.setStyle(sf::Text::Bold);
 
     //button texture
-    if(buttonTexture.loadFromFile("Textures/button.png"))
+    if(texture.loadFromFile("Textures/button.png"))
     {
         //error loading texture
     }
-    setTexture(&buttonTexture);
+    setTexture(&texture);
 
     setButtonSize();
-    setTextPosition();
+    setTextPositionMiddle();
 }
 
 /**
@@ -43,25 +43,25 @@ Button::Button() : RectangleShape()
 Button::Button(const std::string &buttonString) : RectangleShape()
 {
     //font and text
-    if(!buttonFont.loadFromFile("Fonts/Roboto-Thin.ttf"))
+    if(!font.loadFromFile("Fonts/Roboto-Thin.ttf"))
     {
         //error loading font
     }
-    buttonText.setString(buttonString);
-    buttonText.setFont(buttonFont);
-    buttonText.setCharacterSize(25);
-    buttonText.setFillColor(sf::Color::Black);
-    buttonText.setStyle(sf::Text::Bold);
+    text.setString(buttonString);
+    text.setFont(font);
+    text.setCharacterSize(25);
+    text.setFillColor(sf::Color::Black);
+    text.setStyle(sf::Text::Bold);
 
     //button texture
-    if(buttonTexture.loadFromFile("Textures/button.png"))
+    if(texture.loadFromFile("Textures/button.png"))
     {
         //error loading texture
     }
-    setTexture(&buttonTexture);
+    setTexture(&texture);
 
     setButtonSize();
-    setTextPosition();
+    setTextPositionMiddle();
 }
 
 /**
@@ -80,7 +80,7 @@ Button::~Button()
  */
 const std::string& Button::getString()
 {
-    return buttonText.getString();
+    return text.getString();
 }
 
 /**
@@ -90,7 +90,7 @@ const std::string& Button::getString()
  */
 sf::Text& Button::getText()
 {
-    return buttonText;
+    return text;
 }
 
 /**
@@ -98,11 +98,19 @@ sf::Text& Button::getText()
  * 
  * @param buttonString String to use for initialization
  */
-void Button::setButtonString(const std::string &buttonString)
+void Button::setString(const std::string &buttonString)
 {
-    buttonText.setString(buttonString);
+    text.setString(buttonString);
     setButtonSize();
-    setTextPosition();
+    setTextPositionMiddle();
+}
+
+void Button::setFont(const std::string &fileName)
+{
+    if(!font.loadFromFile(fileName))
+    {
+        // error loading font
+    }
 }
 
 /**
@@ -111,7 +119,7 @@ void Button::setButtonString(const std::string &buttonString)
  */
 void Button::setButtonSize()
 {
-    sf::FloatRect textBound = buttonText.getGlobalBounds();
+    sf::FloatRect textBound = text.getGlobalBounds();
     sf::Vector2f textSize = {textBound.width + 20, textBound.height + 30};
     textSize.x = std::max(textBound.width + 20, 100.f);
     textSize.y = std::max(textBound.height + 30, 55.f);
@@ -142,19 +150,19 @@ void Button::setButtonSize(const sf::Vector2f &size)
         currentSize.y = size.y;
         setSize(currentSize);
     }
-    setTextPosition();
+    setTextPositionMiddle();
 }
 
 /**
  * @brief Sets the position of the text relative to the button. Will be in the middle of the button
  * 
  */
-void Button::setTextPosition()
+void Button::setTextPositionMiddle()
 {
     sf::Vector2f rectanglePos = getPosition();
     rectanglePos.x += 10;
     rectanglePos.y += 10;
-    buttonText.setPosition(rectanglePos);
+    text.setPosition(rectanglePos);
 }
 
 /**
@@ -166,7 +174,7 @@ void Button::setTextPosition()
 void Button::setButtonPosition(float x, float y)
 {
     setPosition(x, y);
-    setTextPosition();
+    setTextPositionMiddle();
 }
 
 /**
@@ -177,7 +185,7 @@ void Button::setButtonPosition(float x, float y)
 void Button::setButtonPosition(const sf::Vector2f &position)
 {
     setPosition(position);
-    setTextPosition();
+    setTextPositionMiddle();
 }
 
 /**
