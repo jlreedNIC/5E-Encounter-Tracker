@@ -3,8 +3,10 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
+#include "button.h"
+#include "textbox.h"
+#include <iostream>
 
-void createButton(sf::RectangleShape &buttonShape, sf::Text &buttonText, sf::Font &buttonFont, std::string &buttonString);
 void initiativeGameLoop(sf::RenderWindow &window);
 
 #endif

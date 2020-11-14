@@ -1,38 +1,15 @@
 #include "graphicsfunctions.h"
 
-void createButton(sf::RectangleShape &buttonShape, sf::Text &buttonText, sf::Font &buttonFont, std::string &buttonString)
-{
-    //set text
-    buttonText.setFont(buttonFont);
-    buttonText.setString(buttonString);
-    buttonText.setFillColor(sf::Color::Black);
-    buttonText.setCharacterSize(25);
-    buttonText.setStyle(sf::Text::Bold);
-
-    //set shape
-    buttonShape.setSize(sf::Vector2f(210.f, 60.f));
-    // buttonShape.setFillColor(sf::Color::Black);
-    // buttonShape.setOutlineThickness(2.f);
-    // buttonShape.setOutlineColor(sf::Color::Red);
-
-    // sf::Texture buttonTexture;
-    // buttonTexture.loadFromFile("Sprites/button.png");
-    // // sf::Sprite buttonSprite;
-    // // buttonSprite.loadFromFile("Sprites/button.png");
-    // buttonShape.setTexture(&buttonTexture);
-}
 
 void initiativeGameLoop(sf::RenderWindow &window)
 {
-    sf::RectangleShape exitButton;
-    sf::Text exitText;
-    sf::Font buttonFont;
-    buttonFont.loadFromFile("Fonts/Roboto-Thin.ttf");
-    std::string exitString = "Exit";
-    createButton(exitButton, exitText, buttonFont, exitString);
-    exitButton.setPosition(50, 700);
-    exitText.setPosition(100, 715);
-    sf::FloatRect exitBound = exitButton.getGlobalBounds();
+    Button exitButton("Exit");
+    exitButton.setButtonPosition(50, 700);
+    TextBox nameText("Rihala");
+    nameText.setButtonPosition(50, 50);
+    TextBox acText("13");
+    acText.setButtonPosition(200, 50);
+
     while(window.isOpen())
     {
         sf::Event event;
@@ -48,15 +25,29 @@ void initiativeGameLoop(sf::RenderWindow &window)
                 float posX = event.mouseButton.x;
                 float posY = event.mouseButton.y;
                 sf::Vector2f mouseClick = {posX, posY};
-                if(exitBound.contains(mouseClick))
+                // if(exitBound.contains(mouseClick))
+                if(exitButton.isClicked(mouseClick))
                 {
                     return;
+                }
+
+                if(nameText.isClicked(mouseClick))
+                {
+                    std::cout << nameText.getString() << "\n";
+                }
+                if(acText.isClicked(mouseClick))
+                {
+                    std::cout << acText.getString() << "\n";
                 }
             }
 
             window.clear(sf::Color::White);
             window.draw(exitButton);
-            window.draw(exitText);
+            window.draw(exitButton.getText());
+            window.draw(nameText);
+            window.draw(nameText.getText());
+            window.draw(acText);
+            window.draw(acText.getText());
             window.display();
         }
     }
