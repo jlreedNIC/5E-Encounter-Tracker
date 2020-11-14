@@ -78,7 +78,7 @@ Button::~Button()
  * 
  * @return std::string& A reference to the string for the button
  */
-const std::string& Button::getString()
+const std::string Button::getString()
 {
     return text.getString();
 }
