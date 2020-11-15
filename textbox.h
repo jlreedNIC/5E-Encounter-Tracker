@@ -7,8 +7,7 @@
 class TextBox : public Button
 {
     public:
-        TextBox();
-        TextBox(const std::string &tString);
+        TextBox(const std::string &tString="");
         ~TextBox();
 
         void setTextBoxSize(const sf::Vector2f &size);

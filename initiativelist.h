@@ -6,8 +6,8 @@
 #include <sstream>
 #include <iomanip>
 #include <iostream>
-// #include "textbox.h"
-// #include "creature.h"
+// #include <SFML/Graphics.hpp>
+#include "creature.h"
 
 using std::string;
 using std::ostringstream;
@@ -16,28 +16,28 @@ using std::setw;
 //turn struct into class
 //can use a creature class for parent class
 // child classes can be npc, player, monster, etc
-struct Creature
-{
-    string name;
-    int maxHealth;
-    int health;
-    int tempHealth;
-    int initiative;
-    int armorClass;
-    string status;
+// struct Creature
+// {
+//     string name;
+//     int maxHealth;
+//     int health;
+//     int tempHealth;
+//     int initiative;
+//     int armorClass;
+//     string status;
 
-    Creature() {};
-    Creature(string name, int maxHealth, int health, int tempHealth, int initiative, int armorClass, string status)
-    {
-        this->name = name;
-        this->maxHealth = maxHealth;
-        this->health = health;
-        this->tempHealth = tempHealth;
-        this->initiative = initiative;
-        this->armorClass = armorClass;
-        this->status = status;
-    }
-};
+//     Creature() {};
+//     Creature(string name, int maxHealth, int health, int tempHealth, int initiative, int armorClass, string status)
+//     {
+//         this->name = name;
+//         this->maxHealth = maxHealth;
+//         this->health = health;
+//         this->tempHealth = tempHealth;
+//         this->initiative = initiative;
+//         this->armorClass = armorClass;
+//         this->status = status;
+//     }
+// };
 
 struct Node
 {

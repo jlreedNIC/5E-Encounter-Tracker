@@ -1,8 +1,7 @@
 #include "creature.h"
 
-Creature::Creature(string name, int maxHealth, int health, int tempHealth, int initiative, int armorClass, string status)
+Creature::Creature(std::string name, int maxHealth, int health, int tempHealth, int initiative, int armorClass, std::string status)
 {
-    std::cout << "test\n";   
     this->name = name;
     this->maxHealth = maxHealth;
     this->health = health;
@@ -24,7 +23,7 @@ Creature::Creature(string name, int maxHealth, int health, int tempHealth, int i
 
 void Creature::updateTextBoxes()
 {
-    ostringstream ostr;
+    std::ostringstream ostr;
 
     nameText.setString(name);
 

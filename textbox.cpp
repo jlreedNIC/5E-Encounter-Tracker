@@ -1,18 +1,5 @@
 #include "textbox.h"
 
-TextBox::TextBox() : Button()
-{
-    text.setCharacterSize(20);
-    text.setStyle(0);
-    setTextBoxSize(sf::Vector2f(0.f, 0.f));
-    setTextPositionLeft();
-    texture.loadFromFile(nullptr);
-    setTexture(nullptr);
-    setFillColor(sf::Color::White);
-    setOutlineColor(sf::Color::Black);
-    setOutlineThickness(2);
-}
-
 TextBox::TextBox(const std::string &tString) : Button(tString)
 {
     text.setCharacterSize(20);

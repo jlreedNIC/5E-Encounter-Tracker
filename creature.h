@@ -6,13 +6,13 @@
 #include <sstream>
 #include <iostream>
 
-using std::string;
-using std::ostringstream;
+// using std::string;
+// using std::ostringstream;
 
 class Creature
 {
     public:
-        string name;
+        std::string name;
         TextBox nameText;
         int maxHealth;
         TextBox maxHealthText;
@@ -24,10 +24,10 @@ class Creature
         TextBox initiativeText;
         int armorClass;
         TextBox armorClassText;
-        string status;
+        std::string status;
         TextBox statusText;
 
-        Creature(string name="BOB", int maxHealth=0, int health=0, int tempHealth=0, int initiative=0, int armorClass=0, string status="NA");
+        Creature(std::string name="BOB", int maxHealth=0, int health=0, int tempHealth=0, int initiative=0, int armorClass=0, std::string status="NA");
 
         void updateTextBoxes();
 
