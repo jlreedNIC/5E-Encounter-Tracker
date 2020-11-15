@@ -52,6 +52,12 @@ void TextBox::setTextBoxPosition(const float &x, const float &y)
     setTextPositionLeft();
 }
 
+void TextBox::setTextBoxPosition(const int &x, const int &y)
+{
+    setPosition(x, y);
+    setTextPositionLeft();
+}
+
 void TextBox::setTextPositionLeft()
 {
     sf::Vector2f rectanglePos = getPosition();
