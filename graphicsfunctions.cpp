@@ -63,14 +63,14 @@ void initiativeGameLoop(sf::RenderWindow &window)
                     return;
                 }
 
-                if(nameText.isClicked(mouseClick))
-                {
-                    std::cout << nameText.getString() << "\n";
-                }
-                if(acText.isClicked(mouseClick))
-                {
-                    std::cout << acText.getString() << "\n";
-                }
+                // if(nameText.isClicked(mouseClick))
+                // {
+                //     std::cout << nameText.getString() << "\n";
+                // }
+                // if(acText.isClicked(mouseClick))
+                // {
+                //     std::cout << acText.getString() << "\n";
+                // }
             }
 
             window.clear(sf::Color::White);
@@ -81,10 +81,10 @@ void initiativeGameLoop(sf::RenderWindow &window)
             }
             window.draw(exitButton);
             window.draw(exitButton.getText());
-            window.draw(nameText);
-            window.draw(nameText.getText());
-            window.draw(acText);
-            window.draw(acText.getText());
+            // window.draw(nameText);
+            // window.draw(nameText.getText());
+            // window.draw(acText);
+            // window.draw(acText.getText());
             window.display();
         }
     }
