@@ -5,6 +5,7 @@
 #include <string>
 #include "button.h"
 #include "textbox.h"
+#include "initiativelist.h"
 #include <iostream>
 
 void initiativeGameLoop(sf::RenderWindow &window);
