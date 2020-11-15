@@ -1,12 +1,17 @@
 #ifndef INITIATIVELIST_H
 #define INITIATIVELIST_H
 
-// #include "diceroll.h"
+#include "diceroll.h"
 #include <string>
 #include <sstream>
 #include <iomanip>
 #include <iostream>
-using namespace std;
+// #include "textbox.h"
+// #include "creature.h"
+
+using std::string;
+using std::ostringstream;
+using std::setw;
 
 //turn struct into class
 //can use a creature class for parent class
@@ -75,6 +80,8 @@ class Initiative
         string listToString() const;
         string nodeToString(string name) const;
 
+        // void drawList(sf::RenderWindow &window, sf::Vector2f pos);
+
         string advanceTurn();
         void resetStart();
 
@@ -84,6 +91,7 @@ class Initiative
         int round;  //keeps track of initiative rounds
 
         string nodeToString(Node *ptr) const;
+        // void drawNode(sf::RenderWindow &window, sf::Vector2f pos, Node *ptr);
 };
 
 #endif

@@ -300,3 +300,30 @@ string Initiative::nodeToString(Node *ptr) const
 
     return ostr.str();
 }
+
+// void Initiative::drawList(sf::RenderWindow &window, sf::Vector2f pos)
+// {
+//     Node *ptr = mHead;
+
+//     while(ptr != nullptr)
+//     {
+//         drawNode(window, pos, ptr);
+//         ptr = ptr->next;
+//     }
+// }
+
+// void Initiative::drawNode(sf::RenderWindow &window, sf::Vector2f pos, Node *ptr)
+// {
+//     if(ptr != nullptr)
+//     {
+//         ptr->character.setPosition(pos);
+
+//         window.draw(ptr->character.nameText);
+//         window.draw(ptr->character.armorClassText);
+//         window.draw(ptr->character.healthText);
+//         window.draw(ptr->character.maxHealthText);
+//         window.draw(ptr->character.initiativeText);
+//         window.draw(ptr->character.statusText);
+//         window.draw(ptr->character.tempHealthText);
+//     }
+// }
