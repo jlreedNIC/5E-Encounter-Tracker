@@ -427,22 +427,22 @@ void Initiative::drawList(sf::RenderWindow &window, sf::Vector2f pos)
  * @param pos 
  * @param ptr 
  */
-void Initiative::drawNode(sf::RenderWindow &window, sf::Vector2f pos, Node *&ptr)
+void Initiative::drawNode(sf::RenderWindow &window, sf::Vector2f pos, Node* &ptr)
 {
     if(ptr != nullptr)
     {
-        sf::Font font;
-        font.loadFromFile("Fonts/Roboto-Thin.ttf");
+        // sf::Font font;
+        // font.loadFromFile("Fonts/Roboto-Thin.ttf");
 
         ptr->character.setPosition(pos);
 
-        ptr->character.nameText.getText().setFont(font);
-        ptr->character.armorClassText.getText().setFont(font);
-        ptr->character.healthText.getText().setFont(font);
-        ptr->character.maxHealthText.getText().setFont(font);
-        ptr->character.initiativeText.getText().setFont(font);
-        ptr->character.statusText.getText().setFont(font);
-        ptr->character.tempHealthText.getText().setFont(font);
+        // ptr->character.nameText.getText().setFont(font);
+        // ptr->character.armorClassText.getText().setFont(font);
+        // ptr->character.healthText.getText().setFont(font);
+        // ptr->character.maxHealthText.getText().setFont(font);
+        // ptr->character.initiativeText.getText().setFont(font);
+        // ptr->character.statusText.getText().setFont(font);
+        // ptr->character.tempHealthText.getText().setFont(font);
         
         window.draw(ptr->character.nameText);
         window.draw(ptr->character.nameText.getText());

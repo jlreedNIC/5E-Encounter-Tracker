@@ -14,16 +14,22 @@ class Creature
     public:
         std::string name;
         TextBox nameText;
+
         int maxHealth;
         TextBox maxHealthText;
+
         int health;
         TextBox healthText;
+
         int tempHealth;
         TextBox tempHealthText;
+
         int initiative;
         TextBox initiativeText;
+
         int armorClass;
         TextBox armorClassText;
+        
         std::string status;
         TextBox statusText;
 

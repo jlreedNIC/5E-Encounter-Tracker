@@ -91,7 +91,7 @@ class Initiative
         int round;  //keeps track of initiative rounds
 
         string nodeToString(Node *ptr) const;
-        void drawNode(sf::RenderWindow &window, sf::Vector2f pos, Node *&ptr);
+        void drawNode(sf::RenderWindow &window, sf::Vector2f pos, Node* &ptr);
 };
 
 #endif
