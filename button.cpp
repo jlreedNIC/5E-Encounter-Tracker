@@ -25,7 +25,7 @@ Button::Button() : RectangleShape()
     text.setStyle(sf::Text::Bold);
 
     //button texture
-    if(texture.loadFromFile("Textures/button.png"))
+    if(!texture.loadFromFile("Textures/button.png"))
     {
         //error loading texture
     }
