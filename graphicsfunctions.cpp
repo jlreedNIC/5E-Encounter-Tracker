@@ -57,7 +57,6 @@ void initiativeGameLoop(sf::RenderWindow &window)
                 float posX = event.mouseButton.x;
                 float posY = event.mouseButton.y;
                 sf::Vector2f mouseClick = {posX, posY};
-                // if(exitBound.contains(mouseClick))
                 if(exitButton.isClicked(mouseClick))
                 {
                     return;
