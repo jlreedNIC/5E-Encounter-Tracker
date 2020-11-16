@@ -19,12 +19,18 @@ class Button : public sf::RectangleShape
         Button(const std::string &buttonString);    // convert string to button constructor
         virtual ~Button();                          // destructor
 
-        const std::string getString();           // returns a reference to string for button
+        const std::string getString();      // returns a reference to string for button
         sf::Text& getText();                // returns a reference to text object for button
 
         void setString(const std::string &buttonString);        // sets the string for the button
         void setFont(const std::string &fileName);              // passes the filename for a font to set the font to
         void setButtonSize(const sf::Vector2f &size);           // sets the minimum size of the button
+
+        // void draw(sf::RenderTarget& target, sf::RenderStates state) const
+        // {
+        //     // need to figure out how to draw both rectangle and text
+        //     target.draw(text);
+        // }
 
         //want to overwrite setPosition
         void setButtonPosition(float x, float y);               // sets the position of both button and text
