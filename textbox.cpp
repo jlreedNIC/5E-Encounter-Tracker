@@ -4,6 +4,7 @@ TextBox::TextBox(const std::string &tString) : Button(tString)
 {
     text.setCharacterSize(20);
     text.setStyle(0);
+    text.setFillColor(sf::Color::Black);
     setTextBoxSize(sf::Vector2f(0.f,0.f));
     setTextPositionLeft();
     setTexture(nullptr);
@@ -25,6 +26,11 @@ void TextBox::setTextBoxSize(const sf::Vector2f &size)
     textSize.x = std::max(textSize.x, size.x);
     textSize.y = std::max(textSize.y, size.y);
     setSize(textSize);
+}
+
+void TextBox::setString(const std::string &tstring)
+{
+    text.setString(tstring);
 }
 
 void TextBox::setTextBoxPosition(const sf::Vector2f &size)

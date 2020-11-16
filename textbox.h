@@ -2,7 +2,6 @@
 #define TEXTBOX_H
 
 #include "button.h"
-// #include <string>
 
 class TextBox : public Button
 {
@@ -11,6 +10,7 @@ class TextBox : public Button
         ~TextBox();
 
         void setTextBoxSize(const sf::Vector2f &size);
+        void setString(const std::string &tstring);
 
         void setTextBoxPosition(const sf::Vector2f &size);
         void setTextBoxPosition(const float &x, const float &y);
