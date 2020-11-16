@@ -41,6 +41,8 @@ int main()
     Button initiativeButton("Initiative Order");
     initiativeButton.setButtonPosition(300, 265);
 
+    TextBox testing("testing");
+    testing.setTextBoxPosition(50, 300);
     //event loop
     while(window.isOpen())
     {
@@ -73,6 +75,8 @@ int main()
         window.clear(sf::Color::White);
         window.draw(textHeader);
         window.draw(newEButton);
+        window.draw(testing);
+        window.draw(testing.getText());
         window.draw(newEButton.getText());
         window.draw(existingEButton);
         window.draw(existingEButton.getText());
