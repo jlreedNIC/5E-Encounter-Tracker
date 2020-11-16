@@ -81,6 +81,7 @@ void initiativeGameLoop(sf::RenderWindow &window)
             }
             window.draw(exitButton);
             window.draw(exitButton.getText());
+            initList.drawList(window, sf::Vector2f(50, 50));
             // window.draw(nameText);
             // window.draw(nameText.getText());
             // window.draw(acText);
