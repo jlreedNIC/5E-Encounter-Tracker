@@ -6,7 +6,7 @@
 #include <sstream>
 #include <iomanip>
 #include <iostream>
-// #include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include "creature.h"
 
 using std::string;
@@ -80,7 +80,7 @@ class Initiative
         string listToString() const;
         string nodeToString(string name) const;
 
-        // void drawList(sf::RenderWindow &window, sf::Vector2f pos);
+        void drawList(sf::RenderWindow &window, sf::Vector2f pos);
 
         string advanceTurn();
         void resetStart();
@@ -91,7 +91,7 @@ class Initiative
         int round;  //keeps track of initiative rounds
 
         string nodeToString(Node *ptr) const;
-        // void drawNode(sf::RenderWindow &window, sf::Vector2f pos, Node *ptr);
+        void drawNode(sf::RenderWindow &window, sf::Vector2f pos, Node *&ptr);
 };
 
 #endif

@@ -1,5 +1,9 @@
 #include "initiativelist.h"
 
+/**
+ * @brief Construct a new circularly linked list
+ * 
+ */
 Initiative::Initiative()
 {
     mHead = nullptr;
@@ -7,6 +11,10 @@ Initiative::Initiative()
     round = 0;
 }
 
+/**
+ * @brief Destroy the list
+ * 
+ */
 Initiative::~Initiative()
 {
     if(mHead != nullptr)
@@ -35,6 +43,11 @@ Initiative::~Initiative()
     }
 }
 
+/**
+ * @brief Adds a new node to the list, sorted by initiative
+ * 
+ * @param character 
+ */
 void Initiative::addNodeInOrder(Creature character)
 {
     Node* ptr = mHead;
@@ -45,6 +58,7 @@ void Initiative::addNodeInOrder(Creature character)
         Node* nodePtr = new Node(character);
         mHead = mStart = nodePtr;
         mHead->next = mHead->prev = mHead;
+        nodePtr->character.updateTextBoxes();
     }
     else
     {
@@ -58,9 +72,16 @@ void Initiative::addNodeInOrder(Creature character)
         ptr->prev->next = nodePtr;
         ptr->prev = nodePtr;
         if(ptr == mHead && mHead->prev->character.initiative >= mHead->character.initiative) mHead = mStart = ptr->prev;
+        nodePtr->character.updateTextBoxes();
     }
+    
 }
 
+/**
+ * @brief Deletes a specific node
+ * 
+ * @param name Parameter to search for the node to delete
+ */
 void Initiative::deleteNode(string name)
 {
     Node *ptr = mHead;
@@ -87,11 +108,22 @@ void Initiative::deleteNode(string name)
     }
 }
 
+/**
+ * @brief Returns the round counter
+ * 
+ * @return int 
+ */
 int Initiative::getRound() const
 {
     return round;
 }
 
+/**
+ * @brief Updates the health value
+ * 
+ * @param name Parameter to search the list by
+ * @param newHealth New value
+ */
 void Initiative::editHealth(string name, int newHealth)
 {
     Node* ptr = mHead;
@@ -108,9 +140,16 @@ void Initiative::editHealth(string name, int newHealth)
     if(found)
     {
         ptr->character.health = newHealth;
+        ptr->character.updateTextBoxes();
     }
 }
 
+/**
+ * @brief Updates the name value
+ * 
+ * @param name Parameter to seach the list by
+ * @param newName New value
+ */
 void Initiative::editName(string name, string newName)
 {
     Node* ptr = mHead;
@@ -127,9 +166,16 @@ void Initiative::editName(string name, string newName)
     if(found)
     {
         ptr->character.name = newName;
+        ptr->character.updateTextBoxes();
     }
 }
 
+/**
+ * @brief Updates the max health value
+ * 
+ * @param name Parameter to seach the list by
+ * @param newName New value
+ */
 void Initiative::editMaxHealth(string name, int newMaxHealth)
 {
     Node* ptr = mHead;
@@ -146,9 +192,16 @@ void Initiative::editMaxHealth(string name, int newMaxHealth)
     if(found)
     {
         ptr->character.maxHealth = newMaxHealth;
+        ptr->character.updateTextBoxes();
     }
 }
 
+/**
+ * @brief Updates the initiative value
+ * 
+ * @param name Parameter to seach the list by
+ * @param newName New value
+ */
 void Initiative::editInit(string name, int newInit)
 {
     Node* ptr = mHead;
@@ -165,9 +218,16 @@ void Initiative::editInit(string name, int newInit)
     if(found)
     {
         ptr->character.initiative = newInit;
+        ptr->character.updateTextBoxes();
     }
 }
 
+/**
+ * @brief Updates the armor class value
+ * 
+ * @param name Parameter to seach the list by
+ * @param newName New value
+ */
 void Initiative::editAC(string name, int newAC)
 {
     Node* ptr = mHead;
@@ -184,9 +244,16 @@ void Initiative::editAC(string name, int newAC)
     if(found)
     {
         ptr->character.armorClass = newAC;
+        ptr->character.updateTextBoxes();
     }
 }
 
+/**
+ * @brief Updates the status value
+ * 
+ * @param name Parameter to seach the list by
+ * @param newName New value
+ */
 void Initiative::editStatus(string name, string newStatus)
 {
     Node* ptr = mHead;
@@ -203,9 +270,16 @@ void Initiative::editStatus(string name, string newStatus)
     if(found)
     {
         ptr->character.status = newStatus;
+        ptr->character.updateTextBoxes();
     }
 }
 
+/**
+ * @brief Updates the temp health value
+ * 
+ * @param name Parameter to seach the list by
+ * @param newName New value
+ */
 void Initiative::editTempHealth(string name, int newTempHealth)
 {
     Node* ptr = mHead;
@@ -222,9 +296,15 @@ void Initiative::editTempHealth(string name, int newTempHealth)
     if(found)
     {
         ptr->character.tempHealth = newTempHealth;
+        ptr->character.updateTextBoxes();
     }
 }
 
+/**
+ * @brief Advances the list in the turn order. Currently set up to return a string
+ * 
+ * @return string 
+ */
 string Initiative::advanceTurn()
 {
     if(mHead == nullptr) return "";
@@ -246,12 +326,21 @@ string Initiative::advanceTurn()
     }
 }
 
+/**
+ * @brief Resets the start position to the beginning of the list
+ * 
+ */
 void Initiative::resetStart()
 {
     mStart = mHead;
     round = 0;
 }
 
+/**
+ * @brief Converts the contents of the list to a string
+ * 
+ * @return string 
+ */
 string Initiative::listToString() const
 {
     
@@ -270,6 +359,12 @@ string Initiative::listToString() const
     return ostr.str();
 }
 
+/**
+ * @brief Converts the contents of a specific node to a string
+ * 
+ * @param name Parameter to search for
+ * @return string 
+ */
 string Initiative::nodeToString(string name) const
 {
     Node* ptr = mHead;
@@ -286,6 +381,12 @@ string Initiative::nodeToString(string name) const
     else return "";
 }
 
+/**
+ * @brief Converts the contents of a specific node to a string
+ * 
+ * @param ptr Parameter to search for
+ * @return string 
+ */
 string Initiative::nodeToString(Node *ptr) const
 {
     ostringstream ostr;
@@ -301,29 +402,67 @@ string Initiative::nodeToString(Node *ptr) const
     return ostr.str();
 }
 
-// void Initiative::drawList(sf::RenderWindow &window, sf::Vector2f pos)
-// {
-//     Node *ptr = mHead;
+/**
+ * @brief Draws entire list to a window object
+ * 
+ * @param window 
+ * @param pos 
+ */
+void Initiative::drawList(sf::RenderWindow &window, sf::Vector2f pos)
+{
+    Node *ptr = mHead;
 
-//     while(ptr != nullptr)
-//     {
-//         drawNode(window, pos, ptr);
-//         ptr = ptr->next;
-//     }
-// }
+    do
+    {
+        drawNode(window, pos, ptr);
+        ptr = ptr->next;
+        pos.y += 75;
+    }while(ptr != mHead);
+}
 
-// void Initiative::drawNode(sf::RenderWindow &window, sf::Vector2f pos, Node *ptr)
-// {
-//     if(ptr != nullptr)
-//     {
-//         ptr->character.setPosition(pos);
+/**
+ * @brief Draws a specific node to a window object
+ * 
+ * @param window 
+ * @param pos 
+ * @param ptr 
+ */
+void Initiative::drawNode(sf::RenderWindow &window, sf::Vector2f pos, Node *&ptr)
+{
+    if(ptr != nullptr)
+    {
+        sf::Font font;
+        font.loadFromFile("Fonts/Roboto-Thin.ttf");
 
-//         window.draw(ptr->character.nameText);
-//         window.draw(ptr->character.armorClassText);
-//         window.draw(ptr->character.healthText);
-//         window.draw(ptr->character.maxHealthText);
-//         window.draw(ptr->character.initiativeText);
-//         window.draw(ptr->character.statusText);
-//         window.draw(ptr->character.tempHealthText);
-//     }
-// }
+        ptr->character.setPosition(pos);
+
+        ptr->character.nameText.getText().setFont(font);
+        ptr->character.armorClassText.getText().setFont(font);
+        ptr->character.healthText.getText().setFont(font);
+        ptr->character.maxHealthText.getText().setFont(font);
+        ptr->character.initiativeText.getText().setFont(font);
+        ptr->character.statusText.getText().setFont(font);
+        ptr->character.tempHealthText.getText().setFont(font);
+        
+        window.draw(ptr->character.nameText);
+        window.draw(ptr->character.nameText.getText());
+
+        window.draw(ptr->character.armorClassText);
+        window.draw(ptr->character.armorClassText.getText());
+
+        window.draw(ptr->character.healthText);
+        window.draw(ptr->character.healthText.getText());
+
+        window.draw(ptr->character.maxHealthText);
+        window.draw(ptr->character.maxHealthText.getText());
+
+        window.draw(ptr->character.initiativeText);
+        window.draw(ptr->character.initiativeText.getText());
+
+        window.draw(ptr->character.statusText);
+        window.draw(ptr->character.statusText.getText());
+
+        window.draw(ptr->character.tempHealthText);
+        window.draw(ptr->character.tempHealthText.getText());
+    }
+}
