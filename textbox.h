@@ -7,7 +7,8 @@
 class TextBox : public Button
 {
     public:
-        TextBox(const std::string &tString="");
+        TextBox() {};
+        TextBox(const std::string &tString, const sf::Font &font);
         ~TextBox();
 
         void setTextBoxSize(const sf::Vector2f &size);
@@ -17,7 +18,7 @@ class TextBox : public Button
         void setTextBoxPosition(const float &x, const float &y);
         void setTextBoxPosition(const int &x, const int &y);
 
-
+        static sf::Texture tTexture;
     private:
         void setTextPositionLeft();
 };

@@ -1,6 +1,8 @@
 #include "textbox.h"
 
-TextBox::TextBox(const std::string &tString) : Button(tString)
+sf::Texture TextBox::tTexture;
+
+TextBox::TextBox(const std::string &tString, const sf::Font &font) : Button(tString, font)
 {
     text.setCharacterSize(20);
     text.setStyle(0);
@@ -9,10 +11,10 @@ TextBox::TextBox(const std::string &tString) : Button(tString)
     setTextBoxSize(sf::Vector2f(0.f,0.f));
     setTextPositionLeft();
 
-    setFillColor(sf::Color::White);
-    setOutlineColor(sf::Color::Black);
-    setOutlineThickness(2);
-    setTexture(nullptr);
+    // setFillColor(sf::Color::White);
+    // setOutlineColor(sf::Color::Black);
+    // setOutlineThickness(2);
+    // setTexture(nullptr);
 }
 
 TextBox::~TextBox()
