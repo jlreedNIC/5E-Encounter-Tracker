@@ -7,7 +7,7 @@
 class TextBox : public Button
 {
     public:
-        TextBox() {};
+        TextBox();
         TextBox(const std::string &tString, const sf::Font &font);
         ~TextBox();
 

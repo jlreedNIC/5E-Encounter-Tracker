@@ -2,6 +2,15 @@
 
 sf::Texture TextBox::tTexture;
 
+TextBox::TextBox() : Button()
+{
+    text.setCharacterSize(20);
+    text.setStyle(0);
+
+    setTextBoxSize(sf::Vector2f(0.f,0.f));
+    setTextPositionLeft();
+}
+
 TextBox::TextBox(const std::string &tString, const sf::Font &font) : Button(tString, font)
 {
     text.setCharacterSize(20);
