@@ -7,29 +7,20 @@
  */
 #include "button.h"
 
+// sf::Font Button::font;
+// sf::Texture Button::texture;
 /**
  * @brief Default constructor for a button object. Initializes an empty button. Calls a constructor to RectangleShape
+ *        Sets an empty string, character size color and style of string. Sets the default button size and text position
+ *        to the middle.
  * 
  */
-Button::Button() : RectangleShape()	
+Button::Button() : RectangleShape(), text()
 {
-    //font and text
-    if(!font.loadFromFile("Fonts/Roboto-Thin.ttf"))
-    {
-        //error loading font
-    }
     text.setString("");
-    text.setFont(font);
     text.setCharacterSize(25);
     text.setFillColor(sf::Color::Black);
     text.setStyle(sf::Text::Bold);
-
-    //button texture
-    if(!texture.loadFromFile("Textures/button.png"))
-    {
-        //error loading texture
-    }
-    setTexture(&texture);
 
     setButtonSize();
     setTextPositionMiddle();
@@ -40,24 +31,26 @@ Button::Button() : RectangleShape()
  * 
  * @param buttonString String to initialize button text with
  */
-Button::Button(const std::string &buttonString) : RectangleShape()
+Button::Button(const std::string &buttonString, const sf::Font &font) : RectangleShape()
 {
-    //font and text
-    if(!font.loadFromFile("Fonts/Roboto-Thin.ttf"))
-    {
-        //error loading font
-    }
     text.setString(buttonString);
     text.setFont(font);
     text.setCharacterSize(25);
     text.setFillColor(sf::Color::Black);
     text.setStyle(sf::Text::Bold);
 
-    //button texture
-    if(texture.loadFromFile("Textures/button.png"))
-    {
-        //error loading texture
-    }
+    setButtonSize();
+    setTextPositionMiddle();
+}
+
+Button::Button(const std::string &buttonString, const sf::Font &font, const sf::Texture &texture)
+{
+    text.setString(buttonString);
+    text.setCharacterSize(25);
+    text.setFillColor(sf::Color::Black);
+    text.setStyle(sf::Text::Bold);
+    text.setFont(font);
+
     setTexture(&texture);
 
     setButtonSize();
@@ -71,6 +64,20 @@ Button::Button(const std::string &buttonString) : RectangleShape()
 Button::~Button()
 {
 
+}
+
+void Button::createButton(const std::string &buttonString, const sf::Font &font, const sf::Texture &texture)
+{
+    text.setString(buttonString);
+    text.setCharacterSize(25);
+    text.setFillColor(sf::Color::Black);
+    text.setStyle(sf::Text::Bold);
+    text.setFont(font);
+
+    setTexture(&texture);
+
+    setButtonSize();
+    setTextPositionMiddle();
 }
 
 /**
@@ -93,6 +100,18 @@ sf::Text& Button::getText()
     return text;
 }
 
+void Button::setText(const std::string &buttonString, const sf::Font &font)
+{
+    text.setString(buttonString);
+    text.setFont(font);
+    text.setCharacterSize(25);
+    text.setFillColor(sf::Color::Black);
+    text.setStyle(sf::Text::Bold);
+
+    setButtonSize();
+    setTextPositionMiddle();
+}
+
 /**
  * @brief Sets the string for the button to use, then sets the size and position of the string relative to the button
  * 
@@ -105,12 +124,9 @@ void Button::setString(const std::string &buttonString)
     setTextPositionMiddle();
 }
 
-void Button::setFont(const std::string &fileName)
+void Button::setFont(sf::Font &font)
 {
-    if(!font.loadFromFile(fileName))
-    {
-        // error loading font
-    }
+    text.setFont(font);
 }
 
 /**
@@ -120,9 +136,9 @@ void Button::setFont(const std::string &fileName)
 void Button::setButtonSize()
 {
     sf::FloatRect textBound = text.getGlobalBounds();
-    sf::Vector2f textSize = {textBound.width + 20, textBound.height + 30};
+    sf::Vector2f textSize = {textBound.width + 10, textBound.height};
     textSize.x = std::max(textBound.width + 20, 100.f);
-    textSize.y = std::max(textBound.height + 30, 55.f);
+    textSize.y = std::max(textBound.height + 30, 0.f);
     setSize(textSize);
 }
 
