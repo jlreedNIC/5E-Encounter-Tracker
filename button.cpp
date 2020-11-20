@@ -124,7 +124,7 @@ void Button::setString(const std::string &buttonString)
     setTextPositionMiddle();
 }
 
-void Button::setFont(sf::Font &font)
+void Button::setFont(const sf::Font &font)
 {
     text.setFont(font);
 }

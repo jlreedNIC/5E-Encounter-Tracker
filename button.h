@@ -33,7 +33,7 @@ class Button : public sf::RectangleShape
         void setText(const std::string &buttonString, const sf::Font &font);
 
         void setString(const std::string &buttonString);        // sets the string for the button
-        void setFont(sf::Font &font);
+        void setFont(const sf::Font &font);
         void setButtonSize(const sf::Vector2f &size);           // sets the minimum size of the button
 
         // void draw(sf::RenderTarget& target, sf::RenderStates state) const
