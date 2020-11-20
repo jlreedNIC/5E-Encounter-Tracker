@@ -137,6 +137,11 @@ void Initiative::deleteNode(string name)
     }
 }
 
+/**
+ * @brief Copies the contents of a list to this list
+ * 
+ * @param copy List to be copied
+ */
 void Initiative::append(const Initiative &copy)
 {
     Node* ptr = copy.mHead;
@@ -342,6 +347,11 @@ void Initiative::editTempHealth(string name, int newTempHealth)
     }
 }
 
+/**
+ * @brief Sets the same texture for all the textbox objects in the list
+ * 
+ * @param texture Texture to be used
+ */
 void Initiative::setListTexture(const sf::Texture &texture)
 {
     Node* ptr = mHead;
@@ -356,6 +366,11 @@ void Initiative::setListTexture(const sf::Texture &texture)
     }
 }
 
+/**
+ * @brief Sets the same font for all the textbox objects in the list
+ * 
+ * @param font Font to be used
+ */
 void Initiative::setListFont(const sf::Font &font)
 {
     Node* ptr = mHead;
@@ -473,10 +488,10 @@ string Initiative::nodeToString(Node *ptr) const
 }
 
 /**
- * @brief Draws entire list to a window object
+ * @brief Draws entire list to a window object by setting position of the nodes
  * 
- * @param window 
- * @param pos 
+ * @param window Window to be drawn to
+ * @param pos position of nodes to be drawn
  */
 void Initiative::drawList(sf::RenderWindow &window, sf::Vector2f pos)
 {
@@ -533,6 +548,11 @@ void Initiative::drawNode(sf::RenderWindow &window, sf::Vector2f pos, Node* &ptr
     }
 }
 
+/**
+ * @brief Draws the entire list to the window object
+ * 
+ * @param window Window to be drawn to
+ */
 void Initiative::drawList(sf::RenderWindow &window)
 {
     Node *ptr = mHead;
@@ -547,6 +567,12 @@ void Initiative::drawList(sf::RenderWindow &window)
     }
 }
 
+/**
+ * @brief Draws a specific node to the window object
+ * 
+ * @param window Window to be drawn to
+ * @param ptr Node to be drawn
+ */
 void Initiative::drawNode(sf::RenderWindow &window, Node* &ptr)
 {
     if(ptr != nullptr)

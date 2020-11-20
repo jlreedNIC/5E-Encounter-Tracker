@@ -53,8 +53,8 @@ class Initiative
         void editTempHealth(string name, int newTempHealth);
 
         //setters
-        void setListTexture(const sf::Texture &texture);
-        void setListFont(const sf::Font &font);
+        void setListTexture(const sf::Texture &texture);    // set a texture for the entire list
+        void setListFont(const sf::Font &font);             // set a font for the entire list
 
         // output list
         string listToString() const;
