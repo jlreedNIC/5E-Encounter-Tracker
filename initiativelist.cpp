@@ -416,6 +416,12 @@ void Initiative::setListFont(const sf::Font &font)
     }
 }
 
+/**
+ * @brief Sets the position of the linked list with a starting point in the top left corner. Position of the headers and textboxes
+ *        are automatically set.
+ * 
+ * @param pos Starting point of the list
+ */
 void Initiative::setPosition(sf::Vector2f pos)
 {
     headers[0].setPosition(pos.x, pos.y);
@@ -437,6 +443,13 @@ void Initiative::setPosition(sf::Vector2f pos)
     }
 }
 
+ /**
+  * @brief Sets the position of the linked list with a starting point in the top left corner. Position of the headers and textboxes
+  *        are automatically set.
+  * 
+  * @param x Starting x coordiante of the list
+  * @param y Starting y coordiante of the list
+  */
 void Initiative::setPosition(float x, float y)
 {
     sf::Vector2f pos(x, y);

@@ -62,7 +62,7 @@ class Initiative
         string listToString() const;
         string nodeToString(string name) const;
 
-        void drawList(sf::RenderWindow &window, sf::Vector2f pos);
+        void drawList(sf::RenderWindow &window, sf::Vector2f pos);  // remove?
         void drawList(sf::RenderWindow &window);
 
         string advanceTurn();
@@ -75,7 +75,7 @@ class Initiative
 
         string nodeToString(Node *ptr) const;
 
-        void drawNode(sf::RenderWindow &window, sf::Vector2f pos, Node* &ptr);
+        void drawNode(sf::RenderWindow &window, sf::Vector2f pos, Node* &ptr); // remove?
         void drawNode(sf::RenderWindow &window, Node* &ptr);
 
         sf::Text headers[6];
