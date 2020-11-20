@@ -55,6 +55,8 @@ class Initiative
         //setters
         void setListTexture(const sf::Texture &texture);    // set a texture for the entire list
         void setListFont(const sf::Font &font);             // set a font for the entire list
+        void setPosition(sf::Vector2f pos);
+        void setPosition(float x, float y);
 
         // output list
         string listToString() const;
@@ -72,8 +74,11 @@ class Initiative
         int round;  //keeps track of initiative rounds
 
         string nodeToString(Node *ptr) const;
+
         void drawNode(sf::RenderWindow &window, sf::Vector2f pos, Node* &ptr);
         void drawNode(sf::RenderWindow &window, Node* &ptr);
+
+        sf::Text headers[6];
 };
 
 #endif

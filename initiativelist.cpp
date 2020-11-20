@@ -9,6 +9,20 @@ Initiative::Initiative()
     mHead = nullptr;
     mStart = mHead;
     round = 0;
+
+    for(int i=0; i<6; i++)
+    {
+        headers[i].setCharacterSize(20);
+        headers[i].setStyle(sf::Text::Bold);
+        headers[i].setFillColor(sf::Color::Black);
+    }
+
+    headers[0].setString("Name");
+    headers[1].setString("Initiative");
+    headers[2].setString("AC");
+    headers[3].setString("Health");
+    headers[4].setString("Temp HP");
+    headers[5].setString("Status/Notes");
 }
 
 /**
@@ -38,6 +52,20 @@ Initiative::Initiative(const Initiative &copy)
             copyPtr = copyPtr->next;
         }while(copyPtr != copy.mHead);
     }
+
+    for(int i=0; i<6; i++)
+    {
+        headers[i].setCharacterSize(20);
+        headers[i].setStyle(sf::Text::Bold);
+        headers[i].setFillColor(sf::Color::Black);
+    }
+
+    headers[0].setString("Name");
+    headers[1].setString("Initiative");
+    headers[2].setString("AC");
+    headers[3].setString("Health");
+    headers[4].setString("Temp HP");
+    headers[5].setString("Status/Notes");
 }
 
 /**
@@ -375,6 +403,9 @@ void Initiative::setListFont(const sf::Font &font)
 {
     Node* ptr = mHead;
 
+    for(int i=0; i<6; i++)
+        headers[i].setFont(font);
+    
     if(mHead != nullptr)
     {
         do
@@ -383,6 +414,32 @@ void Initiative::setListFont(const sf::Font &font)
             ptr = ptr->next;
         }while(ptr != mHead);
     }
+}
+
+void Initiative::setPosition(sf::Vector2f pos)
+{
+    headers[0].setPosition(pos.x, pos.y);
+    headers[1].setPosition(pos.x + 100, pos.y);
+    headers[2].setPosition(pos.x + 200, pos.y);
+    headers[3].setPosition(pos.x + 250, pos.y);
+    headers[4].setPosition(pos.x + 325, pos.y);
+    headers[5].setPosition(pos.x + 425, pos.y);
+    
+    Node* ptr = mHead;
+    if(ptr != nullptr)
+    {
+        do
+        {
+            pos.y += 35;
+            ptr->character.setPosition(pos);
+            ptr = ptr->next;
+        }while(ptr != mHead);
+    }
+}
+
+void Initiative::setPosition(float x, float y)
+{
+
 }
 
 /**
@@ -556,6 +613,9 @@ void Initiative::drawNode(sf::RenderWindow &window, sf::Vector2f pos, Node* &ptr
 void Initiative::drawList(sf::RenderWindow &window)
 {
     Node *ptr = mHead;
+
+    for(int i=0; i<6; i++)
+        window.draw(headers[i]);
 
     if(ptr != nullptr)
     {

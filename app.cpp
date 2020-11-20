@@ -239,38 +239,16 @@ void App::initiative()
         //input
         //update
         //render
-
-    sf::Text header[6];
-
-    header[0].setString("Initiative");
-    header[1].setString("Name");
-    header[2].setString("AC");
-    header[3].setString("Health");
-    header[4].setString("Temp Health");
-    header[5].setString("Status");
-
-    header[0].setPosition( 50, 25);
-    header[1].setPosition(150, 25);
-    header[2].setPosition(300, 25);
-    header[3].setPosition(375, 25);
-    header[4].setPosition(475, 25);
-    header[5].setPosition(625, 25);
-
-    for(int i=0; i<6; i++)
-    {
-        header[i].setFont(buttonFont);
-        header[i].setCharacterSize(20);
-        header[i].setFillColor(sf::Color::Black);
-        header[i].setStyle(sf::Text::Bold);
-    }
     
     // Creature(string name, int maxHealth, int health, int tempHealth, int initiative, int armorClass, string status)
     Initiative initList;
     initList.addNodeInOrder(Creature("Rihala", 33, 33, 0, 1, 11, "NA"));
     initList.addNodeInOrder(Creature("Gravane", 47, 47, 0, 15, 18, "NA"));
+    initList.setListFont(buttonFont);
+    initList.setPosition(sf::Vector2f(50, 25));
 
     std::cout << initList.listToString() << "\n";
-    
+
 
     while(window.isOpen())
     {
@@ -304,13 +282,9 @@ void App::initiative()
 
             window.clear(sf::Color::White);
 
-            for(int i=0; i<6; i++)
-            {
-                window.draw(header[i]);
-            }
             window.draw(exitButton);
             window.draw(exitButton.getText());
-            initList.drawList(window, sf::Vector2f(50, 50));
+            initList.drawList(window);
             // window.draw(nameText);
             // window.draw(nameText.getText());
             // window.draw(acText);
