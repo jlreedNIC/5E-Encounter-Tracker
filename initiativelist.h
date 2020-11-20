@@ -13,32 +13,6 @@ using std::string;
 using std::ostringstream;
 using std::setw;
 
-//turn struct into class
-//can use a creature class for parent class
-// child classes can be npc, player, monster, etc
-// struct Creature
-// {
-//     string name;
-//     int maxHealth;
-//     int health;
-//     int tempHealth;
-//     int initiative;
-//     int armorClass;
-//     string status;
-
-//     Creature() {};
-//     Creature(string name, int maxHealth, int health, int tempHealth, int initiative, int armorClass, string status)
-//     {
-//         this->name = name;
-//         this->maxHealth = maxHealth;
-//         this->health = health;
-//         this->tempHealth = tempHealth;
-//         this->initiative = initiative;
-//         this->armorClass = armorClass;
-//         this->status = status;
-//     }
-// };
-
 struct Node
 {
     Creature character;
@@ -57,15 +31,18 @@ struct Node
 class Initiative
 {
     public:
-        Initiative();
+        Initiative();   //default constructor
+        Initiative(const Initiative &copy);     // copy constructor
         ~Initiative();
 
         //list functions
-        void addNodeInOrder(Creature character);    //add a creature to the initiative order
-        void deleteNode(string name);               //delete a creature from the initiative order
+        void addNodeInOrder(Creature character);    // add a creature to the initiative order
+        void deleteNode(string name);               // delete a creature from the initiative order
+        void append(const Initiative &copy);        // copies the contents of one list into the main list
 
         //getters
-        int getRound() const;                       //return the initiative round
+        int getRound() const;                       // return the initiative round
+
 
         //edit list
         void editHealth(string name, int newHealth);

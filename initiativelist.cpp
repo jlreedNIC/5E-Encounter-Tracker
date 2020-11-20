@@ -12,6 +12,35 @@ Initiative::Initiative()
 }
 
 /**
+ * @brief Constructs a new circularly linked list based off of another list
+ * 
+ * @param copy List to be copied
+ */
+Initiative::Initiative(const Initiative &copy)
+{
+    Node* copyPtr = copy.mHead;
+
+    if(copy.mHead == nullptr)
+    {
+        mHead = nullptr;
+        mStart = mHead;
+        round = 0;
+    }
+    else
+    {
+        mHead = nullptr;
+        mStart = mHead;
+        round = 0;
+
+        do
+        {
+            addNodeInOrder(copyPtr->character);
+            copyPtr = copyPtr->next;
+        }while(copyPtr != copy.mHead);
+    }
+}
+
+/**
  * @brief Destroy the list
  * 
  */
@@ -105,6 +134,19 @@ void Initiative::deleteNode(string name)
         if(ptr == mHead) mHead = mStart = nullptr;
         delete ptr;
         ptr = nullptr;
+    }
+}
+
+void Initiative::append(const Initiative &copy)
+{
+    Node* ptr = copy.mHead;
+    if(ptr != nullptr)
+    {
+        do
+        {
+            addNodeInOrder(ptr->character);
+            ptr = ptr->next;
+        }while(ptr != copy.mHead);
     }
 }
 
@@ -416,7 +458,7 @@ void Initiative::drawList(sf::RenderWindow &window, sf::Vector2f pos)
     {
         drawNode(window, pos, ptr);
         ptr = ptr->next;
-        pos.y += 75;
+        pos.y += 40;
     }while(ptr != mHead);
 }
 
@@ -431,18 +473,17 @@ void Initiative::drawNode(sf::RenderWindow &window, sf::Vector2f pos, Node* &ptr
 {
     if(ptr != nullptr)
     {
-        // sf::Font font;
-        // font.loadFromFile("Fonts/Roboto-Thin.ttf");
+        sf::Font font;
+        font.loadFromFile("Fonts/Roboto-Thin.ttf");
 
         ptr->character.setPosition(pos);
 
-        // ptr->character.nameText.getText().setFont(font);
-        // ptr->character.armorClassText.getText().setFont(font);
-        // ptr->character.healthText.getText().setFont(font);
-        // ptr->character.maxHealthText.getText().setFont(font);
-        // ptr->character.initiativeText.getText().setFont(font);
-        // ptr->character.statusText.getText().setFont(font);
-        // ptr->character.tempHealthText.getText().setFont(font);
+        ptr->character.nameText.getText().setFont(font);
+        ptr->character.armorClassText.getText().setFont(font);
+        ptr->character.healthText.getText().setFont(font);
+        ptr->character.initiativeText.getText().setFont(font);
+        ptr->character.statusText.getText().setFont(font);
+        ptr->character.tempHealthText.getText().setFont(font);
         
         window.draw(ptr->character.nameText);
         window.draw(ptr->character.nameText.getText());
@@ -452,9 +493,6 @@ void Initiative::drawNode(sf::RenderWindow &window, sf::Vector2f pos, Node* &ptr
 
         window.draw(ptr->character.healthText);
         window.draw(ptr->character.healthText.getText());
-
-        window.draw(ptr->character.maxHealthText);
-        window.draw(ptr->character.maxHealthText.getText());
 
         window.draw(ptr->character.initiativeText);
         window.draw(ptr->character.initiativeText.getText());
