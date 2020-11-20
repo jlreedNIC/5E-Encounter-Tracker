@@ -140,7 +140,7 @@ void Button::setButtonSize()
 {
     sf::FloatRect textBound = text.getGlobalBounds();
     sf::Vector2f textSize = {textBound.width + 10, textBound.height};
-    textSize.x = std::max(textBound.width + 20, 100.f);
+    textSize.x = std::max(textBound.width + 20, 0.f);
     textSize.y = std::max(textBound.height + 30, 0.f);
     setSize(textSize);
 }
