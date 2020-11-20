@@ -15,24 +15,23 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
     buttonFont.loadFromFile("Fonts/Roboto-Thin.ttf");
 
     // textures
-    buttonTexture.loadFromFile("Textures/button.png");
+    buttonTexture.loadFromFile("Textures/better-button.png");
 
     // header
     headerText.setFillColor(sf::Color::Black);
     headerText.setPosition(140,50);
 
     // buttons
-    std::string temp = "New Encounter";
-    newEncounter.createButton("New Encounter", buttonFont, buttonTexture);
+    newEncounter.createButton("new encounter", buttonFont, buttonTexture);
     newEncounter.setButtonPosition(300, 365);
     
-    loadEncounter.createButton("Load Encounter", buttonFont, buttonTexture);
+    loadEncounter.createButton("load encounter", buttonFont, buttonTexture);
     loadEncounter.setButtonPosition(300, 465);
 
-    initiativeButton.createButton("Initiative", buttonFont, buttonTexture);
+    initiativeButton.createButton("initiative", buttonFont, buttonTexture);
     initiativeButton.setButtonPosition(300, 265);
 
-    exitButton.createButton("Exit", buttonFont, buttonTexture);
+    exitButton.createButton("exit", buttonFont, buttonTexture);
     exitButton.setButtonPosition(50, 700);
 
     std::fstream stream("encounter-saves", std::ios::in);
