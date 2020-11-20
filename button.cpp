@@ -7,8 +7,6 @@
  */
 #include "button.h"
 
-// sf::Font Button::font;
-// sf::Texture Button::texture;
 /**
  * @brief Default constructor for a button object. Initializes an empty button. Calls a constructor to RectangleShape
  *        Sets an empty string, character size color and style of string. Sets the default button size and text position
@@ -43,6 +41,13 @@ Button::Button(const std::string &buttonString, const sf::Font &font) : Rectangl
     setTextPositionMiddle();
 }
 
+/**
+ * @brief Constructs a new button object using a string, font, and texture
+ * 
+ * @param buttonString String to use in the button text
+ * @param font Font to apply to button text
+ * @param texture Texture to apply to button
+ */
 Button::Button(const std::string &buttonString, const sf::Font &font, const sf::Texture &texture)
 {
     text.setString(buttonString);
@@ -58,7 +63,7 @@ Button::Button(const std::string &buttonString, const sf::Font &font, const sf::
 }
 
 /**
- * @brief Destroy the Button:: Button object
+ * @brief Destroy the Button object
  * 
  */
 Button::~Button()
@@ -66,6 +71,13 @@ Button::~Button()
 
 }
 
+/**
+ * @brief Sets the Text string, Text font, and Texture for the button for after using the default constructor
+ * 
+ * @param buttonString String to use in the button text
+ * @param font Font to apply to button text
+ * @param texture Texture to apply to button 
+ */
 void Button::createButton(const std::string &buttonString, const sf::Font &font, const sf::Texture &texture)
 {
     text.setString(buttonString);
@@ -81,25 +93,11 @@ void Button::createButton(const std::string &buttonString, const sf::Font &font,
 }
 
 /**
- * @brief Returns the string used in the button
+ * @brief Sets just the parameters needed for the Text object
  * 
- * @return std::string& A reference to the string for the button
+ * @param buttonString String to use in the button text
+ * @param font Font to apply to button text
  */
-const std::string Button::getString()
-{
-    return text.getString();
-}
-
-/**
- * @brief Returns the Text object used in the button
- * 
- * @return sf::Text& A reference to the Text object for the button
- */
-sf::Text& Button::getText()
-{
-    return text;
-}
-
 void Button::setText(const std::string &buttonString, const sf::Font &font)
 {
     text.setString(buttonString);
@@ -124,6 +122,11 @@ void Button::setString(const std::string &buttonString)
     setTextPositionMiddle();
 }
 
+/**
+ * @brief Sets the font for the Text object to use
+ * 
+ * @param font Font to apply to button text
+ */
 void Button::setFont(const sf::Font &font)
 {
     text.setFont(font);
@@ -140,6 +143,41 @@ void Button::setButtonSize()
     textSize.x = std::max(textBound.width + 20, 100.f);
     textSize.y = std::max(textBound.height + 30, 0.f);
     setSize(textSize);
+}
+
+/**
+ * @brief Sets the position of both button and text given 2 float values
+ * 
+ * @param x X coordinate of the button
+ * @param y Y coordinate of the button
+ */
+void Button::setButtonPosition(float x, float y)
+{
+    setPosition(x, y);
+    setTextPositionMiddle();
+}
+
+/**
+ * @brief Sets the position of both button and text given a vector of floats
+ * 
+ * @param position X and Y coordinates in a vector
+ */
+void Button::setButtonPosition(const sf::Vector2f &position)
+{
+    setPosition(position);
+    setTextPositionMiddle();
+}
+
+/**
+ * @brief Sets the position of the text relative to the button. Will be in the middle of the button
+ * 
+ */
+void Button::setTextPositionMiddle()
+{
+    sf::Vector2f rectanglePos = getPosition();
+    rectanglePos.x += 10;
+    rectanglePos.y += 10;
+    text.setPosition(rectanglePos);
 }
 
 /**
@@ -170,38 +208,23 @@ void Button::setButtonSize(const sf::Vector2f &size)
 }
 
 /**
- * @brief Sets the position of the text relative to the button. Will be in the middle of the button
+ * @brief Returns the string used in the button
  * 
+ * @return std::string A copy of the string for the button
  */
-void Button::setTextPositionMiddle()
+const std::string Button::getString()
 {
-    sf::Vector2f rectanglePos = getPosition();
-    rectanglePos.x += 10;
-    rectanglePos.y += 10;
-    text.setPosition(rectanglePos);
+    return text.getString();
 }
 
 /**
- * @brief Sets the position of both button and text given 2 float values
+ * @brief Returns the Text object used in the button
  * 
- * @param x X coordinate of the button
- * @param y Y coordinate of the button
+ * @return sf::Text& A reference to the Text object for the button
  */
-void Button::setButtonPosition(float x, float y)
+sf::Text& Button::getText()
 {
-    setPosition(x, y);
-    setTextPositionMiddle();
-}
-
-/**
- * @brief Sets the position of both button and text given a vector of floats
- * 
- * @param position X and Y coordinates in a vector
- */
-void Button::setButtonPosition(const sf::Vector2f &position)
-{
-    setPosition(position);
-    setTextPositionMiddle();
+    return text;
 }
 
 /**

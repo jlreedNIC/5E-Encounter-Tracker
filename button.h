@@ -20,40 +20,45 @@
 class Button : public sf::RectangleShape
 {
     public:
-        Button();                                   // default constructor
-        Button(const std::string &buttonString, const sf::Font &font);    // convert string to button constructor
+        // constructors and destructor
+        Button();
+        Button(const std::string &buttonString, const sf::Font &font);
         Button(const std::string &buttonString, const sf::Font &font, const sf::Texture &texture);
-        virtual ~Button();                          // destructor
+        virtual ~Button();
 
-        void createButton(const std::string &buttonString, const sf::Font &font, const sf::Texture &texture);
-
-        const std::string getString();      // returns a reference to string for button
-        sf::Text& getText();                // returns a reference to text object for button
-
-        void setText(const std::string &buttonString, const sf::Font &font);
-
+        // setters
+        void createButton(const std::string &buttonString, const sf::Font &font, const sf::Texture &texture);   // sets everything needed for button
+        void setText(const std::string &buttonString, const sf::Font &font);    // sets the string and font
+                                                                                // sets what's needed for the Text object
         void setString(const std::string &buttonString);        // sets the string for the button
-        void setFont(const sf::Font &font);
+        void setFont(const sf::Font &font);                     // sets the font for the button's Text object
         void setButtonSize(const sf::Vector2f &size);           // sets the minimum size of the button
 
+        //want to overwrite setPosition
+        void setButtonPosition(float x, float y);               // sets the position of both button and text
+        void setButtonPosition(const sf::Vector2f &position);   // sets the position of both button and text
+        
+        // getters
+        const std::string getString();      // gets the string that is on the button
+        sf::Text& getText();                // returns a reference to text object for button
+
+        // functions to see if button was clicked
+        bool isClicked(const float &x, const float &y);
+        bool isClicked(const int &x, const int &y);
+        bool isClicked(const sf::Vector2f &point);
+
+        // would like to implement
+        // might need to change inheritance to drawable or shape
         // void draw(sf::RenderTarget& target, sf::RenderStates state) const
         // {
         //     // need to figure out how to draw both rectangle and text
         //     target.draw(m_vertices, state);
         //     target.draw(text);
         // }
-
-        //want to overwrite setPosition
-        void setButtonPosition(float x, float y);               // sets the position of both button and text
-        void setButtonPosition(const sf::Vector2f &position);   // sets the position of both button and text
-
-        bool isClicked(const float &x, const float &y);         // checks to see if button was clicked
-        bool isClicked(const int &x, const int &y);             // checks to see if button was clicked
-        bool isClicked(const sf::Vector2f &point);              // checks to see if button was clicked
         
     protected:
-        void setTextPositionMiddle();                           // sets the position of the text relative to the button
-        void setButtonSize();                                   // sets the size of the button relative to the string
+        void setTextPositionMiddle();       // sets the position of the text relative to the button
+        void setButtonSize();               // sets the size of the button relative to the string
 
         sf::Text text;
 };
