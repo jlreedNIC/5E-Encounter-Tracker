@@ -13,7 +13,6 @@ Creature::Creature(std::string name, int maxHealth, int health, int tempHealth, 
     updateTextBoxes();
 
     nameText.setTextBoxSize(sf::Vector2f(140, 35));
-    maxHealthText.setTextBoxSize(sf::Vector2f(50, 35));
     healthText.setTextBoxSize(sf::Vector2f(50, 35));
     tempHealthText.setTextBoxSize(sf::Vector2f(50, 35));
     initiativeText.setTextBoxSize(sf::Vector2f(50, 35));
@@ -27,11 +26,7 @@ void Creature::updateTextBoxes()
 
     nameText.setString(name);
 
-    ostr << "/" << maxHealth;
-    maxHealthText.setString(ostr.str());
-    ostr.str("");
-
-    ostr << health;
+    ostr << health << "/" << maxHealth;
     healthText.setString(ostr.str());
     ostr.str("");
 
@@ -56,7 +51,6 @@ void Creature::setPosition(sf::Vector2f &pos)
     nameText.setTextBoxPosition(pos.x + 100, pos.y);
     armorClassText.setTextBoxPosition(pos.x + 250, pos.y);
     healthText.setTextBoxPosition(pos.x + 325, pos.y);
-    maxHealthText.setTextBoxPosition(pos.x + 370, pos.y);
     tempHealthText.setTextBoxPosition(pos.x + 425, pos.y);
     statusText.setTextBoxPosition(pos.x + 575, pos.y);
 }
