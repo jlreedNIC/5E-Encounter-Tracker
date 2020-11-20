@@ -37,8 +37,12 @@ class Creature //: sf::Drawable
 
         void updateTextBoxes();
 
+        // setters
         void setPosition(sf::Vector2f &pos);
+        void setTexture(const sf::Texture &texture);
+        void setFont(const sf::Font &font);
 
+        void draw(sf::RenderWindow &window);
         // void draw(sf::RenderTarget& target, sf::RenderStates state) const
         // {
         //     target.draw(nameText);

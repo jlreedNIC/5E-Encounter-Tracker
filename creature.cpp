@@ -54,3 +54,44 @@ void Creature::setPosition(sf::Vector2f &pos)
     tempHealthText.setTextBoxPosition(pos.x + 425, pos.y);
     statusText.setTextBoxPosition(pos.x + 575, pos.y);
 }
+
+void Creature::setTexture(const sf::Texture &texture)
+{
+    nameText.setTexture(&texture);
+    healthText.setTexture(&texture);
+    tempHealthText.setTexture(&texture);
+    initiativeText.setTexture(&texture);
+    armorClassText.setTexture(&texture);
+    statusText.setTexture(&texture);
+}
+
+void Creature::setFont(const sf::Font &font)
+{
+    nameText.setFont(font);
+    healthText.setFont(font);
+    tempHealthText.setFont(font);
+    initiativeText.setFont(font);
+    armorClassText.setFont(font);
+    statusText.setFont(font);
+}
+
+void Creature::draw(sf::RenderWindow &window)
+{
+    window.draw(nameText);
+    window.draw(nameText.getText());
+
+    window.draw(healthText);
+    window.draw(healthText.getText());
+
+    window.draw(tempHealthText);
+    window.draw(tempHealthText.getText());
+
+    window.draw(initiativeText);
+    window.draw(initiativeText.getText());
+
+    window.draw(armorClassText);
+    window.draw(armorClassText.getText());
+
+    window.draw(statusText);
+    window.draw(statusText.getText());
+}

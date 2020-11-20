@@ -1,13 +1,13 @@
 #ifndef INITIATIVELIST_H
 #define INITIATIVELIST_H
 
-#include "diceroll.h"
 #include <string>
 #include <sstream>
 #include <iomanip>
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "creature.h"
+#include "diceroll.h"
 
 using std::string;
 using std::ostringstream;
@@ -43,8 +43,7 @@ class Initiative
         //getters
         int getRound() const;                       // return the initiative round
 
-
-        //edit list
+        // edit list by name search
         void editHealth(string name, int newHealth);
         void editName(string name, string newName);
         void editMaxHealth(string name, int newMaxHealth);
@@ -53,11 +52,16 @@ class Initiative
         void editStatus(string name, string newStatus);
         void editTempHealth(string name, int newTempHealth);
 
-        //output list
+        //setters
+        void setListTexture(const sf::Texture &texture);
+        void setListFont(const sf::Font &font);
+
+        // output list
         string listToString() const;
         string nodeToString(string name) const;
 
         void drawList(sf::RenderWindow &window, sf::Vector2f pos);
+        void drawList(sf::RenderWindow &window);
 
         string advanceTurn();
         void resetStart();
@@ -69,6 +73,7 @@ class Initiative
 
         string nodeToString(Node *ptr) const;
         void drawNode(sf::RenderWindow &window, sf::Vector2f pos, Node* &ptr);
+        void drawNode(sf::RenderWindow &window, Node* &ptr);
 };
 
 #endif

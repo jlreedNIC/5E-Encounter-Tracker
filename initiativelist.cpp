@@ -342,6 +342,34 @@ void Initiative::editTempHealth(string name, int newTempHealth)
     }
 }
 
+void Initiative::setListTexture(const sf::Texture &texture)
+{
+    Node* ptr = mHead;
+
+    if(mHead != nullptr)
+    {
+        do
+        {
+            ptr->character.setTexture(texture);
+            ptr = ptr->next;
+        }while(ptr != mHead);
+    }
+}
+
+void Initiative::setListFont(const sf::Font &font)
+{
+    Node* ptr = mHead;
+
+    if(mHead != nullptr)
+    {
+        do
+        {
+            ptr->character.setFont(font);
+            ptr = ptr->next;
+        }while(ptr != mHead);
+    }
+}
+
 /**
  * @brief Advances the list in the turn order. Currently set up to return a string
  * 
@@ -463,7 +491,7 @@ void Initiative::drawList(sf::RenderWindow &window, sf::Vector2f pos)
 }
 
 /**
- * @brief Draws a specific node to a window object
+ * @brief Draws a specific node to a window object given a specific position
  * 
  * @param window 
  * @param pos 
@@ -502,5 +530,27 @@ void Initiative::drawNode(sf::RenderWindow &window, sf::Vector2f pos, Node* &ptr
 
         window.draw(ptr->character.tempHealthText);
         window.draw(ptr->character.tempHealthText.getText());
+    }
+}
+
+void Initiative::drawList(sf::RenderWindow &window)
+{
+    Node *ptr = mHead;
+
+    if(ptr != nullptr)
+    {
+        do
+        {
+            drawNode(window, ptr);
+            ptr = ptr->next;
+        }while(ptr != mHead);
+    }
+}
+
+void Initiative::drawNode(sf::RenderWindow &window, Node* &ptr)
+{
+    if(ptr != nullptr)
+    {
+        ptr->character.draw(window);
     }
 }
