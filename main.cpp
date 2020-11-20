@@ -2,7 +2,6 @@
 #include <iostream>
 #include <string>
 #include "diceroll.h"
-#include "graphicsfunctions.h"
 #include "button.h"
 #include "app.h"
 #include <SFML/Graphics.hpp>
