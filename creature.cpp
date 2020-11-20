@@ -45,7 +45,7 @@ void Creature::updateTextBoxes()
     statusText.setString(status);
 }
 
-void Creature::setPosition(sf::Vector2f &pos)
+void Creature::setPosition(sf::Vector2f pos)
 {
     nameText.setTextBoxPosition(pos);
     initiativeText.setTextBoxPosition(pos.x + 100, pos.y);
@@ -56,6 +56,12 @@ void Creature::setPosition(sf::Vector2f &pos)
     healthText.setTextBoxPosition(pos.x + 250, pos.y);
     tempHealthText.setTextBoxPosition(pos.x + 325, pos.y);
     statusText.setTextBoxPosition(pos.x + 425, pos.y);
+}
+
+void Creature::setPosition(float x, float y)
+{
+    sf::Vector2f pos(x, y);
+    setPosition(pos);
 }
 
 void Creature::setTexture(const sf::Texture &texture)

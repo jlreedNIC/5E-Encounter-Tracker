@@ -439,7 +439,8 @@ void Initiative::setPosition(sf::Vector2f pos)
 
 void Initiative::setPosition(float x, float y)
 {
-
+    sf::Vector2f pos(x, y);
+    setPosition(pos);
 }
 
 /**
