@@ -23,6 +23,11 @@ Initiative::Initiative()
     headers[3].setString("Health");
     headers[4].setString("Temp HP");
     headers[5].setString("Status/Notes");
+
+    roundText.setCharacterSize(20);
+    roundText.setFillColor(sf::Color::Black);
+    roundText.setStyle(sf::Text::Bold);
+    setRoundText();
 }
 
 /**
@@ -66,6 +71,9 @@ Initiative::Initiative(const Initiative &copy)
     headers[3].setString("Health");
     headers[4].setString("Temp HP");
     headers[5].setString("Status/Notes");
+
+    roundText.setCharacterSize(20);
+    roundText.setFillColor(sf::Color::Black);
 }
 
 /**
@@ -405,6 +413,8 @@ void Initiative::setListFont(const sf::Font &font)
 
     for(int i=0; i<6; i++)
         headers[i].setFont(font);
+
+    roundText.setFont(font);
     
     if(mHead != nullptr)
     {
@@ -424,6 +434,7 @@ void Initiative::setListFont(const sf::Font &font)
  */
 void Initiative::setPosition(sf::Vector2f pos)
 {
+    sf::Vector2f curPos = pos;
     headers[0].setPosition(pos.x, pos.y);
     headers[1].setPosition(pos.x + 100, pos.y);
     headers[2].setPosition(pos.x + 200, pos.y);
@@ -441,6 +452,9 @@ void Initiative::setPosition(sf::Vector2f pos)
             ptr = ptr->next;
         }while(ptr != mHead);
     }
+
+    pos.y += 50;
+    roundText.setPosition(curPos.x, pos.y);
 }
 
  /**
@@ -454,6 +468,13 @@ void Initiative::setPosition(float x, float y)
 {
     sf::Vector2f pos(x, y);
     setPosition(pos);
+}
+
+void Initiative::setRoundText()
+{
+    ostringstream ostr;
+    ostr << "Round: " << round;
+    roundText.setString(ostr.str());
 }
 
 /**
@@ -639,6 +660,8 @@ void Initiative::drawList(sf::RenderWindow &window)
             ptr = ptr->next;
         }while(ptr != mHead);
     }
+
+    window.draw(roundText);
 }
 
 /**

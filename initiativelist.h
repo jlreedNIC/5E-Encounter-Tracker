@@ -57,6 +57,7 @@ class Initiative
         void setListFont(const sf::Font &font);             // set a font for the entire list
         void setPosition(sf::Vector2f pos);
         void setPosition(float x, float y);
+        void setRoundText();
 
         // output list
         string listToString() const;
@@ -79,6 +80,7 @@ class Initiative
         void drawNode(sf::RenderWindow &window, Node* &ptr);
 
         sf::Text headers[6];
+        sf::Text roundText;
 };
 
 #endif
