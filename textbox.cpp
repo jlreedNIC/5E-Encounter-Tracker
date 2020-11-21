@@ -6,6 +6,7 @@ TextBox::TextBox() : Button()
 {
     text.setCharacterSize(20);
     text.setStyle(0);
+    text.setFillColor(sf::Color::Black);
 
     setTextBoxSize(sf::Vector2f(0.f,0.f));
     setTextPositionLeft();

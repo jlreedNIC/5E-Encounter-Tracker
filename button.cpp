@@ -82,7 +82,7 @@ void Button::createButton(const std::string &buttonString, const sf::Font &font,
 {
     text.setString(buttonString);
     text.setCharacterSize(25);
-    text.setFillColor(sf::Color::Black);
+    text.setFillColor(sf::Color::White);
     text.setStyle(sf::Text::Bold);
     text.setFont(font);
 

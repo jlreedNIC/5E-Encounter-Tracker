@@ -15,7 +15,7 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
     buttonFont.loadFromFile("Fonts/Roboto-Thin.ttf");
 
     // textures
-    buttonTexture.loadFromFile("Textures/better-button.png");
+    buttonTexture.loadFromFile("Textures/dark-better-button3.png");
 
     // header
     headerText.setFillColor(sf::Color::Black);
