@@ -13,7 +13,7 @@
  *        to the middle.
  * 
  */
-Button::Button() : RectangleShape(), text()
+Button::Button() : text(), rectangle()
 {
     text.setString("");
     text.setCharacterSize(25);
@@ -29,7 +29,7 @@ Button::Button() : RectangleShape(), text()
  * 
  * @param buttonString String to initialize button text with
  */
-Button::Button(const std::string &buttonString, const sf::Font &font) : RectangleShape()
+Button::Button(const std::string &buttonString, const sf::Font &font) : text(), rectangle()
 {
     text.setString(buttonString);
     text.setFont(font);
@@ -48,7 +48,7 @@ Button::Button(const std::string &buttonString, const sf::Font &font) : Rectangl
  * @param font Font to apply to button text
  * @param texture Texture to apply to button
  */
-Button::Button(const std::string &buttonString, const sf::Font &font, const sf::Texture &texture)
+Button::Button(const std::string &buttonString, const sf::Font &font, const sf::Texture &texture) : text(), rectangle()
 {
     text.setString(buttonString);
     text.setCharacterSize(25);
@@ -56,7 +56,7 @@ Button::Button(const std::string &buttonString, const sf::Font &font, const sf::
     text.setStyle(sf::Text::Bold);
     text.setFont(font);
 
-    setTexture(&texture);
+    rectangle.setTexture(&texture);
 
     setButtonSize();
     setTextPositionMiddle();
@@ -86,7 +86,7 @@ void Button::createButton(const std::string &buttonString, const sf::Font &font,
     text.setStyle(sf::Text::Bold);
     text.setFont(font);
 
-    setTexture(&texture);
+    rectangle.setTexture(&texture);
 
     setButtonSize();
     setTextPositionMiddle();
@@ -132,6 +132,11 @@ void Button::setFont(const sf::Font &font)
     text.setFont(font);
 }
 
+void Button::setTexture(const sf::Texture &texture)
+{
+    rectangle.setTexture(&texture);
+}
+
 /**
  * @brief Sets the size of the button relative to the string, so the button is bigger than the Text.
  * 
@@ -142,7 +147,7 @@ void Button::setButtonSize()
     sf::Vector2f textSize = {textBound.width + 10, textBound.height};
     textSize.x = std::max(textBound.width + 20, 0.f);
     textSize.y = std::max(textBound.height + 30, 0.f);
-    setSize(textSize);
+    rectangle.setSize(textSize);
 }
 
 /**
@@ -153,7 +158,7 @@ void Button::setButtonSize()
  */
 void Button::setButtonPosition(float x, float y)
 {
-    setPosition(x, y);
+    rectangle.setPosition(x, y);
     setTextPositionMiddle();
 }
 
@@ -164,7 +169,7 @@ void Button::setButtonPosition(float x, float y)
  */
 void Button::setButtonPosition(const sf::Vector2f &position)
 {
-    setPosition(position);
+    rectangle.setPosition(position);
     setTextPositionMiddle();
 }
 
@@ -174,7 +179,7 @@ void Button::setButtonPosition(const sf::Vector2f &position)
  */
 void Button::setTextPositionMiddle()
 {
-    sf::Vector2f rectanglePos = getPosition();
+    sf::Vector2f rectanglePos = rectangle.getPosition();
     rectanglePos.x += 10;
     rectanglePos.y += 10;
     text.setPosition(rectanglePos);
@@ -189,20 +194,20 @@ void Button::setButtonSize(const sf::Vector2f &size)
 {
     setButtonSize();
 
-    sf::Vector2f currentSize = getSize();
+    sf::Vector2f currentSize = rectangle.getSize();
     if(currentSize.x < size.x && currentSize.y < size.y)
     {
-        setSize(size);
+        rectangle.setSize(size);
     }
     else if(currentSize.x < size.x)
     {
         currentSize.x = size.x;
-        setSize(currentSize);
+        rectangle.setSize(currentSize);
     }
     else if(currentSize.y < size.y)
     {
         currentSize.y = size.y;
-        setSize(currentSize);
+        rectangle.setSize(currentSize);
     }
     setTextPositionMiddle();
 }
@@ -237,7 +242,7 @@ sf::Text& Button::getText()
  */
 bool Button::isClicked(const float &x, const float &y)
 {
-    sf::FloatRect buttonBound = getGlobalBounds();
+    sf::FloatRect buttonBound = rectangle.getGlobalBounds();
     return buttonBound.contains(sf::Vector2f(x,y));
 }
 
@@ -253,7 +258,7 @@ bool Button::isClicked(const int &x, const int &y)
 {
     float posX = x;
     float posY = y;
-    sf::FloatRect buttonBound = getGlobalBounds();
+    sf::FloatRect buttonBound = rectangle.getGlobalBounds();
     return buttonBound.contains(sf::Vector2f(posX,posY));
 }
 
@@ -267,6 +272,6 @@ bool Button::isClicked(const int &x, const int &y)
  */
 bool Button::isClicked(const sf::Vector2f &point)
 {
-    sf::FloatRect buttonBound = getGlobalBounds();
+    sf::FloatRect buttonBound = rectangle.getGlobalBounds();
     return buttonBound.contains(point);
 }

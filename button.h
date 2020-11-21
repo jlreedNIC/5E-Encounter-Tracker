@@ -17,7 +17,7 @@
 // gRobotoFont.loadFromFile("Fonts/Roboto-Thin.ttf");
 
 
-class Button : public sf::RectangleShape
+class Button : public sf::Drawable
 {
     public:
         // constructors and destructor
@@ -32,6 +32,7 @@ class Button : public sf::RectangleShape
                                                                                 // sets what's needed for the Text object
         void setString(const std::string &buttonString);        // sets the string for the button
         void setFont(const sf::Font &font);                     // sets the font for the button's Text object
+        void setTexture(const sf::Texture &texture);
         void setButtonSize(const sf::Vector2f &size);           // sets the minimum size of the button
 
         //want to overwrite setPosition
@@ -49,18 +50,19 @@ class Button : public sf::RectangleShape
 
         // would like to implement
         // might need to change inheritance to drawable or shape
-        // void draw(sf::RenderTarget& target, sf::RenderStates state) const
-        // {
-        //     // need to figure out how to draw both rectangle and text
-        //     target.draw(m_vertices, state);
-        //     target.draw(text);
-        // }
+        void draw(sf::RenderTarget& target, sf::RenderStates state) const
+        {
+            // need to figure out how to draw both rectangle and text
+            target.draw(rectangle);
+            target.draw(text);
+        }
         
     protected:
         void setTextPositionMiddle();       // sets the position of the text relative to the button
         void setButtonSize();               // sets the size of the button relative to the string
 
         sf::Text text;
+        sf::RectangleShape rectangle;
 };
 
 #endif

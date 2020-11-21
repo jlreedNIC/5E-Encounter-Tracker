@@ -39,7 +39,7 @@ void TextBox::setTextBoxSize(const sf::Vector2f &size)
     sf::Vector2f textSize = {textBound.width + 10, textBound.height + 10};
     textSize.x = std::max(textSize.x, size.x);
     textSize.y = std::max(textSize.y, size.y);
-    setSize(textSize);
+    rectangle.setSize(textSize);
 }
 
 void TextBox::setString(const std::string &tstring)
@@ -49,25 +49,25 @@ void TextBox::setString(const std::string &tstring)
 
 void TextBox::setTextBoxPosition(const sf::Vector2f &size)
 {
-    setPosition(size);
+    rectangle.setPosition(size);
     setTextPositionLeft();
 }
 
 void TextBox::setTextBoxPosition(const float &x, const float &y)
 {
-    setPosition(x, y);
+    rectangle.setPosition(x, y);
     setTextPositionLeft();
 }
 
 void TextBox::setTextBoxPosition(const int &x, const int &y)
 {
-    setPosition(x, y);
+    rectangle.setPosition(x, y);
     setTextPositionLeft();
 }
 
 void TextBox::setTextPositionLeft()
 {
-    sf::Vector2f rectanglePos = getPosition();
+    sf::Vector2f rectanglePos = rectangle.getPosition();
     rectanglePos.x += 5;
     rectanglePos.y += 5;
     text.setPosition(rectanglePos);

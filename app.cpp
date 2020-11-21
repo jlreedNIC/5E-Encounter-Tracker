@@ -221,13 +221,13 @@ void App::mainMenuDraw()
     window.draw(headerText);
 
     window.draw(newEncounter);
-    window.draw(newEncounter.getText());
+    // window.draw(newEncounter.getText());
 
     window.draw(loadEncounter);
-    window.draw(loadEncounter.getText());
+    // window.draw(loadEncounter.getText());
 
     window.draw(initiativeButton);
-    window.draw(initiativeButton.getText());
+    // window.draw(initiativeButton.getText());
 
     window.display();
 }
