@@ -8,6 +8,7 @@
 #include "button.h"
 #include "textbox.h"
 #include "initiativelist.h"
+#include "encounter.h"
 
 class App
 {
@@ -21,10 +22,12 @@ class App
 
         void initiative();
 
-        
+        void editNode(Initiative& initList, const float &x, const float &y);
 
     private:
         sf::RenderWindow window;
+        Encounter encounter;
+
         sf::Text saves[3];  // change to textbox
 
         sf::Font headerFont;

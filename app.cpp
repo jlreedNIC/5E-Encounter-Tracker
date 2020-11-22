@@ -1,6 +1,7 @@
 #include "app.h"
 
 App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"), 
+             encounter(), 
             //  newEncounter(), 
              loadEncounter(), 
              initiativeButton(),
@@ -241,10 +242,17 @@ void App::initiative()
     
     // Creature(string name, int maxHealth, int health, int tempHealth, int initiative, int armorClass, string status)
     Initiative initList;
-    initList.addNodeInOrder(Creature("Rihala", 33, 33, 0, 1, 11, "NA"));
-    initList.addNodeInOrder(Creature("Gravane", 47, 47, 0, 15, 18, "NA"));
+    initList.addNodeInOrder(Creature("Rihala", 33, 33, 0, 1, 11, "NA", 4));
+    initList.addNodeInOrder(Creature("Gravane", 47, 47, 0, 15, 18, "NA", 4));
     initList.setListFont(buttonFont);
     initList.setPosition(sf::Vector2f(50, 25));
+
+    encounter.addPlayer(Creature("Rihala", 33, 33, 0, 1, 11, "raging", 4));
+    encounter.addPlayer(Creature("Gravane", 47, 47, 0, 15, 18, "NA", 4));
+    encounter.addEnemy(Creature("Goblin Fighter", 30, 30, 0, 5, 15, "NA", 50));
+    encounter.addEnemy(Creature("Kobold", 0, 12, 0, 20, 13, "Bleeding out", 25));
+
+    encounter.calculateEncounterDifficulty();
 
     std::cout << initList.listToString() << "\n";
 
@@ -269,6 +277,12 @@ void App::initiative()
                     return;
                 }
 
+                if(initList.isNodeClicked(posX, posY))
+                {
+                    std::cout << "Node Clicked\n";
+                    editNode(initList, posX, posY);
+                    // initList.editNode(posX, posY);
+                }
                 // if(nameText.isClicked(mouseClick))
                 // {
                 //     std::cout << nameText.getString() << "\n";
@@ -288,6 +302,60 @@ void App::initiative()
             // window.draw(nameText.getText());
             // window.draw(acText);
             // window.draw(acText.getText());
+            window.display();
+        }
+    }
+}
+
+void App::editNode(Initiative &initList, const float &x, const float &y)
+{
+    sf::Event event;
+    TextBox textbox = initList.getTextBox(x, y);
+    std::string tempString = textbox.getString();
+
+    while(window.isOpen())
+    {
+        while(window.pollEvent(event))
+        {
+            if(event.type == sf::Event::Closed)
+            {
+                window.close();
+            }
+
+            if(event.type == sf::Event::MouseButtonPressed)
+            {
+                float posX = event.mouseButton.x;
+                float posY = event.mouseButton.y;
+                sf::Vector2f mouseClick = {posX, posY};
+                if(exitButton.isClicked(mouseClick))
+                {
+                    return;
+                }
+
+                if(!textbox.isClicked(posX, posY))
+                {
+                    return;
+                }
+            }
+
+            if (event.type == sf::Event::TextEntered)
+            {
+                tempString += event.text.unicode;
+                unsigned int size = tempString.size();
+
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
+                {
+                    tempString = tempString.substr(0, size-2);
+                }
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+                    return;
+                
+                initList.editNode(x, y, tempString);
+            }
+
+            window.clear(sf::Color::White);
+            window.draw(exitButton);
+            initList.drawList(window);
             window.display();
         }
     }
