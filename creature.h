@@ -31,9 +31,11 @@ class Creature //: sf::Drawable
         std::string status;
         TextBox statusText;
 
+        int level;
+
         Creature(std::string name="BOB", int maxHealth=0, 
                  int health=0, int tempHealth=0, int initiative=0, 
-                 int armorClass=0, std::string status="NA");
+                 int armorClass=0, std::string status="NA", int level=1);
 
         void updateTextBoxes();
 
@@ -42,6 +44,11 @@ class Creature //: sf::Drawable
         void setPosition(float x, float y);
         void setTexture(const sf::Texture &texture);
         void setFont(const sf::Font &font);
+
+        TextBox& getTextBox(const float &x, const float &y);
+        void edit(const float &x, const float &y, const std::string &tempValue);
+
+        bool isClicked(const float &x, const float &y);
 
         void draw(sf::RenderWindow &window);
         // void draw(sf::RenderTarget& target, sf::RenderStates state) const

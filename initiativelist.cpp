@@ -9,6 +9,7 @@ Initiative::Initiative()
     mHead = nullptr;
     mStart = mHead;
     round = 0;
+    size = 0;
 
     for(int i=0; i<6; i++)
     {
@@ -44,12 +45,14 @@ Initiative::Initiative(const Initiative &copy)
         mHead = nullptr;
         mStart = mHead;
         round = 0;
+        size = 0;
     }
     else
     {
         mHead = nullptr;
         mStart = mHead;
         round = 0;
+        size = 0;
 
         do
         {
@@ -140,6 +143,7 @@ void Initiative::addNodeInOrder(Creature character)
         nodePtr->character.updateTextBoxes();
     }
     
+    size++;
 }
 
 /**
@@ -171,6 +175,8 @@ void Initiative::deleteNode(string name)
         delete ptr;
         ptr = nullptr;
     }
+
+    size--;
 }
 
 /**
@@ -189,6 +195,8 @@ void Initiative::append(const Initiative &copy)
             ptr = ptr->next;
         }while(ptr != copy.mHead);
     }
+
+    size += copy.size;
 }
 
 /**
@@ -199,6 +207,44 @@ void Initiative::append(const Initiative &copy)
 int Initiative::getRound() const
 {
     return round;
+}
+
+int Initiative::getSize() const
+{
+    return size;
+}
+
+int* Initiative::getLevel()
+{
+    int *levelArr = new int [getSize()];
+
+    Node* ptr = mHead;
+    if(ptr != nullptr)
+    {
+        int i = 0;
+        do
+        {
+            
+            levelArr[i] = ptr->character.level;
+            i++;
+            ptr = ptr->next;
+        }while(ptr != mHead);
+    }
+    return levelArr;
+}
+
+TextBox& Initiative::getTextBox(const float &x, const float &y)
+{
+    Node *ptr = mHead;
+    if(mHead != nullptr)
+    {
+        do
+        {
+            if(ptr->character.isClicked(x, y)) 
+                return ptr->character.getTextBox(x, y);
+            else ptr = ptr->next;
+        }while(ptr != mHead);
+    }
 }
 
 /**
@@ -383,6 +429,23 @@ void Initiative::editTempHealth(string name, int newTempHealth)
     }
 }
 
+void Initiative::editNode(const float &x, const float &y, const std::string &tempValue)
+{
+    //find right textbox
+    Node *ptr = mHead;
+    if(ptr != nullptr)
+    {
+        do
+        {
+            if(ptr->character.isClicked(x, y))
+            {
+                ptr->character.edit(x, y, tempValue);
+            }
+            ptr = ptr->next;
+        }while(ptr != mHead);
+    }
+}
+
 /**
  * @brief Sets the same texture for all the textbox objects in the list
  * 
@@ -475,6 +538,25 @@ void Initiative::setRoundText()
     ostringstream ostr;
     ostr << "Round: " << round;
     roundText.setString(ostr.str());
+}
+
+bool Initiative::isNodeClicked(const float &x, const float &y)
+{
+    Node* ptr = mHead;
+    bool clicked = false;
+    if(ptr != nullptr)
+    {
+        do
+        {
+            if(ptr->character.isClicked(x, y)) clicked = true;
+            // sf::FloatRect nodeBounds = ptr->character.getGlobalBounds();
+            // if(nodeBounds.contains(x, y)) clicked = true;
+            ptr = ptr->next;
+        }while(ptr != mHead && !clicked);
+    }
+    return clicked;
+    // sf::FloatRect buttonBound = rectangle.getGlobalBounds();
+    // return buttonBound.contains(sf::Vector2f(x,y));
 }
 
 /**

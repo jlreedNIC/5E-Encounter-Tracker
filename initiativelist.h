@@ -42,6 +42,9 @@ class Initiative
 
         //getters
         int getRound() const;                       // return the initiative round
+        TextBox& getTextBox(const float &x, const float &y);
+        int getSize() const;
+        int* getLevel();
 
         // edit list by name search
         void editHealth(string name, int newHealth);
@@ -52,12 +55,17 @@ class Initiative
         void editStatus(string name, string newStatus);
         void editTempHealth(string name, int newTempHealth);
 
+        void editNode(const float &x, const float &y, const std::string &tempValue);
+
         //setters
         void setListTexture(const sf::Texture &texture);    // set a texture for the entire list
         void setListFont(const sf::Font &font);             // set a font for the entire list
         void setPosition(sf::Vector2f pos);
         void setPosition(float x, float y);
         void setRoundText();
+
+        // bool functions
+        bool isNodeClicked(const float &x, const float &y);
 
         // output list
         string listToString() const;
@@ -72,7 +80,8 @@ class Initiative
     private:
         Node* mHead;
         Node* mStart; //keeps track of where you are in initiative
-        int round;  //keeps track of initiative rounds
+        int round;    //keeps track of initiative rounds
+        int size;     //keeps track of size of list
 
         string nodeToString(Node *ptr) const;
 

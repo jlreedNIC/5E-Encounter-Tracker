@@ -1,6 +1,6 @@
 #include "creature.h"
 
-Creature::Creature(std::string name, int maxHealth, int health, int tempHealth, int initiative, int armorClass, std::string status)
+Creature::Creature(std::string name, int maxHealth, int health, int tempHealth, int initiative, int armorClass, std::string status, int level)
 {
     this->name = name;
     this->maxHealth = maxHealth;
@@ -9,10 +9,11 @@ Creature::Creature(std::string name, int maxHealth, int health, int tempHealth, 
     this->initiative = initiative;
     this->armorClass = armorClass;
     this->status = status;
+    this->level = level;
 
     updateTextBoxes();
 
-    nameText.setTextBoxSize(sf::Vector2f(140, 35));
+    nameText.setTextBoxSize(sf::Vector2f(100, 35));
     healthText.setTextBoxSize(sf::Vector2f(50, 35));
     tempHealthText.setTextBoxSize(sf::Vector2f(50, 35));
     initiativeText.setTextBoxSize(sf::Vector2f(50, 35));
@@ -82,6 +83,45 @@ void Creature::setFont(const sf::Font &font)
     initiativeText.setFont(font);
     armorClassText.setFont(font);
     statusText.setFont(font);
+}
+
+TextBox& Creature::getTextBox(const float &x, const float &y)
+{
+    if(nameText.isClicked(x, y))
+        return nameText;
+    else if(healthText.isClicked(x, y))
+        return healthText;
+    else if(tempHealthText.isClicked(x, y))
+        return tempHealthText;
+    else if(initiativeText.isClicked(x, y))
+        return initiativeText;
+    else if(armorClassText.isClicked(x, y))
+        return armorClassText;
+    else if(statusText.isClicked(x, y))
+        return statusText;
+}
+
+void Creature::edit(const float &x, const float &y, const std::string &tempValue)
+{
+    if(nameText.isClicked(x, y))
+        nameText.setString(tempValue);
+    else if(healthText.isClicked(x, y))
+        healthText.setString(tempValue);
+    else if(tempHealthText.isClicked(x, y))
+        tempHealthText.setString(tempValue);
+    else if(initiativeText.isClicked(x, y))
+        initiativeText.setString(tempValue);
+    else if(armorClassText.isClicked(x, y))
+        armorClassText.setString(tempValue);
+    else if(statusText.isClicked(x, y))
+        statusText.setString(tempValue);
+}
+
+bool Creature::isClicked(const float &x, const float &y)
+{
+    return (nameText.isClicked(x, y) || healthText.isClicked(x, y) ||
+            tempHealthText.isClicked(x, y) || initiativeText.isClicked(x, y) ||
+            armorClassText.isClicked(x, y) || statusText.isClicked(x, y));
 }
 
 void Creature::draw(sf::RenderWindow &window)
