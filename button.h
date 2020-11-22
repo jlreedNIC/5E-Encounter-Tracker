@@ -48,14 +48,7 @@ class Button : public sf::Drawable
         bool isClicked(const int &x, const int &y);
         bool isClicked(const sf::Vector2f &point);
 
-        // would like to implement
-        // might need to change inheritance to drawable or shape
-        void draw(sf::RenderTarget& target, sf::RenderStates state) const
-        {
-            // need to figure out how to draw both rectangle and text
-            target.draw(rectangle);
-            target.draw(text);
-        }
+        void draw(sf::RenderTarget& target, sf::RenderStates state) const;
         
     protected:
         void setTextPositionMiddle();       // sets the position of the text relative to the button

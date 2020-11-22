@@ -275,3 +275,9 @@ bool Button::isClicked(const sf::Vector2f &point)
     sf::FloatRect buttonBound = rectangle.getGlobalBounds();
     return buttonBound.contains(point);
 }
+
+void Button::draw(sf::RenderTarget& target, sf::RenderStates state) const
+{
+    target.draw(rectangle, state);
+    target.draw(text, state);
+}
