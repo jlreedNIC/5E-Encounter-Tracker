@@ -32,6 +32,7 @@ class Creature //: sf::Drawable
         TextBox statusText;
 
         int level;
+        TextBox levelText;
 
         Creature(std::string name="BOB", int maxHealth=0, 
                  int health=0, int tempHealth=0, int initiative=0, 

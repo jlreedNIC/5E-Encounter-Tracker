@@ -9,6 +9,7 @@
 #include "textbox.h"
 #include "initiativelist.h"
 #include "encounter.h"
+#include "diceroll.h"
 
 class App
 {
@@ -20,8 +21,9 @@ class App
 
         void mainMenu();
 
-        void initiative();
+        void buildEncounter();
 
+        void initiative();
         void editNode(Initiative& initList, const float &x, const float &y);
 
     private:
@@ -47,8 +49,19 @@ class App
         void mainMenuUpdate();
         void mainMenuDraw();
 
+        void encounterInput();
+        void encounterProcess();
+        void encounterDraw();
+        //encounter headers
+        sf::Text encounterTitles[3];
+        sf::Text playerHeaders[7], enemyHeaders[7];
+        sf::Text encounterDifficulty;
+        sf::Text totalXP;
+
         void loadSave();
         void newSave();
+
+        DiceRoller dice;
 };
 
 #endif

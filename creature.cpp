@@ -13,12 +13,13 @@ Creature::Creature(std::string name, int maxHealth, int health, int tempHealth, 
 
     updateTextBoxes();
 
-    nameText.setTextBoxSize(sf::Vector2f(100, 35));
-    healthText.setTextBoxSize(sf::Vector2f(50, 35));
-    tempHealthText.setTextBoxSize(sf::Vector2f(50, 35));
-    initiativeText.setTextBoxSize(sf::Vector2f(50, 35));
-    armorClassText.setTextBoxSize(sf::Vector2f(50, 35));
-    statusText.setTextBoxSize(sf::Vector2f(50, 35));
+    nameText.setTextBoxSize(sf::Vector2f(90, 35));
+    healthText.setTextBoxSize(sf::Vector2f(70, 35));
+    tempHealthText.setTextBoxSize(sf::Vector2f(35, 35));
+    initiativeText.setTextBoxSize(sf::Vector2f(35, 35));
+    armorClassText.setTextBoxSize(sf::Vector2f(35, 35));
+    statusText.setTextBoxSize(sf::Vector2f(150, 35));
+    levelText.setTextBoxSize(sf::Vector2f(60, 35));
 }
 
 void Creature::updateTextBoxes()
@@ -44,6 +45,10 @@ void Creature::updateTextBoxes()
     ostr.str("");
 
     statusText.setString(status);
+
+    ostr << level;
+    levelText.setString(ostr.str());
+    ostr.str("");
 }
 
 void Creature::setPosition(sf::Vector2f pos)
@@ -57,6 +62,7 @@ void Creature::setPosition(sf::Vector2f pos)
     healthText.setTextBoxPosition(pos.x + 250, pos.y);
     tempHealthText.setTextBoxPosition(pos.x + 325, pos.y);
     statusText.setTextBoxPosition(pos.x + 425, pos.y);
+    levelText.setTextBoxPosition(pos.x + 625, pos.y);
 }
 
 void Creature::setPosition(float x, float y)
@@ -73,6 +79,7 @@ void Creature::setTexture(const sf::Texture &texture)
     initiativeText.setTexture(texture);
     armorClassText.setTexture(texture);
     statusText.setTexture(texture);
+    levelText.setTexture(texture);
 }
 
 void Creature::setFont(const sf::Font &font)
@@ -83,8 +90,10 @@ void Creature::setFont(const sf::Font &font)
     initiativeText.setFont(font);
     armorClassText.setFont(font);
     statusText.setFont(font);
+    levelText.setFont(font);
 }
 
+// change return type to string
 TextBox& Creature::getTextBox(const float &x, const float &y)
 {
     if(nameText.isClicked(x, y))
@@ -99,6 +108,8 @@ TextBox& Creature::getTextBox(const float &x, const float &y)
         return armorClassText;
     else if(statusText.isClicked(x, y))
         return statusText;
+    else if(levelText.isClicked(x, y))
+        return levelText;
 }
 
 void Creature::edit(const float &x, const float &y, const std::string &tempValue)
@@ -115,32 +126,25 @@ void Creature::edit(const float &x, const float &y, const std::string &tempValue
         armorClassText.setString(tempValue);
     else if(statusText.isClicked(x, y))
         statusText.setString(tempValue);
+    else if(levelText.isClicked(x, y))
+        levelText.setString(tempValue);
 }
 
 bool Creature::isClicked(const float &x, const float &y)
 {
     return (nameText.isClicked(x, y) || healthText.isClicked(x, y) ||
             tempHealthText.isClicked(x, y) || initiativeText.isClicked(x, y) ||
-            armorClassText.isClicked(x, y) || statusText.isClicked(x, y));
+            armorClassText.isClicked(x, y) || statusText.isClicked(x, y) ||
+            levelText.isClicked(x, y));
 }
 
 void Creature::draw(sf::RenderWindow &window)
 {
     window.draw(nameText);
-    // window.draw(nameText.getText());
-
     window.draw(healthText);
-    // window.draw(healthText.getText());
-
     window.draw(tempHealthText);
-    // window.draw(tempHealthText.getText());
-
     window.draw(initiativeText);
-    // window.draw(initiativeText.getText());
-
     window.draw(armorClassText);
-    // window.draw(armorClassText.getText());
-
     window.draw(statusText);
-    // window.draw(statusText.getText());
+    window.draw(levelText);
 }
