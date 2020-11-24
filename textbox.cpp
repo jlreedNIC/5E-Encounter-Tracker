@@ -10,6 +10,10 @@ TextBox::TextBox() : Button()
 
     setTextBoxSize(sf::Vector2f(0.f,0.f));
     setTextPositionLeft();
+
+    // rectangle.setFillColor(sf::Color::Red);
+    // rectangle.setOutlineColor(sf::Color::Red);
+    // rectangle.setOutlineThickness(1);
 }
 
 TextBox::TextBox(const std::string &tString, const sf::Font &font) : Button(tString, font)
@@ -36,7 +40,7 @@ void TextBox::setTextBoxSize(const sf::Vector2f &size)
 {
     //either max of text size or parameter size
     sf::FloatRect textBound = text.getGlobalBounds();
-    sf::Vector2f textSize = {textBound.width + 10, textBound.height + 10};
+    sf::Vector2f textSize = {textBound.width + 10.f, textBound.height + 10.f};
     textSize.x = std::max(textSize.x, size.x);
     textSize.y = std::max(textSize.y, size.y);
     rectangle.setSize(textSize);
