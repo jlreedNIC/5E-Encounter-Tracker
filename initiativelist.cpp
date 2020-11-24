@@ -199,6 +199,25 @@ void Initiative::append(const Initiative &copy)
     size += copy.size;
 }
 
+void Initiative::clear()
+{
+    Node *ptr = mHead;
+    Node *prevPtr = ptr;
+
+    if(ptr != nullptr)
+    {
+        do
+        {
+            ptr = ptr->next;
+            deleteNode(prevPtr->character.name);
+            prevPtr = ptr;
+        }while(ptr != nullptr && ptr != mHead);
+    }
+    ptr = prevPtr = nullptr;
+    round = 0;
+    mStart = nullptr;
+}
+
 /**
  * @brief Returns the round counter
  * 
@@ -510,8 +529,8 @@ void Initiative::setPosition(sf::Vector2f pos)
     {
         do
         {
-            pos.y += 35;
             ptr->character.setPosition(pos);
+            pos.y += 35;
             ptr = ptr->next;
         }while(ptr != mHead);
     }
@@ -731,8 +750,8 @@ void Initiative::drawList(sf::RenderWindow &window)
 {
     Node *ptr = mHead;
 
-    for(int i=0; i<6; i++)
-        window.draw(headers[i]);
+    // for(int i=0; i<6; i++)
+    //     window.draw(headers[i]);
 
     if(ptr != nullptr)
     {
@@ -743,7 +762,7 @@ void Initiative::drawList(sf::RenderWindow &window)
         }while(ptr != mHead);
     }
 
-    window.draw(roundText);
+    // window.draw(roundText);
 }
 
 /**

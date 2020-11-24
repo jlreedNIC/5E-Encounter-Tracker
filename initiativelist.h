@@ -39,6 +39,8 @@ class Initiative
         void addNodeInOrder(Creature character);    // add a creature to the initiative order
         void deleteNode(string name);               // delete a creature from the initiative order
         void append(const Initiative &copy);        // copies the contents of one list into the main list
+        void clear();
+        void sort();
 
         //getters
         int getRound() const;                       // return the initiative round
