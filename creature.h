@@ -39,6 +39,7 @@ class Creature //: sf::Drawable
                  int armorClass=0, std::string status="NA", int level=1);
 
         void updateTextBoxes();
+        void updateValues();
 
         // setters
         void setPosition(sf::Vector2f pos);
@@ -47,9 +48,14 @@ class Creature //: sf::Drawable
         void setFont(const sf::Font &font);
 
         TextBox& getTextBox(const float &x, const float &y);
+        std::string getString(const sf::Vector2f &mouseClick);
+        int getLevel();
+        
         void edit(const float &x, const float &y, const std::string &tempValue);
+        void edit(const sf::Vector2f &mouseClick, const std::string &tempValue);
 
         bool isClicked(const float &x, const float &y);
+        bool isClicked(const sf::Vector2f &mouseClick);
 
         void draw(sf::RenderWindow &window);
         // void draw(sf::RenderTarget& target, sf::RenderStates state) const

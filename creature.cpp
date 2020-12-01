@@ -51,6 +51,45 @@ void Creature::updateTextBoxes()
     ostr.str("");
 }
 
+void Creature::updateValues()
+{
+    std::string temp;
+
+    name = nameText.getString();
+    status = statusText.getString();
+    temp = levelText.getString();
+    std::cout << temp;
+    if(temp != " ")
+    {
+        level = stoi(temp);
+    }
+
+    temp = initiativeText.getString();
+    if(temp.size() != 0)
+    {
+        initiative = stoi(temp);
+    }
+
+    temp = tempHealthText.getString();
+    if(temp.size() != 0)
+    {
+        tempHealth = stoi(temp);
+    }
+
+    temp = armorClassText.getString();
+    if(temp.size() != 0)
+    {
+        armorClass = stoi(temp);
+    }
+
+    temp = healthText.getString();
+    if(temp != "")
+    {
+        health = stoi(temp);
+        maxHealth = stoi(temp);
+    }
+}
+
 void Creature::setPosition(sf::Vector2f pos)
 {
     nameText.setTextBoxPosition(pos);
@@ -112,30 +151,84 @@ TextBox& Creature::getTextBox(const float &x, const float &y)
         return levelText;
 }
 
+std::string Creature::getString(const sf::Vector2f &mouseClick)
+{
+    if(nameText.isClicked(mouseClick))
+        return nameText.getString();
+    else if(healthText.isClicked(mouseClick))
+        return healthText.getString();
+    else if(tempHealthText.isClicked(mouseClick))
+        return tempHealthText.getString();
+    else if(initiativeText.isClicked(mouseClick))
+        return initiativeText.getString();
+    else if(armorClassText.isClicked(mouseClick))
+        return armorClassText.getString();
+    else if(statusText.isClicked(mouseClick))
+        return statusText.getString();
+    else if(levelText.isClicked(mouseClick))
+        return levelText.getString();
+}
+
+int Creature::getLevel()
+{
+    std::string tempLevel = levelText.getString();
+    int newLevel = 0;
+    if(tempLevel == "")
+    {
+        return 0;
+    }
+    else return stoi(tempLevel);
+}
+
 void Creature::edit(const float &x, const float &y, const std::string &tempValue)
 {
-    if(nameText.isClicked(x, y))
+    edit(sf::Vector2f(x, y), tempValue);
+    // if(nameText.isClicked(x, y))
+    //     nameText.setString(tempValue);
+    // else if(healthText.isClicked(x, y))
+    //     healthText.setString(tempValue);
+    // else if(tempHealthText.isClicked(x, y))
+    //     tempHealthText.setString(tempValue);
+    // else if(initiativeText.isClicked(x, y))
+    //     initiativeText.setString(tempValue);
+    // else if(armorClassText.isClicked(x, y))
+    //     armorClassText.setString(tempValue);
+    // else if(statusText.isClicked(x, y))
+    //     statusText.setString(tempValue);
+    // else if(levelText.isClicked(x, y))
+    //     levelText.setString(tempValue);
+}
+
+void Creature::edit(const sf::Vector2f &mouseClick, const std::string &tempValue)
+{
+    if(nameText.isClicked(mouseClick))
         nameText.setString(tempValue);
-    else if(healthText.isClicked(x, y))
+    else if(healthText.isClicked(mouseClick))
         healthText.setString(tempValue);
-    else if(tempHealthText.isClicked(x, y))
+    else if(tempHealthText.isClicked(mouseClick))
         tempHealthText.setString(tempValue);
-    else if(initiativeText.isClicked(x, y))
+    else if(initiativeText.isClicked(mouseClick))
         initiativeText.setString(tempValue);
-    else if(armorClassText.isClicked(x, y))
+    else if(armorClassText.isClicked(mouseClick))
         armorClassText.setString(tempValue);
-    else if(statusText.isClicked(x, y))
+    else if(statusText.isClicked(mouseClick))
         statusText.setString(tempValue);
-    else if(levelText.isClicked(x, y))
+    else if(levelText.isClicked(mouseClick))
         levelText.setString(tempValue);
+
 }
 
 bool Creature::isClicked(const float &x, const float &y)
 {
-    return (nameText.isClicked(x, y) || healthText.isClicked(x, y) ||
-            tempHealthText.isClicked(x, y) || initiativeText.isClicked(x, y) ||
-            armorClassText.isClicked(x, y) || statusText.isClicked(x, y) ||
-            levelText.isClicked(x, y));
+    return isClicked(sf::Vector2f(x, y));
+}
+
+bool Creature::isClicked(const sf::Vector2f &mouseClick)
+{
+    return (nameText.isClicked(mouseClick) || healthText.isClicked(mouseClick) ||
+            tempHealthText.isClicked(mouseClick) || initiativeText.isClicked(mouseClick) ||
+            armorClassText.isClicked(mouseClick) || statusText.isClicked(mouseClick) ||
+            levelText.isClicked(mouseClick));
 }
 
 void Creature::draw(sf::RenderWindow &window)
