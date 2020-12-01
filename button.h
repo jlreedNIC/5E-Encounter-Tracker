@@ -40,7 +40,7 @@ class Button : public sf::Drawable
         void setButtonPosition(const sf::Vector2f &position);   // sets the position of both button and text
         
         // getters
-        const std::string getString();      // gets the string that is on the button
+        std::string getString();           // gets the string that is on the button
         sf::Text& getText();                // returns a reference to text object for button
 
         // functions to see if button was clicked
@@ -54,6 +54,7 @@ class Button : public sf::Drawable
         void setTextPositionMiddle();       // sets the position of the text relative to the button
         void setButtonSize();               // sets the size of the button relative to the string
 
+        std::string buttonString;
         sf::Text text;
         sf::RectangleShape rectangle;
 };

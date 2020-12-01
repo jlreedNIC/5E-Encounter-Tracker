@@ -15,7 +15,8 @@
  */
 Button::Button() : text(), rectangle()
 {
-    text.setString("");
+    buttonString = "";
+    text.setString(buttonString);
     text.setCharacterSize(25);
     text.setFillColor(sf::Color::Black);
     text.setStyle(sf::Text::Bold);
@@ -31,7 +32,8 @@ Button::Button() : text(), rectangle()
  */
 Button::Button(const std::string &buttonString, const sf::Font &font) : text(), rectangle()
 {
-    text.setString(buttonString);
+    this->buttonString = buttonString;
+    text.setString(this->buttonString);
     text.setFont(font);
     text.setCharacterSize(25);
     text.setFillColor(sf::Color::Black);
@@ -50,7 +52,8 @@ Button::Button(const std::string &buttonString, const sf::Font &font) : text(), 
  */
 Button::Button(const std::string &buttonString, const sf::Font &font, const sf::Texture &texture) : text(), rectangle()
 {
-    text.setString(buttonString);
+    this->buttonString = buttonString;
+    text.setString(this->buttonString);
     text.setCharacterSize(25);
     text.setFillColor(sf::Color::Black);
     text.setStyle(sf::Text::Bold);
@@ -80,6 +83,7 @@ Button::~Button()
  */
 void Button::createButton(const std::string &buttonString, const sf::Font &font, const sf::Texture &texture)
 {
+    this->buttonString = buttonString;
     text.setString(buttonString);
     text.setCharacterSize(25);
     text.setFillColor(sf::Color::White);
@@ -100,6 +104,7 @@ void Button::createButton(const std::string &buttonString, const sf::Font &font,
  */
 void Button::setText(const std::string &buttonString, const sf::Font &font)
 {
+    this->buttonString = buttonString;
     text.setString(buttonString);
     text.setFont(font);
     text.setCharacterSize(25);
@@ -117,6 +122,7 @@ void Button::setText(const std::string &buttonString, const sf::Font &font)
  */
 void Button::setString(const std::string &buttonString)
 {
+    this->buttonString = buttonString;
     text.setString(buttonString);
     setButtonSize();
     setTextPositionMiddle();
@@ -217,9 +223,11 @@ void Button::setButtonSize(const sf::Vector2f &size)
  * 
  * @return std::string A copy of the string for the button
  */
-const std::string Button::getString()
+std::string Button::getString()
 {
-    return text.getString();
+    // need to fix underlying issue
+    buttonString = text.getString();
+    return buttonString;
 }
 
 /**
