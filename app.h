@@ -22,6 +22,7 @@ class App
         void mainMenu();
 
         void buildEncounter();
+        void editEncounter(sf::Vector2f &mouseclick);
 
         void initiative();
         void editNode(Initiative& initList, const float &x, const float &y);
@@ -54,9 +55,8 @@ class App
         void encounterDraw();
         //encounter headers
         sf::Text encounterTitles[3];
-        sf::Text playerHeaders[7], enemyHeaders[7];
-        sf::Text encounterDifficulty;
-        sf::Text totalXP;
+        sf::Text playerHeaders[7], enemyHeaders[7], encounterHeaders[2];
+        sf::Text encounterDifficulty, totalXP;
 
         void loadSave();
         void newSave();

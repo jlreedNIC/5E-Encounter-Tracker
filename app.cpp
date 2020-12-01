@@ -94,6 +94,9 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
 
         playerHeaders[6].setString("Level");
         enemyHeaders[6].setString("XP");
+
+        encounterHeaders[0].setString("Encounter Difficulty:");
+        encounterHeaders[1].setString("Total Encounter XP:");
     
     //setting font choices
     for(int i=0; i<3;i++)
@@ -118,18 +121,26 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
         playerHeaders[i].setCharacterSize(20);
         enemyHeaders[i].setCharacterSize(20);
     }
+    
+    for(int i=0; i<2; i++)
+    {
+        encounterHeaders[i].setFillColor(sf::Color::Black);
+        encounterHeaders[i].setFont(buttonFont);
+        encounterHeaders[i].setCharacterSize(20);
+        encounterHeaders[i].setStyle(sf::Text::Bold);
+    }
 
-    encounterDifficulty.setString("Encounter Difficulty: ");
+    encounterDifficulty.setString("EASY");
         encounterDifficulty.setFillColor(sf::Color::Black);
         encounterDifficulty.setFont(buttonFont);
         encounterDifficulty.setCharacterSize(20);
-        encounterDifficulty.setStyle(sf::Text::Bold);
+        // encounterDifficulty.setStyle(sf::Text::Bold);
 
-    totalXP.setString("Total XP: ");
+    totalXP.setString("0");
         totalXP.setFillColor(sf::Color::Black);
         totalXP.setFont(buttonFont);
         totalXP.setCharacterSize(20);
-        totalXP.setStyle(sf::Text::Bold);
+        // totalXP.setStyle(sf::Text::Bold);
 
 }
 
@@ -316,8 +327,11 @@ void App::buildEncounter()
     enemyHeaders[5].setPosition(475, 345);
     enemyHeaders[6].setPosition(675, 345);
 
-    encounterDifficulty.setPosition(50, 645);
-    totalXP.setPosition(50, 675);
+    encounterHeaders[0].setPosition(50, 645);
+    encounterHeaders[1].setPosition(50, 675);
+
+    encounterDifficulty.setPosition(300, 645);
+    totalXP.setPosition(300, 675);
 
     
 
@@ -333,12 +347,8 @@ void App::buildEncounter()
     encounter.setFont(buttonFont);
 
     encounter.calculateEncounterDifficulty();
-    std::string temp = encounter.getTotalEnemyXP();
-    std::string current = totalXP.getString();
-    totalXP.setString(current + temp);
-    temp = encounter.getEncounterDifficulty();
-    current = encounterDifficulty.getString();
-    encounterDifficulty.setString(current + temp);
+    encounterDifficulty.setString(encounter.getEncounterDifficulty());
+    totalXP.setString(encounter.getTotalEnemyXP());
 
     while(window.isOpen())
     {
@@ -364,8 +374,93 @@ void App::encounterInput()
             sf::Vector2f mouseClick = {posX, posY};
             if(exitButton.isClicked(mouseClick))
             {
+                // fix this to return to main screen
                 return;
             }
+            if(encounter.isClicked(mouseClick))
+            {
+                // check if somewhere on the encounter was clicked
+                std::cout << "encounter clicked\n";
+                editEncounter(mouseClick);
+
+                // update encounter
+                encounter.calculateEncounterDifficulty();
+                encounterDifficulty.setString(encounter.getEncounterDifficulty());
+                totalXP.setString(encounter.getTotalEnemyXP());
+            }
+        }
+    }
+}
+
+void App::editEncounter(sf::Vector2f &mouseClick)
+{
+    // get string to edit
+    std::string tempString = encounter.getString(mouseClick);
+    tempString += "|";
+    encounter.edit(mouseClick, tempString);
+
+    sf::Event event;
+    while(window.isOpen())
+    {
+        while(window.pollEvent(event))
+        {
+            if(event.type == sf::Event::Closed)
+            {
+                window.close();
+            }
+
+            if(event.type == sf::Event::MouseButtonPressed)
+            {
+                float posX = event.mouseButton.x;
+                float posY = event.mouseButton.y;
+                sf::Vector2f mouseClick2 = {posX, posY};
+
+                if(exitButton.isClicked(mouseClick2))
+                {
+                    tempString = tempString.substr(0, tempString.size()-1);
+                    encounter.edit(mouseClick2, tempString);
+                    return;
+                }
+
+                if(mouseClick != mouseClick2)
+                {
+                    tempString = tempString.substr(0, tempString.size()-1);
+                    encounter.edit(mouseClick, tempString);
+                    return;
+                }
+            }
+
+            if(event.type == sf::Event::TextEntered)
+            {
+                // get rid of cursor
+                tempString = tempString.substr(0, tempString.size()-1);
+                // add new text
+                tempString += event.text.unicode;
+                // add cursor back
+                tempString += "|";
+
+                // size of tempString
+                unsigned int size = tempString.size();
+
+                // if backspace pressed
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
+                {
+                    tempString = tempString.substr(0, size-3);
+                    tempString += "|";
+                }
+
+                // if enter pressed
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+                {
+                    tempString = tempString.substr(0, size-1);
+                    encounter.edit(mouseClick, tempString);
+                    return;
+                }
+
+                encounter.edit(mouseClick, tempString);
+            }
+
+            encounterDraw();
         }
     }
 }
@@ -386,6 +481,10 @@ void App::encounterDraw()
     {
         window.draw(playerHeaders[i]);
         window.draw(enemyHeaders[i]);
+    }
+    for(int i=0; i<2; i++)
+    {
+        window.draw(encounterHeaders[i]);
     }
     window.draw(encounterDifficulty);
     window.draw(totalXP);
@@ -415,7 +514,7 @@ void App::initiative()
 
     encounter.calculateEncounterDifficulty();
 
-    std::cout << initList.listToString() << "\n";
+    // std::cout << initList.listToString() << "\n";
 
 
     while(window.isOpen())
@@ -442,7 +541,7 @@ void App::initiative()
                 {
                     std::cout << "Node Clicked\n";
                     editNode(initList, posX, posY);
-                    // initList.editNode(posX, posY);
+                    // initList.edit(posX, posY);
                 }
                 // if(nameText.isClicked(mouseClick))
                 // {
@@ -472,9 +571,10 @@ void App::editNode(Initiative &initList, const float &x, const float &y)
 {
     sf::Event event;
     TextBox textbox = initList.getTextBox(x, y);
-    std::string tempString = textbox.getString();
+    sf::Vector2f pos(x, y);
+    std::string tempString = initList.getString(pos);
     tempString += "|";
-    initList.editNode(x, y, tempString);
+    initList.edit(x, y, tempString);
 
     while(window.isOpen())
     {
@@ -493,14 +593,14 @@ void App::editNode(Initiative &initList, const float &x, const float &y)
                 if(exitButton.isClicked(mouseClick))
                 {
                     tempString = tempString.substr(0, tempString.size()-1);
-                    initList.editNode(x, y, tempString);
+                    initList.edit(x, y, tempString);
                     return;
                 }
 
                 if(!textbox.isClicked(posX, posY))
                 {
                     tempString = tempString.substr(0, tempString.size()-1);
-                    initList.editNode(x, y, tempString);
+                    initList.edit(x, y, tempString);
                     return;
                 }
             }
@@ -520,11 +620,11 @@ void App::editNode(Initiative &initList, const float &x, const float &y)
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
                     {
                         tempString = tempString.substr(0, tempString.size()-1);
-                        initList.editNode(x, y, tempString);
+                        initList.edit(x, y, tempString);
                         return;
                     }
                 
-                initList.editNode(x, y, tempString);
+                initList.edit(x, y, tempString);
             }
 
             window.clear(sf::Color::White);
