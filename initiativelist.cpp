@@ -233,23 +233,36 @@ int Initiative::getSize() const
     return size;
 }
 
-int* Initiative::getLevel()
+std::string Initiative::getLevel()
 {
-    int *levelArr = new int [getSize()];
+    ostringstream ostr;
+    Node *ptr = mHead;
 
-    Node* ptr = mHead;
     if(ptr != nullptr)
     {
-        int i = 0;
         do
         {
-            
-            levelArr[i] = ptr->character.level;
-            i++;
+            ostr << ptr->character.getLevel() << " ";
             ptr = ptr->next;
         }while(ptr != mHead);
     }
-    return levelArr;
+    return ostr.str();
+
+    // int *levelArr = new int [getSize()];
+
+    // Node* ptr = mHead;
+    // if(ptr != nullptr)
+    // {
+    //     int i = 0;
+    //     do
+    //     {
+            
+    //         levelArr[i] = ptr->character.level;
+    //         i++;
+    //         ptr = ptr->next;
+    //     }while(ptr != mHead);
+    // }
+    // return levelArr;
 }
 
 TextBox& Initiative::getTextBox(const float &x, const float &y)
@@ -262,6 +275,23 @@ TextBox& Initiative::getTextBox(const float &x, const float &y)
             if(ptr->character.isClicked(x, y)) 
                 return ptr->character.getTextBox(x, y);
             else ptr = ptr->next;
+        }while(ptr != mHead);
+    }
+}
+
+std::string Initiative::getString(sf::Vector2f &mouseClick)
+{
+    Node *ptr = mHead;
+
+    if(ptr != nullptr)
+    {
+        do
+        {
+            if(ptr->character.isClicked(mouseClick))
+            {
+                return ptr->character.getString(mouseClick);
+            }
+            ptr = ptr->next;
         }while(ptr != mHead);
     }
 }
@@ -448,17 +478,34 @@ void Initiative::editTempHealth(string name, int newTempHealth)
     }
 }
 
-void Initiative::editNode(const float &x, const float &y, const std::string &tempValue)
+void Initiative::edit(const float &x, const float &y, const std::string &tempValue)
 {
+    edit(sf::Vector2f(x, y), tempValue);
     //find right textbox
+    // Node *ptr = mHead;
+    // if(ptr != nullptr)
+    // {
+    //     do
+    //     {
+    //         if(ptr->character.isClicked(x, y))
+    //         {
+    //             ptr->character.edit(x, y, tempValue);
+    //         }
+    //         ptr = ptr->next;
+    //     }while(ptr != mHead);
+    // }
+}
+
+void Initiative::edit(const sf::Vector2f &mouseClick, const std::string &tempValue)
+{
     Node *ptr = mHead;
     if(ptr != nullptr)
     {
         do
         {
-            if(ptr->character.isClicked(x, y))
+            if(ptr->character.isClicked(mouseClick))
             {
-                ptr->character.edit(x, y, tempValue);
+                ptr->character.edit(mouseClick, tempValue);
             }
             ptr = ptr->next;
         }while(ptr != mHead);
@@ -561,21 +608,33 @@ void Initiative::setRoundText()
 
 bool Initiative::isNodeClicked(const float &x, const float &y)
 {
+    return isNodeClicked(sf::Vector2f(x, y));
+    // Node* ptr = mHead;
+    // bool clicked = false;
+    // if(ptr != nullptr)
+    // {
+    //     do
+    //     {
+    //         if(ptr->character.isClicked(x, y)) clicked = true;
+    //         ptr = ptr->next;
+    //     }while(ptr != mHead && !clicked);
+    // }
+    // return clicked;
+}
+
+bool Initiative::isNodeClicked(const sf::Vector2f &mouseClick)
+{
     Node* ptr = mHead;
-    bool clicked = false;
+
     if(ptr != nullptr)
     {
         do
         {
-            if(ptr->character.isClicked(x, y)) clicked = true;
-            // sf::FloatRect nodeBounds = ptr->character.getGlobalBounds();
-            // if(nodeBounds.contains(x, y)) clicked = true;
-            ptr = ptr->next;
-        }while(ptr != mHead && !clicked);
+            if(ptr->character.isClicked(mouseClick)) return true;
+            else ptr = ptr->next;
+        }while(ptr != mHead);
     }
-    return clicked;
-    // sf::FloatRect buttonBound = rectangle.getGlobalBounds();
-    // return buttonBound.contains(sf::Vector2f(x,y));
+    return false;
 }
 
 /**
