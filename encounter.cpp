@@ -84,6 +84,14 @@ void Encounter::setTextTexture(const sf::Texture &texture)
     initiativeList.setListTexture(texture);
 }
 
+void Encounter::edit(const sf::Vector2f &mouseClick, const std::string &tempValue)
+{
+    if(playerList.isNodeClicked(mouseClick))
+        playerList.edit(mouseClick, tempValue);
+    else if(enemyList.isNodeClicked(mouseClick))
+        enemyList.edit(mouseClick, tempValue);
+}
+
 std::string Encounter::getEncounterDifficulty() const
 {
     return difficulty;
@@ -94,6 +102,30 @@ std::string Encounter::getTotalEnemyXP() const
     std::ostringstream ostr;
     ostr << totalEnemyXP;
     return ostr.str();
+}
+
+std::string Encounter::getString(sf::Vector2f &mouseClick)
+{
+    if(playerList.isNodeClicked(mouseClick))
+    {
+        return playerList.getString(mouseClick);
+    }
+    else if(enemyList.isNodeClicked(mouseClick))
+    {
+        return enemyList.getString(mouseClick);
+    }
+    else return ""; // need to fix?
+}
+
+bool Encounter::isClicked(const sf::Vector2f &mouseClick)
+{
+    return (playerList.isNodeClicked(mouseClick) ||
+            enemyList.isNodeClicked(mouseClick));
+}
+
+bool Encounter::isClicked(const float &x, const float &y)
+{
+    return isClicked(sf::Vector2f(x, y));
 }
 
 void Encounter::startInitiative()
@@ -109,34 +141,39 @@ void Encounter::calculateEncounterDifficulty()
     calculatePlayerXpThreshhold();
     calculateEnemyXpThreshhold();
 
-    std::cout << playerList.listToString() << "\n";
-    std::cout << enemyList.listToString() << "\n";
-    for(int i=0; i<4; i++)
-    {
-        std::cout << playerXpThreshhold[i] << " ";
-    }
-    std::cout << "\n" << enemyXpThreshhold << "\n";
-
     setDifficulty();
 }
 
 void Encounter::calculatePlayerXpThreshhold()
 {
+    std::string levels = playerList.getLevel();
     int playerSize = playerList.getSize();
-    int *levels = new int [playerSize];
 
-    levels = playerList.getLevel();
+    // get levels of players
+    int *playerLevels = new int [playerSize];
+    std::string::size_type sz;
 
-    //set player xp threshholds
+    for(int i=0; i<playerSize; i++)
+    {
+        playerLevels[i] = stoi(levels, &sz);
+        levels = levels.substr(sz);
+    }
+
+    // reinitialize xp threshholds
+    for(int i=0; i<4; i++)
+    {
+        playerXpThreshhold[i] = 0;
+    }
+    // set xp threshholds for players
     for(int i=0; i<playerSize; i++)
     {
         for(int j=0; j<4; j++)
         {
-            playerXpThreshhold[j] += threshholds[j][levels[i] - 1];
+            playerXpThreshhold[j] += threshholds[j][playerLevels[i]-1];
         }
     }
 
-    delete [] levels;
+    delete [] playerLevels;
     
 }
 
@@ -144,16 +181,27 @@ void Encounter::calculateEnemyXpThreshhold()
 {
     int enemySize = enemyList.getSize();
     int playerSize = playerList.getSize();
+
+    // get xp of enemies
+    std::string tempCR = enemyList.getLevel();
     int *CR = new int [enemySize];
-
-    CR = enemyList.getLevel();
-
-    // caclulate monster's xp
+    std::string::size_type sz;
+    
+    for(int i=0; i<enemySize; i++)
+    {
+        CR[i] = stoi(tempCR, &sz);
+        tempCR = tempCR.substr(sz);
+    }
+    
+    enemyXpThreshhold = 0;
+    // caclulate monster's xp threshhold
     for(int i=0; i<enemySize; i++)
         enemyXpThreshhold += CR[i];
     
+    // set total monster xp
     totalEnemyXP = enemyXpThreshhold;
 
+    // factor in monster multiplier based on number of monsters
     float monsterMultipliers[8] = {.5, 1.0, 1.5, 2.0, 2.5, 3.0, 4.0, 4.0};
     int index = 0;
 
@@ -182,10 +230,10 @@ void Encounter::setDifficulty()
     medium = (hard + medium) / 2;
     hard = (deadly + hard) / 2;
     deadly = hard + 1;
-    if(enemyXpThreshhold <= easy) difficulty = "easy";
-    else if(enemyXpThreshhold <= medium) difficulty = "medium";
-    else if(enemyXpThreshhold <= hard) difficulty = "hard";
-    else difficulty = "deadly";
+    if(enemyXpThreshhold <= easy) difficulty = "EASY";
+    else if(enemyXpThreshhold <= medium) difficulty = "MEDIUM";
+    else if(enemyXpThreshhold <= hard) difficulty = "HARD";
+    else difficulty = "DEADLY";
 }
 
 void Encounter::drawEncounter(sf::RenderWindow &window)

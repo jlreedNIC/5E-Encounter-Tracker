@@ -29,10 +29,16 @@ class Encounter
         void setButtonTexture(const sf::Texture &texture);
         void setDifficultyTextPosition(const sf::Vector2f &pos);
         void setTotalEnemyXPTextPosition(const sf::Vector2f &pos);
+        void edit(const sf::Vector2f &mouseclick, const std::string &tempValue);
 
         // getters
         std::string getEncounterDifficulty() const;
         std::string getTotalEnemyXP() const;
+        std::string getString(sf::Vector2f &mouseClick);
+
+        // boolean
+        bool isClicked(const sf::Vector2f &mouseClick);
+        bool isClicked(const float &x, const float &y);
 
         // encounter actions
         void startInitiative();
