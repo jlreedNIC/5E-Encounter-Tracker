@@ -69,6 +69,18 @@ void TextBox::setTextBoxPosition(const int &x, const int &y)
     setTextPositionLeft();
 }
 
+void TextBox::setOutline()
+{
+    rectangle.setOutlineColor(sf::Color::Black);
+    rectangle.setOutlineThickness(2);
+    rectangle.setFillColor(sf::Color::White);
+}
+
+void TextBox::clearOutline()
+{
+    rectangle.setOutlineThickness(0);
+}
+
 void TextBox::setTextPositionLeft()
 {
     sf::Vector2f rectanglePos = rectangle.getPosition();

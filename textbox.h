@@ -18,6 +18,9 @@ class TextBox : public Button
         void setTextBoxPosition(const float &x, const float &y);
         void setTextBoxPosition(const int &x, const int &y);
 
+        void setOutline();
+        void clearOutline();
+
         static sf::Texture tTexture;
     private:
         void setTextPositionLeft();
