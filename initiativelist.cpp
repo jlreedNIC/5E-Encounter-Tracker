@@ -192,11 +192,20 @@ void Initiative::deleteNode(const sf::Vector2f &mouseClick)
         else ptr = ptr->next;
     }while(ptr != mHead && !found);
 
+    
+
     if(!found) return;
 
     // delete ptr
-    deleteNode(ptr->character.name);
-    ptr = nullptr;
+    if(mHead == ptr) mHead = mStart = mHead->next;
+    ptr->prev->next = ptr->next;
+    ptr->next->prev = ptr->prev;
+    ptr->next = nullptr;
+    ptr->prev = nullptr;
+    if(mHead == ptr) mHead = mStart = nullptr;
+    delete ptr;
+
+    size--;
 }
 
 /**
