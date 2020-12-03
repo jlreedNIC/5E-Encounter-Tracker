@@ -505,7 +505,7 @@ void App::editEncounter(sf::Vector2f &mouseClick)
                 // if enter pressed
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
                 {
-                    tempString = tempString.substr(0, size-1);
+                    tempString = tempString.substr(0, size-2);
                     encounter.edit(mouseClick, tempString);
                     return;
                 }
@@ -621,7 +621,7 @@ void App::editCreatureText(float x, float y)
                 // if enter pressed
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
                 {
-                    tempString = tempString.substr(0, size-1);
+                    tempString = tempString.substr(0, size-2);
                     newCreature.edit(pos, tempString);
                     return;
                 }
@@ -752,7 +752,7 @@ void App::editNode(Initiative &initList, const float &x, const float &y)
     //             }
     //             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
     //                 {
-    //                     tempString = tempString.substr(0, tempString.size()-1);
+    //                     tempString = tempString.substr(0, tempString.size()-2);
     //                     initList.edit(x, y, tempString);
     //                     return;
     //                 }
