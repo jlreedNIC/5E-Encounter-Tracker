@@ -699,27 +699,10 @@ void App::deletePlayer()
 
 void App::initiative()
 {
-    //game loop
-        //input
-        //update
-        //render
-    // encounter.startInitiative();
-    // Creature(string name, int maxHealth, int health, int tempHealth, int initiative, int armorClass, string status)
-    // Initiative initList;
-    // initList.addNodeInOrder(Creature("Rihala", 33, 33, 0, 1, 11, "NA", 4));
-    // initList.addNodeInOrder(Creature("Gravane", 47, 47, 0, 15, 18, "NA", 4));
-    // initList.setListFont(buttonFont);
-    // initList.setPosition(sf::Vector2f(50, 25));
-
-    // encounter.addPlayer(Creature("Rihala", 33, 33, 0, 1, 11, "raging", 4));
-    // encounter.addPlayer(Creature("Gravane", 47, 47, 0, 15, 18, "NA", 4));
-    // encounter.addEnemy(Creature("Goblin Fighter", 30, 30, 0, 5, 15, "NA", 50));
-    // encounter.addEnemy(Creature("Kobold", 0, 12, 0, 20, 13, "Bleeding out", 25));
-
-    // encounter.calculateEncounterDifficulty();
-
-    // std::cout << initList.listToString() << "\n";
     encounter.setInitiativePosition(sf::Vector2f(50, 80));
+    bool initClicked = false;
+    std::string tempString;
+    sf::Vector2f mouseClick;
 
     while(window.isOpen())
     {
@@ -735,7 +718,7 @@ void App::initiative()
             {
                 float posX = event.mouseButton.x;
                 float posY = event.mouseButton.y;
-                sf::Vector2f mouseClick = {posX, posY};
+                mouseClick = {posX, posY};
                 if(exitButton.isClicked(mouseClick))
                 {
                     return;
@@ -743,10 +726,18 @@ void App::initiative()
 
                 if(encounter.initIsClicked(mouseClick))
                 {
+                    initClicked = true;
                     std::cout << "Node Clicked\n";
-                    // editNode(initList, posX, posY);
-                    // initList.edit(posX, posY);
+                    // gets the string to edit
+                    tempString = encounter.getInitiativeString(mouseClick);
+                    tempString += "|";
+                    encounter.editInitiative(mouseClick, tempString);
                 }
+            }
+
+            if(initClicked)
+            {
+                editInitiative(event, initClicked, mouseClick, tempString);
             }
 
             window.clear(sf::Color::White);
@@ -763,70 +754,64 @@ void App::initiative()
     }
 }
 
-void App::editNode(Initiative &initList, const float &x, const float &y)
+void App::editInitiative(sf::Event &event, bool &initClicked, sf::Vector2f &mouseClick, std::string &tempString)
 {
-    // sf::Event event;
-    // TextBox textbox = initList.getTextBox(x, y);
-    // sf::Vector2f pos(x, y);
-    // std::string tempString = initList.getString(pos);
-    // tempString += "|";
-    // initList.edit(x, y, tempString);
+    while(window.pollEvent(event))
+    {
+        // if click off of the node
+        if(event.type == sf::Event::MouseButtonPressed)
+        {
+            float posX = event.mouseButton.x;
+            float posY = event.mouseButton.y;
+            sf::Vector2f mouseClick2 = {posX, posY};
 
-    // while(window.isOpen())
-    // {
-    //     while(window.pollEvent(event))
-    //     {
-    //         if(event.type == sf::Event::Closed)
-    //         {
-    //             window.close();
-    //         }
+            if(exitButton.isClicked(mouseClick2))
+            {
+                tempString = tempString.substr(0, tempString.size()-1);
+                encounter.editInitiative(mouseClick, tempString);
+                initClicked = false;
+                return;
+            }
 
-    //         if(event.type == sf::Event::MouseButtonPressed)
-    //         {
-    //             float posX = event.mouseButton.x;
-    //             float posY = event.mouseButton.y;
-    //             sf::Vector2f mouseClick = {posX, posY};
-    //             if(exitButton.isClicked(mouseClick))
-    //             {
-    //                 tempString = tempString.substr(0, tempString.size()-1);
-    //                 initList.edit(x, y, tempString);
-    //                 return;
-    //             }
+            if(mouseClick != mouseClick2)
+            {
+                tempString = tempString.substr(0, tempString.size()-1);
+                encounter.editInitiative(mouseClick, tempString);
+                initClicked = false;
+                return;
+            }
+        }
 
-    //             if(!textbox.isClicked(posX, posY))
-    //             {
-    //                 tempString = tempString.substr(0, tempString.size()-1);
-    //                 initList.edit(x, y, tempString);
-    //                 return;
-    //             }
-    //         }
+        // edit text
+        if(event.type == sf::Event::TextEntered && initClicked)
+        {
+            // get rid of cursor
+            tempString = tempString.substr(0, tempString.size()-1);
+            // add new text
+            tempString += event.text.unicode;
+            // add cursor back
+            tempString += "|";
 
-    //         if (event.type == sf::Event::TextEntered)
-    //         {
-    //             tempString = tempString.substr(0, tempString.size()-1);
-    //             tempString += event.text.unicode;
-    //             tempString += "|";
-    //             unsigned int size = tempString.size();
+            // size of tempString
+            unsigned int size = tempString.size();
 
-    //             if(sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
-    //             {
-    //                 tempString = tempString.substr(0, size-3);
-    //                 tempString += "|";
-    //             }
-    //             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
-    //                 {
-    //                     tempString = tempString.substr(0, tempString.size()-2);
-    //                     initList.edit(x, y, tempString);
-    //                     return;
-    //                 }
-                
-    //             initList.edit(x, y, tempString);
-    //         }
+            // if backspace pressed
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
+            {
+                tempString = tempString.substr(0, size-3);
+                tempString += "|";
+            }
 
-    //         window.clear(sf::Color::White);
-    //         window.draw(exitButton);
-    //         initList.drawList(window);
-    //         window.display();
-    //     }
-    // }
+            // if enter pressed
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+            {
+                tempString = tempString.substr(0, size-2);
+                encounter.editInitiative(mouseClick, tempString);
+                initClicked = false;
+                return;
+            }
+
+            encounter.editInitiative(mouseClick, tempString);
+        }
+    }
 }

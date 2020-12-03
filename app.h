@@ -25,7 +25,7 @@ class App
         void editEncounter(sf::Vector2f &mouseclick);
 
         void initiative();
-        void editNode(Initiative& initList, const float &x, const float &y);
+        void editInitiative(sf::Event &event, bool &initClicked, sf::Vector2f &mouseClick, std::string &tempString);
 
     private:
         sf::RenderWindow window;
