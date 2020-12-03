@@ -32,6 +32,7 @@ class Encounter
         void setDifficultyTextPosition(const sf::Vector2f &pos);
         void setTotalEnemyXPTextPosition(const sf::Vector2f &pos);
         void edit(const sf::Vector2f &mouseclick, const std::string &tempValue);
+        void editInitiative(const sf::Vector2f &mouseClick, const std::string &tempValue);
 
         void clearTextTexture();
 
@@ -39,6 +40,7 @@ class Encounter
         std::string getEncounterDifficulty() const;
         std::string getTotalEnemyXP() const;
         std::string getString(sf::Vector2f &mouseClick);
+        std::string getInitiativeString(sf::Vector2f &mouseClick);
 
         // boolean
         bool isClicked(const sf::Vector2f &mouseClick);

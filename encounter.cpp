@@ -116,6 +116,12 @@ void Encounter::edit(const sf::Vector2f &mouseClick, const std::string &tempValu
         enemyList.edit(mouseClick, tempValue);
 }
 
+void Encounter::editInitiative(const sf::Vector2f &mouseClick, const std::string &tempValue)
+{
+    if(initiativeList.isNodeClicked(mouseClick))
+        initiativeList.edit(mouseClick, tempValue);
+}
+
 void Encounter::clearTextTexture()
 {
     playerList.clearTexture();
@@ -146,6 +152,16 @@ std::string Encounter::getString(sf::Vector2f &mouseClick)
         return enemyList.getString(mouseClick);
     }
     else return ""; // need to fix?
+}
+
+std::string Encounter::getInitiativeString(sf::Vector2f &mouseClick)
+{
+    std::string value;
+
+    if(initiativeList.isNodeClicked(mouseClick))
+        value = initiativeList.getString(mouseClick);
+    
+    return value;
 }
 
 bool Encounter::isClicked(const sf::Vector2f &mouseClick)
