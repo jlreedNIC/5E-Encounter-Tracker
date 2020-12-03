@@ -48,14 +48,16 @@ void Encounter::addEnemy(Creature enemy)
     clearTextTexture();
 }
 
-void Encounter::deletePlayer()
+void Encounter::deletePlayer(const sf::Vector2f &mouseClick)
 {
     // delete from playerList
+    playerList.deleteNode(mouseClick);
 }
 
-void Encounter::deleteEnemy()
+void Encounter::deleteEnemy(const sf::Vector2f &mouseClick)
 {
     // delete from enemyList
+    enemyList.deleteNode(mouseClick);
 }
 
 void Encounter::sort()

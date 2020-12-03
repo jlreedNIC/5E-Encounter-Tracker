@@ -17,8 +17,8 @@ class Encounter
         void addEnemy(Creature enemy);
 
         // delete from list/encounter
-        void deletePlayer();
-        void deleteEnemy();
+        void deletePlayer(const sf::Vector2f &mouseClick);
+        void deleteEnemy(const sf::Vector2f &mouseClick);
 
         void sort();
 
