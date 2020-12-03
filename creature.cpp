@@ -78,40 +78,37 @@ void Creature::updateTextBoxes()
 
 void Creature::updateValues()
 {
+    std::istringstream istr;
     std::string temp;
 
     name = nameText.getString();
     status = statusText.getString();
+
     temp = levelText.getString();
-    if(temp != " " && temp != "")
-    {
-        // level = stoi(temp);
-    }
+    // temp = "76hello";
+    std::cout << temp << "\n";
+    istr.str(temp);
+    istr >> level;
 
     temp = initiativeText.getString();
-    if(temp.size() != 0)
-    {
-        initiative = stoi(temp);
-    }
+    // temp = "76hello";
+    istr.str(temp);
+    std::cout << temp << " " << istr.str();
+    istr >> initiative;
+    std::cout << istr.str() << " " << initiative << "\n";
 
     temp = tempHealthText.getString();
-    if(temp.size() != 0)
-    {
-        tempHealth = stoi(temp);
-    }
+    istr.str(temp);
+    istr >> tempHealth;
 
     temp = armorClassText.getString();
-    if(temp.size() != 0)
-    {
-        armorClass = stoi(temp);
-    }
+    istr.str(temp);
+    istr >> armorClass;
 
+    char delim;
     temp = healthText.getString();
-    if(temp != "")
-    {
-        health = stoi(temp);
-        maxHealth = stoi(temp);
-    }
+    istr.str(temp);
+    istr >> health >> delim >> maxHealth;
 }
 
 void Creature::setPosition(sf::Vector2f pos)
@@ -244,35 +241,43 @@ void Creature::edit(const sf::Vector2f &mouseClick, const std::string &tempValue
 
     if(nameText.isClicked(mouseClick))
         name = tempValue;
+        // nameText.setString(tempValue);
     else if(healthText.isClicked(mouseClick))
     {
         istr.str(tempValue);
         istr >> health >> delim >> maxHealth;
     }
+        // healthText.setString(tempValue);
     else if(tempHealthText.isClicked(mouseClick))
     {
         istr.str(tempValue);
         istr >> tempHealth;
     }
+        // tempHealthText.setString(tempValue);
     else if(initiativeText.isClicked(mouseClick))
     {
         istr.str(tempValue);
         istr >> initiative;
     }
+        // initiativeText.setString(tempValue);
     else if(armorClassText.isClicked(mouseClick))
     {
         istr.str(tempValue);
         istr >> armorClass;
     }
+        // armorClassText.setString(tempValue);
     else if(statusText.isClicked(mouseClick))
         status = tempValue;
+        // statusText.setString(tempValue);
     else if(levelText.isClicked(mouseClick))
     {
         istr.str(tempValue);
         istr >> level;
     }
-
+        // levelText.setString(tempValue);
+    
     updateTextBoxes();
+    // updateValues();
 }
 
 bool Creature::isClicked(const float &x, const float &y)
