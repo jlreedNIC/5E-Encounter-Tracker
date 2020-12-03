@@ -245,6 +245,11 @@ sf::Text& Button::getText()
     return text;
 }
 
+sf::Vector2f Button::getPosition() const
+{
+    return rectangle.getPosition();
+}
+
 /**
  * @brief Checks to see if the button was clicked given float coordinates
  * 

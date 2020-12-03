@@ -44,6 +44,7 @@ class Button : public sf::Drawable
         // getters
         std::string getString();           // gets the string that is on the button
         sf::Text& getText();                // returns a reference to text object for button
+        sf::Vector2f getPosition() const;
 
         // functions to see if button was clicked
         bool isClicked(const float &x, const float &y);
