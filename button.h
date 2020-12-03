@@ -35,6 +35,8 @@ class Button : public sf::Drawable
         void setTexture(const sf::Texture &texture);
         void setButtonSize(const sf::Vector2f &size);           // sets the minimum size of the button
 
+        void clearTexture();
+
         //want to overwrite setPosition
         void setButtonPosition(float x, float y);               // sets the position of both button and text
         void setButtonPosition(const sf::Vector2f &position);   // sets the position of both button and text

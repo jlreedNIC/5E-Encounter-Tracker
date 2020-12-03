@@ -18,7 +18,7 @@ Button::Button() : text(), rectangle()
     buttonString = "";
     text.setString(buttonString);
     text.setCharacterSize(25);
-    text.setFillColor(sf::Color::Black);
+    text.setFillColor(sf::Color::White);
     text.setStyle(sf::Text::Bold);
 
     setButtonSize();
@@ -36,7 +36,7 @@ Button::Button(const std::string &buttonString, const sf::Font &font) : text(), 
     text.setString(this->buttonString);
     text.setFont(font);
     text.setCharacterSize(25);
-    text.setFillColor(sf::Color::Black);
+    text.setFillColor(sf::Color::White);
     text.setStyle(sf::Text::Bold);
 
     setButtonSize();
@@ -55,7 +55,7 @@ Button::Button(const std::string &buttonString, const sf::Font &font, const sf::
     this->buttonString = buttonString;
     text.setString(this->buttonString);
     text.setCharacterSize(25);
-    text.setFillColor(sf::Color::Black);
+    text.setFillColor(sf::Color::White);
     text.setStyle(sf::Text::Bold);
     text.setFont(font);
 
@@ -154,6 +154,11 @@ void Button::setButtonSize()
     textSize.x = std::max(textBound.width + 20, 0.f);
     textSize.y = std::max(textBound.height + 30, 0.f);
     rectangle.setSize(textSize);
+}
+
+void Button::clearTexture()
+{
+    rectangle.setTexture(nullptr);
 }
 
 /**
