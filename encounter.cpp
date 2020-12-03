@@ -18,10 +18,15 @@ Encounter::Encounter() : playerList(), enemyList(), initiativeList()
     
     in.close();
 
-    playerAdd.setString("add");
-    playerDelete.setString("delete");
-    enemyAdd.setString("add");
-    enemyDelete.setString("delete");
+    playerAdd.setString("+");
+    playerDelete.setString("-");
+    enemyAdd.setString("+");
+    enemyDelete.setString("-");
+
+    playerAdd.setButtonPosition(750, 50);
+    playerDelete.setButtonPosition(750, 150);
+    enemyAdd.setButtonPosition(750, 380);
+    enemyDelete.setButtonPosition(750, 480);
 }
 
 Encounter::~Encounter()
@@ -33,12 +38,14 @@ void Encounter::addPlayer(Creature player)
 {
     // add to playerList
     playerList.addNodeInOrder(player);
+    clearTextTexture();
 }
 
 void Encounter::addEnemy(Creature enemy)
 {
     // add to enemyList
     enemyList.addNodeInOrder(enemy);
+    clearTextTexture();
 }
 
 void Encounter::deletePlayer()
@@ -84,12 +91,27 @@ void Encounter::setTextTexture(const sf::Texture &texture)
     initiativeList.setListTexture(texture);
 }
 
+void Encounter::setButtonTexture(const sf::Texture &texture)
+{
+    playerAdd.setTexture(texture);
+    playerDelete.setTexture(texture);
+    enemyAdd.setTexture(texture);
+    enemyDelete.setTexture(texture);
+}
+
 void Encounter::edit(const sf::Vector2f &mouseClick, const std::string &tempValue)
 {
     if(playerList.isNodeClicked(mouseClick))
         playerList.edit(mouseClick, tempValue);
     else if(enemyList.isNodeClicked(mouseClick))
         enemyList.edit(mouseClick, tempValue);
+}
+
+void Encounter::clearTextTexture()
+{
+    playerList.clearTexture();
+    enemyList.clearTexture();
+    initiativeList.clearTexture();
 }
 
 std::string Encounter::getEncounterDifficulty() const
@@ -126,6 +148,31 @@ bool Encounter::isClicked(const sf::Vector2f &mouseClick)
 bool Encounter::isClicked(const float &x, const float &y)
 {
     return isClicked(sf::Vector2f(x, y));
+}
+
+bool Encounter::initIsClicked(const sf::Vector2f &mouseClick)
+{
+    return initiativeList.isNodeClicked(mouseClick);
+}
+
+bool Encounter::playerAddClicked(const sf::Vector2f &mouseClick)
+{
+    return playerAdd.isClicked(mouseClick);
+}
+
+bool Encounter::playerDeleteClicked(const sf::Vector2f &mouseClick)
+{
+    return playerDelete.isClicked(mouseClick);
+}
+
+bool Encounter::enemyAddClicked(const sf::Vector2f &mouseClick)
+{
+    return enemyAdd.isClicked(mouseClick);
+}
+
+bool Encounter::enemyDeleteClicked(const sf::Vector2f &mouseClick)
+{
+    return enemyDelete.isClicked(mouseClick);
 }
 
 void Encounter::startInitiative()
@@ -240,6 +287,10 @@ void Encounter::drawEncounter(sf::RenderWindow &window)
 {
     playerList.drawList(window);
     enemyList.drawList(window);
+    window.draw(playerAdd);
+    window.draw(playerDelete);
+    window.draw(enemyAdd);
+    window.draw(enemyDelete);
 }
 
 void Encounter::drawInitiative(sf::RenderWindow &window)
