@@ -31,18 +31,21 @@ class App
         sf::RenderWindow window;
         Encounter encounter;
 
-        sf::Text saves[3];  // change to textbox
+        sf::Text saves[3];  // change to vector of textboxes
 
         sf::Font headerFont;
         sf::Font buttonFont;
         
         sf::Texture buttonTexture;
+        sf::Texture textBoxTexture;
 
         // buttons
         Button newEncounter;
         Button loadEncounter;
         Button initiativeButton;
         Button exitButton;
+        Button saveButton;
+        Button startInitiative;
         sf::Text headerText;
 
         // helper functions
@@ -57,6 +60,11 @@ class App
         sf::Text encounterTitles[3];
         sf::Text playerHeaders[7], enemyHeaders[7], encounterHeaders[2];
         sf::Text encounterDifficulty, totalXP;
+
+        Creature newCreature;
+        bool drawNewCreature;
+        void editNewCreature(float x, float y);
+        void editCreatureText(float x, float y);
 
         void loadSave();
         void newSave();

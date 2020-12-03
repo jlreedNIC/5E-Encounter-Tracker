@@ -3,10 +3,12 @@
 App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"), 
              encounter(), 
             //  newEncounter(), 
-             loadEncounter(), 
-             initiativeButton(),
-             exitButton(),
+            //  loadEncounter(), 
+            //  initiativeButton(),
+            //  exitButton(),
+            //  saveButton(),
              headerText("Encounter Tracker", headerFont, 80)
+             // add in encounter titles here
 {
     //window
     window.setPosition(sf::Vector2i(10, 30));
@@ -17,6 +19,7 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
 
     // textures
     buttonTexture.loadFromFile("Textures/dark-better-button3.png");
+    textBoxTexture.loadFromFile("Textures/textBox.png");
 
     // header
     headerText.setFillColor(sf::Color::Black);
@@ -34,6 +37,12 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
 
     exitButton.createButton("back", buttonFont, buttonTexture);
     exitButton.setButtonPosition(50, 700);
+
+    saveButton.createButton("save", buttonFont, buttonTexture);
+    saveButton.setButtonPosition(150, 700);
+
+    startInitiative.createButton("start initiative", buttonFont, buttonTexture);
+    startInitiative.setButtonPosition(250, 700);
 
     // encounter save files
     std::fstream stream("encounter-saves", std::ios::in);
@@ -69,6 +78,7 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
     }
 
     encounter.setFont(buttonFont);
+    encounter.setButtonTexture(buttonTexture);
     // setting titles for encounter
         encounterTitles[0].setString("Players");
         encounterTitles[1].setString("Enemies");
@@ -98,7 +108,7 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
         encounterHeaders[0].setString("Encounter Difficulty:");
         encounterHeaders[1].setString("Total Encounter XP:");
     
-    //setting font choices
+    //setting font choices for encounter
     for(int i=0; i<3;i++)
     {
         encounterTitles[i].setFillColor(sf::Color::Black);
@@ -141,7 +151,38 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
         totalXP.setFont(buttonFont);
         totalXP.setCharacterSize(20);
         // totalXP.setStyle(sf::Text::Bold);
+    
+    // set positions for encounter
+    for(int i=0; i<3; i++)
+    {
+        encounterTitles[i].setPosition(30, 10 + (i*300));
+    }
+    playerHeaders[0].setPosition(50, 45);
+    playerHeaders[1].setPosition(150, 45);
+    playerHeaders[2].setPosition(250, 45);
+    playerHeaders[3].setPosition(300, 45);
+    playerHeaders[4].setPosition(375, 45);
+    playerHeaders[5].setPosition(475, 45);
+    playerHeaders[6].setPosition(675, 45);
 
+    enemyHeaders[0].setPosition(50, 345);
+    enemyHeaders[1].setPosition(150, 345);
+    enemyHeaders[2].setPosition(250, 345);
+    enemyHeaders[3].setPosition(300, 345);
+    enemyHeaders[4].setPosition(375, 345);
+    enemyHeaders[5].setPosition(475, 345);
+    enemyHeaders[6].setPosition(675, 345);
+
+    encounterHeaders[0].setPosition(50, 645);
+    encounterHeaders[1].setPosition(50, 675);
+
+    encounterDifficulty.setPosition(300, 645);
+    totalXP.setPosition(300, 675);
+
+    newCreature.setFont(buttonFont);
+    newCreature.setTexture(textBoxTexture);
+
+    drawNewCreature = false;
 }
 
 App::~App()
@@ -306,35 +347,6 @@ void App::newSave()
 
 void App::buildEncounter()
 {
-    // set positions
-    for(int i=0; i<3; i++)
-    {
-        encounterTitles[i].setPosition(30, 10 + (i*300));
-    }
-    playerHeaders[0].setPosition(50, 45);
-    playerHeaders[1].setPosition(150, 45);
-    playerHeaders[2].setPosition(250, 45);
-    playerHeaders[3].setPosition(300, 45);
-    playerHeaders[4].setPosition(375, 45);
-    playerHeaders[5].setPosition(475, 45);
-    playerHeaders[6].setPosition(675, 45);
-
-    enemyHeaders[0].setPosition(50, 345);
-    enemyHeaders[1].setPosition(150, 345);
-    enemyHeaders[2].setPosition(250, 345);
-    enemyHeaders[3].setPosition(300, 345);
-    enemyHeaders[4].setPosition(375, 345);
-    enemyHeaders[5].setPosition(475, 345);
-    enemyHeaders[6].setPosition(675, 345);
-
-    encounterHeaders[0].setPosition(50, 645);
-    encounterHeaders[1].setPosition(50, 675);
-
-    encounterDifficulty.setPosition(300, 645);
-    totalXP.setPosition(300, 675);
-
-    
-
     // creature(string name, maxhealth, health, temphealth, initiative, armorclass, string status, level/cr);
     encounter.addPlayer(Creature("Rihala", 33, 33, 24, dice.rollDice(20), 11, "bear form", 4));
     encounter.addPlayer(Creature("Garth", 47, 47, 0, dice.rollDice(20), 14, "raging", 4));
@@ -372,11 +384,16 @@ void App::encounterInput()
             float posX = event.mouseButton.x;
             float posY = event.mouseButton.y;
             sf::Vector2f mouseClick = {posX, posY};
+
+            // exit to main menu
             if(exitButton.isClicked(mouseClick))
             {
                 // fix this to return to main screen
+                mainMenu();
                 return;
             }
+
+            // edit encounter
             if(encounter.isClicked(mouseClick))
             {
                 // check if somewhere on the encounter was clicked
@@ -387,6 +404,42 @@ void App::encounterInput()
                 encounter.calculateEncounterDifficulty();
                 encounterDifficulty.setString(encounter.getEncounterDifficulty());
                 totalXP.setString(encounter.getTotalEnemyXP());
+            }
+
+            // add player
+            if(encounter.playerAddClicked(mouseClick))
+            {
+                // create new creature and add to player list
+                newCreature.setPosition(50, 80);
+                encounter.setPlayerPosition(sf::Vector2f(50, 115));
+
+                drawNewCreature = true;
+                editNewCreature(50, 80);
+                encounter.addPlayer(newCreature);
+                encounter.setPlayerPosition(sf::Vector2f(50, 80));
+                drawNewCreature = false;
+            }
+            
+            // add enemy
+            if(encounter.enemyAddClicked(mouseClick))
+            {
+                // create new creature and add to enemy list
+                newCreature.setPosition(50, 380);
+                encounter.setEnemyPosition(sf::Vector2f(50, 415));
+
+                drawNewCreature = true;
+                editNewCreature(50, 380);
+                encounter.addEnemy(newCreature);
+                encounter.setEnemyPosition(sf::Vector2f(50, 380));
+                drawNewCreature = false;
+            }
+
+            // run encounter
+            if(startInitiative.isClicked(mouseClick))
+            {
+                // start initiative order/run encounter
+                encounter.startInitiative();
+                initiative();
             }
         }
     }
@@ -418,7 +471,7 @@ void App::editEncounter(sf::Vector2f &mouseClick)
                 if(exitButton.isClicked(mouseClick2))
                 {
                     tempString = tempString.substr(0, tempString.size()-1);
-                    encounter.edit(mouseClick2, tempString);
+                    encounter.edit(mouseClick, tempString);
                     return;
                 }
 
@@ -488,9 +541,97 @@ void App::encounterDraw()
     }
     window.draw(encounterDifficulty);
     window.draw(totalXP);
+    if(drawNewCreature) newCreature.draw(window);
     encounter.drawEncounter(window);
     window.draw(exitButton);
+    window.draw(saveButton);
+    window.draw(startInitiative);
     window.display();
+}
+
+void App::editNewCreature(float x, float y)
+{
+    editCreatureText(x, y);
+    editCreatureText(x+100, y);
+    editCreatureText(x+200, y);
+    editCreatureText(x+250, y);
+    editCreatureText(x+325, y);
+    editCreatureText(x+425, y);
+    editCreatureText(x+625, y);
+}
+
+void App::editCreatureText(float x, float y)
+{
+    // get string to edit
+    sf::Vector2f pos(x, y);
+    std::string tempString = newCreature.getString(pos);
+    tempString += "|";
+    newCreature.edit(pos, tempString);
+
+    sf::Event event;
+    while(window.isOpen())
+    {
+        while(window.pollEvent(event))
+        {
+            if(event.type == sf::Event::Closed)
+            {
+                window.close();
+            }
+
+            if(event.type == sf::Event::MouseButtonPressed)
+            {
+                float posX = event.mouseButton.x;
+                float posY = event.mouseButton.y;
+                sf::Vector2f mouseClick2 = {posX, posY};
+
+                if(exitButton.isClicked(mouseClick2))
+                {
+                    tempString = tempString.substr(0, tempString.size()-1);
+                    newCreature.edit(pos, tempString);
+                    return;
+                }
+
+                if(pos != mouseClick2)
+                {
+                    tempString = tempString.substr(0, tempString.size()-1);
+                    newCreature.edit(pos, tempString);
+                    return;
+                }
+            }
+
+            if(event.type == sf::Event::TextEntered)
+            {
+                // get rid of cursor
+                tempString = tempString.substr(0, tempString.size()-1);
+                // add new text
+                tempString += event.text.unicode;
+                // add cursor back
+                tempString += "|";
+
+                // size of tempString
+                unsigned int size = tempString.size();
+
+                // if backspace pressed
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
+                {
+                    tempString = tempString.substr(0, size-3);
+                    tempString += "|";
+                }
+
+                // if enter pressed
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+                {
+                    tempString = tempString.substr(0, size-1);
+                    newCreature.edit(pos, tempString);
+                    return;
+                }
+
+                newCreature.edit(pos, tempString);
+            }
+
+            encounterDraw();
+        }
+    }
 }
 
 void App::initiative()
@@ -499,23 +640,23 @@ void App::initiative()
         //input
         //update
         //render
-    encounter.startInitiative();
+    // encounter.startInitiative();
     // Creature(string name, int maxHealth, int health, int tempHealth, int initiative, int armorClass, string status)
-    Initiative initList;
-    initList.addNodeInOrder(Creature("Rihala", 33, 33, 0, 1, 11, "NA", 4));
-    initList.addNodeInOrder(Creature("Gravane", 47, 47, 0, 15, 18, "NA", 4));
-    initList.setListFont(buttonFont);
-    initList.setPosition(sf::Vector2f(50, 25));
+    // Initiative initList;
+    // initList.addNodeInOrder(Creature("Rihala", 33, 33, 0, 1, 11, "NA", 4));
+    // initList.addNodeInOrder(Creature("Gravane", 47, 47, 0, 15, 18, "NA", 4));
+    // initList.setListFont(buttonFont);
+    // initList.setPosition(sf::Vector2f(50, 25));
 
-    encounter.addPlayer(Creature("Rihala", 33, 33, 0, 1, 11, "raging", 4));
-    encounter.addPlayer(Creature("Gravane", 47, 47, 0, 15, 18, "NA", 4));
-    encounter.addEnemy(Creature("Goblin Fighter", 30, 30, 0, 5, 15, "NA", 50));
-    encounter.addEnemy(Creature("Kobold", 0, 12, 0, 20, 13, "Bleeding out", 25));
+    // encounter.addPlayer(Creature("Rihala", 33, 33, 0, 1, 11, "raging", 4));
+    // encounter.addPlayer(Creature("Gravane", 47, 47, 0, 15, 18, "NA", 4));
+    // encounter.addEnemy(Creature("Goblin Fighter", 30, 30, 0, 5, 15, "NA", 50));
+    // encounter.addEnemy(Creature("Kobold", 0, 12, 0, 20, 13, "Bleeding out", 25));
 
-    encounter.calculateEncounterDifficulty();
+    // encounter.calculateEncounterDifficulty();
 
     // std::cout << initList.listToString() << "\n";
-
+    encounter.setInitiativePosition(sf::Vector2f(50, 80));
 
     while(window.isOpen())
     {
@@ -537,31 +678,23 @@ void App::initiative()
                     return;
                 }
 
-                if(initList.isNodeClicked(posX, posY))
+                if(encounter.initIsClicked(mouseClick))
                 {
                     std::cout << "Node Clicked\n";
-                    editNode(initList, posX, posY);
+                    // editNode(initList, posX, posY);
                     // initList.edit(posX, posY);
                 }
-                // if(nameText.isClicked(mouseClick))
-                // {
-                //     std::cout << nameText.getString() << "\n";
-                // }
-                // if(acText.isClicked(mouseClick))
-                // {
-                //     std::cout << acText.getString() << "\n";
-                // }
             }
 
             window.clear(sf::Color::White);
 
             window.draw(exitButton);
             window.draw(exitButton.getText());
-            initList.drawList(window);
-            // window.draw(nameText);
-            // window.draw(nameText.getText());
-            // window.draw(acText);
-            // window.draw(acText.getText());
+            for(int i=0; i<7; i++)
+            {
+                window.draw(playerHeaders[i]);
+            }
+            encounter.drawInitiative(window);
             window.display();
         }
     }
@@ -569,68 +702,68 @@ void App::initiative()
 
 void App::editNode(Initiative &initList, const float &x, const float &y)
 {
-    sf::Event event;
-    TextBox textbox = initList.getTextBox(x, y);
-    sf::Vector2f pos(x, y);
-    std::string tempString = initList.getString(pos);
-    tempString += "|";
-    initList.edit(x, y, tempString);
+    // sf::Event event;
+    // TextBox textbox = initList.getTextBox(x, y);
+    // sf::Vector2f pos(x, y);
+    // std::string tempString = initList.getString(pos);
+    // tempString += "|";
+    // initList.edit(x, y, tempString);
 
-    while(window.isOpen())
-    {
-        while(window.pollEvent(event))
-        {
-            if(event.type == sf::Event::Closed)
-            {
-                window.close();
-            }
+    // while(window.isOpen())
+    // {
+    //     while(window.pollEvent(event))
+    //     {
+    //         if(event.type == sf::Event::Closed)
+    //         {
+    //             window.close();
+    //         }
 
-            if(event.type == sf::Event::MouseButtonPressed)
-            {
-                float posX = event.mouseButton.x;
-                float posY = event.mouseButton.y;
-                sf::Vector2f mouseClick = {posX, posY};
-                if(exitButton.isClicked(mouseClick))
-                {
-                    tempString = tempString.substr(0, tempString.size()-1);
-                    initList.edit(x, y, tempString);
-                    return;
-                }
+    //         if(event.type == sf::Event::MouseButtonPressed)
+    //         {
+    //             float posX = event.mouseButton.x;
+    //             float posY = event.mouseButton.y;
+    //             sf::Vector2f mouseClick = {posX, posY};
+    //             if(exitButton.isClicked(mouseClick))
+    //             {
+    //                 tempString = tempString.substr(0, tempString.size()-1);
+    //                 initList.edit(x, y, tempString);
+    //                 return;
+    //             }
 
-                if(!textbox.isClicked(posX, posY))
-                {
-                    tempString = tempString.substr(0, tempString.size()-1);
-                    initList.edit(x, y, tempString);
-                    return;
-                }
-            }
+    //             if(!textbox.isClicked(posX, posY))
+    //             {
+    //                 tempString = tempString.substr(0, tempString.size()-1);
+    //                 initList.edit(x, y, tempString);
+    //                 return;
+    //             }
+    //         }
 
-            if (event.type == sf::Event::TextEntered)
-            {
-                tempString = tempString.substr(0, tempString.size()-1);
-                tempString += event.text.unicode;
-                tempString += "|";
-                unsigned int size = tempString.size();
+    //         if (event.type == sf::Event::TextEntered)
+    //         {
+    //             tempString = tempString.substr(0, tempString.size()-1);
+    //             tempString += event.text.unicode;
+    //             tempString += "|";
+    //             unsigned int size = tempString.size();
 
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
-                {
-                    tempString = tempString.substr(0, size-3);
-                    tempString += "|";
-                }
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
-                    {
-                        tempString = tempString.substr(0, tempString.size()-1);
-                        initList.edit(x, y, tempString);
-                        return;
-                    }
+    //             if(sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
+    //             {
+    //                 tempString = tempString.substr(0, size-3);
+    //                 tempString += "|";
+    //             }
+    //             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+    //                 {
+    //                     tempString = tempString.substr(0, tempString.size()-1);
+    //                     initList.edit(x, y, tempString);
+    //                     return;
+    //                 }
                 
-                initList.edit(x, y, tempString);
-            }
+    //             initList.edit(x, y, tempString);
+    //         }
 
-            window.clear(sf::Color::White);
-            window.draw(exitButton);
-            initList.drawList(window);
-            window.display();
-        }
-    }
+    //         window.clear(sf::Color::White);
+    //         window.draw(exitButton);
+    //         initList.drawList(window);
+    //         window.display();
+    //     }
+    // }
 }
