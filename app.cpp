@@ -348,12 +348,12 @@ void App::newSave()
 void App::buildEncounter()
 {
     // creature(string name, maxhealth, health, temphealth, initiative, armorclass, string status, level/cr);
-    encounter.addPlayer(Creature("Rihala", 33, 33, 24, dice.rollDice(20), 11, "bear form", 4));
-    encounter.addPlayer(Creature("Garth", 47, 47, 0, dice.rollDice(20), 14, "raging", 4));
-    encounter.addPlayer(Creature("Gravane", 37, 5, 0, dice.rollDice(20), 18, "bleeding out", 4));
-    encounter.addPlayer(Creature("Robinton", 30, 30, 0, dice.rollDice(20), 13, "NA", 4));
-    encounter.addEnemy(Creature("Spectator", 39, 39, 0, dice.rollDice(20, 2), 14, "NA", 700));
-    encounter.addEnemy(Creature("Bugbear", 27, 27, 0, dice.rollDice(20), 16, "NA", 200));
+    // encounter.addPlayer(Creature("Rihala", 33, 33, 24, dice.rollDice(20), 11, "bear form", 4));
+    // encounter.addPlayer(Creature("Garth", 47, 47, 0, dice.rollDice(20), 14, "raging", 4));
+    // encounter.addPlayer(Creature("Gravane", 37, 5, 0, dice.rollDice(20), 18, "bleeding out", 4));
+    // encounter.addPlayer(Creature("Robinton", 30, 30, 0, dice.rollDice(20), 13, "NA", 4));
+    // encounter.addEnemy(Creature("Spectator", 39, 39, 0, dice.rollDice(20, 2), 14, "NA", 700));
+    // encounter.addEnemy(Creature("Bugbear", 27, 27, 0, dice.rollDice(20), 16, "NA", 200));
     encounter.setPlayerPosition(sf::Vector2f(50, 80));
     encounter.setEnemyPosition(sf::Vector2f(50, 380));
     encounter.setFont(buttonFont);
@@ -404,6 +404,8 @@ void App::encounterInput()
                 encounter.calculateEncounterDifficulty();
                 encounterDifficulty.setString(encounter.getEncounterDifficulty());
                 totalXP.setString(encounter.getTotalEnemyXP());
+
+                encounter.sort();
             }
 
             // add player
@@ -418,6 +420,11 @@ void App::encounterInput()
                 encounter.addPlayer(newCreature);
                 encounter.setPlayerPosition(sf::Vector2f(50, 80));
                 drawNewCreature = false;
+
+                // update encounter
+                encounter.calculateEncounterDifficulty();
+                encounterDifficulty.setString(encounter.getEncounterDifficulty());
+                totalXP.setString(encounter.getTotalEnemyXP());
             }
             
             // add enemy
@@ -432,6 +439,11 @@ void App::encounterInput()
                 encounter.addEnemy(newCreature);
                 encounter.setEnemyPosition(sf::Vector2f(50, 380));
                 drawNewCreature = false;
+
+                // update encounter
+                encounter.calculateEncounterDifficulty();
+                encounterDifficulty.setString(encounter.getEncounterDifficulty());
+                totalXP.setString(encounter.getTotalEnemyXP());
             }
 
             // run encounter
