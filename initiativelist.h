@@ -44,7 +44,7 @@ class Initiative
 
         //getters
         int getRound() const;                       // return the initiative round
-        TextBox& getTextBox(const float &x, const float &y);
+        // TextBox& getTextBox(const float &x, const float &y);
         int getSize() const;
         std::string getLevel();
         std::string getString(sf::Vector2f &mouseClick);
@@ -67,6 +67,8 @@ class Initiative
         void setPosition(sf::Vector2f pos);
         void setPosition(float x, float y);
         void setRoundText();
+
+        void clearTexture();
 
         // bool functions
         bool isNodeClicked(const float &x, const float &y);
