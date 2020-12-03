@@ -20,6 +20,8 @@ class Encounter
         void deletePlayer();
         void deleteEnemy();
 
+        void sort();
+
         // setters
         void setPlayerPosition(const sf::Vector2f &pos);
         void setEnemyPosition(const sf::Vector2f &pos);

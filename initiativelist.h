@@ -48,6 +48,7 @@ class Initiative
         int getSize() const;
         std::string getLevel();
         std::string getString(sf::Vector2f &mouseClick);
+        sf::Vector2f getPosition() const;
 
         // edit list by name search
         void editHealth(string name, int newHealth);

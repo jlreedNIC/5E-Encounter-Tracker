@@ -58,6 +58,13 @@ void Encounter::deleteEnemy()
     // delete from enemyList
 }
 
+void Encounter::sort()
+{
+    playerList.sort();
+    enemyList.sort();
+    initiativeList.sort();
+}
+
 void Encounter::setPlayerPosition(const sf::Vector2f &pos)
 {
     playerList.setPosition(pos);
@@ -177,6 +184,8 @@ bool Encounter::enemyDeleteClicked(const sf::Vector2f &mouseClick)
 
 void Encounter::startInitiative()
 {
+    playerList.sort();
+    enemyList.sort();
     // start initiative
     initiativeList.clear();
     initiativeList.append(playerList);

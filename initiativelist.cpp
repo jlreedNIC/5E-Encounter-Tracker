@@ -218,6 +218,42 @@ void Initiative::clear()
     mStart = nullptr;
 }
 
+void Initiative::sort()
+{
+    // if list is empty or has 1 element
+    if(mHead == nullptr || mHead->next == mHead) return;
+
+    Node *start = mHead->next;
+
+    while(start != mHead)
+    {
+        Node *key = start;
+        Node *index = start->prev;
+        do
+        {
+            if(index->character.initiative < key->character.initiative)
+            {
+                // swap key and index
+                if(index->next->next != index)
+                {
+                    index->next = key->next;
+                    key->prev = index->prev;
+                    index->prev->next = key;
+                    key->next->prev = index;
+                }
+                index->prev = key;
+                key->next = index;
+                if(mHead == index) mHead = key;
+
+                // decrement index and reset start
+                index = index->prev->prev;
+                if(start == key) start = start->next;
+            }
+        }while(index != mHead->prev && index->character.initiative < key->character.initiative);
+        start = start->next;
+    }
+}
+
 /**
  * @brief Returns the round counter
  * 
@@ -281,6 +317,11 @@ std::string Initiative::getString(sf::Vector2f &mouseClick)
     }
 
     return value;
+}
+
+sf::Vector2f Initiative::getPosition() const
+{
+    return mHead->character.nameText.getPosition();
 }
 
 /**
