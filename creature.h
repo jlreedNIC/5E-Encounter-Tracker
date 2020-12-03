@@ -47,6 +47,8 @@ class Creature //: sf::Drawable
         void setTexture(const sf::Texture &texture);
         void setFont(const sf::Font &font);
 
+        void clearTexture();
+
         TextBox& getTextBox(const float &x, const float &y);
         std::string getString(const sf::Vector2f &mouseClick);
         int getLevel();
