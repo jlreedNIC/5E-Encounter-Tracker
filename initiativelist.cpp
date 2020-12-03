@@ -171,7 +171,7 @@ void Initiative::deleteNode(string name)
         ptr->prev->next = ptr->next;
         ptr->next = nullptr;
         ptr->prev = nullptr;
-        if(ptr == mHead) mHead = mStart = nullptr;
+        if(ptr == mHead) mHead = mStart = nullptr;  // potential error here
         delete ptr;
         ptr = nullptr;
     }
@@ -213,7 +213,7 @@ void Initiative::clear()
             prevPtr = ptr;
         }while(ptr != nullptr && ptr != mHead);
     }
-    ptr = prevPtr = nullptr;
+    ptr = prevPtr = mHead = nullptr;
     round = 0;
     mStart = nullptr;
 }
