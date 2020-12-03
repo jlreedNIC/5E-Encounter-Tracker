@@ -179,6 +179,26 @@ void Initiative::deleteNode(string name)
     size--;
 }
 
+void Initiative::deleteNode(const sf::Vector2f &mouseClick)
+{
+    Node *ptr = mHead;
+    bool found = false;
+
+    if(ptr == nullptr) return;
+
+    do
+    {
+        if(ptr->character.isClicked(mouseClick)) found = true;
+        else ptr = ptr->next;
+    }while(ptr != mHead && !found);
+
+    if(!found) return;
+
+    // delete ptr
+    deleteNode(ptr->character.name);
+    ptr = nullptr;
+}
+
 /**
  * @brief Copies the contents of a list to this list
  * 

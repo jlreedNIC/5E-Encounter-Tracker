@@ -38,6 +38,7 @@ class Initiative
         //list functions
         void addNodeInOrder(Creature character);    // add a creature to the initiative order
         void deleteNode(string name);               // delete a creature from the initiative order
+        void deleteNode(const sf::Vector2f &mouseClick);
         void append(const Initiative &copy);        // copies the contents of one list into the main list
         void clear();
         void sort();
