@@ -8,8 +8,21 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
             //  exitButton(),
             //  saveButton(),
              instructions("Not Implemented", buttonFont),
-             headerText("Encounter Tracker", headerFont, 80)
-             // add in encounter titles here
+             headerText("Encounter Tracker", headerFont, 80), 
+             encounterTitles{sf::Text("Players", buttonFont, 30), sf::Text("Enemies", buttonFont, 30), 
+                             sf::Text("Encounter", buttonFont, 30)},
+             playerHeaders{sf::Text("Name", buttonFont, 20), sf::Text("Init.", buttonFont, 20),
+                           sf::Text("AC", buttonFont, 20), sf::Text("Health", buttonFont, 20),
+                           sf::Text("Temp HP", buttonFont, 20),sf::Text("Status/Notes", buttonFont, 20),
+                           sf::Text("Level", buttonFont, 20)},
+             enemyHeaders{sf::Text("Name", buttonFont, 20), sf::Text("Initiative", buttonFont, 20),
+                          sf::Text("AC", buttonFont, 20), sf::Text("Health", buttonFont, 20),
+                          sf::Text("Temp HP", buttonFont, 20), sf::Text("Status/Notes", buttonFont, 20),
+                          sf::Text("XP", buttonFont, 20)},
+             encounterHeaders{sf::Text("Encounter Difficulty:", buttonFont, 20),
+                              sf::Text("Total Encounter XP:", buttonFont, 20)},
+             encounterDifficulty("EASY", buttonFont, 20),
+             totalXP("0", buttonFont, 20)
 {
     //window
     window.setPosition(sf::Vector2i(10, 30));
@@ -80,41 +93,11 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
 
     encounter.setFont(buttonFont);
     encounter.setButtonTexture(buttonTexture);
-    // setting titles for encounter
-        encounterTitles[0].setString("Players");
-        encounterTitles[1].setString("Enemies");
-        encounterTitles[2].setString("Encounter");
 
-        playerHeaders[0].setString("Name");
-        enemyHeaders[0].setString("Name");
-
-        playerHeaders[1].setString("Initiative");
-        enemyHeaders[1].setString("Initiative");
-
-        playerHeaders[2].setString("AC");
-        enemyHeaders[2].setString("AC");
-
-        playerHeaders[3].setString("Health");
-        enemyHeaders[3].setString("Health");
-
-        playerHeaders[4].setString("Temp HP");
-        enemyHeaders[4].setString("Temp HP");
-
-        playerHeaders[5].setString("Status/Notes");
-        enemyHeaders[5].setString("Status/Notes");
-
-        playerHeaders[6].setString("Level");
-        enemyHeaders[6].setString("XP");
-
-        encounterHeaders[0].setString("Encounter Difficulty:");
-        encounterHeaders[1].setString("Total Encounter XP:");
-    
     //setting font choices for encounter
     for(int i=0; i<3;i++)
     {
         encounterTitles[i].setFillColor(sf::Color::Black);
-        encounterTitles[i].setFont(buttonFont);
-        encounterTitles[i].setCharacterSize(30);
         encounterTitles[i].setStyle(sf::Text::Bold);
     }
 
@@ -125,33 +108,19 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
 
         playerHeaders[i].setStyle(sf::Text::Bold);
         enemyHeaders[i].setStyle(sf::Text::Bold);
-
-        playerHeaders[i].setFont(buttonFont);
-        enemyHeaders[i].setFont(buttonFont);
-
-        playerHeaders[i].setCharacterSize(20);
-        enemyHeaders[i].setCharacterSize(20);
     }
     
     for(int i=0; i<2; i++)
     {
         encounterHeaders[i].setFillColor(sf::Color::Black);
-        encounterHeaders[i].setFont(buttonFont);
-        encounterHeaders[i].setCharacterSize(20);
         encounterHeaders[i].setStyle(sf::Text::Bold);
     }
 
-    encounterDifficulty.setString("EASY");
-        encounterDifficulty.setFillColor(sf::Color::Black);
-        encounterDifficulty.setFont(buttonFont);
-        encounterDifficulty.setCharacterSize(20);
-        // encounterDifficulty.setStyle(sf::Text::Bold);
+    encounterDifficulty.setFillColor(sf::Color::Black);
+    // encounterDifficulty.setStyle(sf::Text::Bold);
 
-    totalXP.setString("0");
-        totalXP.setFillColor(sf::Color::Black);
-        totalXP.setFont(buttonFont);
-        totalXP.setCharacterSize(20);
-        // totalXP.setStyle(sf::Text::Bold);
+    totalXP.setFillColor(sf::Color::Black);
+    // totalXP.setStyle(sf::Text::Bold);
     
     // set positions for encounter
     for(int i=0; i<3; i++)
