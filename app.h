@@ -38,6 +38,9 @@ class App
         
         sf::Texture buttonTexture;
         sf::Texture textBoxTexture;
+        
+        TextBox instructions;
+        bool drawInstructions;
 
         // buttons
         Button newEncounter;
@@ -54,7 +57,7 @@ class App
         void mainMenuDraw();
 
         void encounterInput();
-        void encounterProcess();
+        void encounterUpdate();
         void encounterDraw();
         //encounter headers
         sf::Text encounterTitles[3];
@@ -68,6 +71,9 @@ class App
 
         void loadSave();
         void newSave();
+
+        void deleteEnemy();
+        void deletePlayer();
 
         DiceRoller dice;
 };

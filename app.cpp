@@ -7,6 +7,7 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
             //  initiativeButton(),
             //  exitButton(),
             //  saveButton(),
+             instructions("Not Implemented", buttonFont),
              headerText("Encounter Tracker", headerFont, 80)
              // add in encounter titles here
 {
@@ -183,6 +184,10 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
     newCreature.setTexture(textBoxTexture);
 
     drawNewCreature = false;
+    drawInstructions = false;
+
+    instructions.setTextBoxSize(sf::Vector2f(400, 100));
+    instructions.setOutline();
 }
 
 App::~App()
@@ -348,12 +353,12 @@ void App::newSave()
 void App::buildEncounter()
 {
     // creature(string name, maxhealth, health, temphealth, initiative, armorclass, string status, level/cr);
-    // encounter.addPlayer(Creature("Rihala", 33, 33, 24, dice.rollDice(20), 11, "bear form", 4));
-    // encounter.addPlayer(Creature("Garth", 47, 47, 0, dice.rollDice(20), 14, "raging", 4));
-    // encounter.addPlayer(Creature("Gravane", 37, 5, 0, dice.rollDice(20), 18, "bleeding out", 4));
-    // encounter.addPlayer(Creature("Robinton", 30, 30, 0, dice.rollDice(20), 13, "NA", 4));
-    // encounter.addEnemy(Creature("Spectator", 39, 39, 0, dice.rollDice(20, 2), 14, "NA", 700));
-    // encounter.addEnemy(Creature("Bugbear", 27, 27, 0, dice.rollDice(20), 16, "NA", 200));
+    encounter.addPlayer(Creature("Rihala", 33, 33, 24, dice.rollDice(20), 11, "bear form", 4));
+    encounter.addPlayer(Creature("Garth", 47, 47, 0, dice.rollDice(20), 14, "raging", 4));
+    encounter.addPlayer(Creature("Gravane", 37, 5, 0, dice.rollDice(20), 18, "bleeding out", 4));
+    encounter.addPlayer(Creature("Robinton", 30, 30, 0, dice.rollDice(20), 13, "NA", 4));
+    encounter.addEnemy(Creature("Spectator", 39, 39, 0, dice.rollDice(20, 2), 14, "NA", 700));
+    encounter.addEnemy(Creature("Bugbear", 27, 27, 0, dice.rollDice(20), 16, "NA", 200));
     encounter.setPlayerPosition(sf::Vector2f(50, 80));
     encounter.setEnemyPosition(sf::Vector2f(50, 380));
     encounter.setFont(buttonFont);
@@ -365,7 +370,7 @@ void App::buildEncounter()
     while(window.isOpen())
     {
         encounterInput();
-        encounterProcess();
+        encounterUpdate();
         encounterDraw();
     }
 }
@@ -388,7 +393,7 @@ void App::encounterInput()
             // exit to main menu
             if(exitButton.isClicked(mouseClick))
             {
-                // fix this to return to main screen
+                // FIX: this to return to main screen
                 mainMenu();
                 return;
             }
@@ -396,16 +401,9 @@ void App::encounterInput()
             // edit encounter
             if(encounter.isClicked(mouseClick))
             {
-                // check if somewhere on the encounter was clicked
+                // check if playerList or enemyList was clicked
                 std::cout << "encounter clicked\n";
                 editEncounter(mouseClick);
-
-                // update encounter
-                encounter.calculateEncounterDifficulty();
-                encounterDifficulty.setString(encounter.getEncounterDifficulty());
-                totalXP.setString(encounter.getTotalEnemyXP());
-
-                encounter.sort();
             }
 
             // add player
@@ -420,11 +418,6 @@ void App::encounterInput()
                 encounter.addPlayer(newCreature);
                 encounter.setPlayerPosition(sf::Vector2f(50, 80));
                 drawNewCreature = false;
-
-                // update encounter
-                encounter.calculateEncounterDifficulty();
-                encounterDifficulty.setString(encounter.getEncounterDifficulty());
-                totalXP.setString(encounter.getTotalEnemyXP());
             }
             
             // add enemy
@@ -439,12 +432,27 @@ void App::encounterInput()
                 encounter.addEnemy(newCreature);
                 encounter.setEnemyPosition(sf::Vector2f(50, 380));
                 drawNewCreature = false;
-
-                // update encounter
-                encounter.calculateEncounterDifficulty();
-                encounterDifficulty.setString(encounter.getEncounterDifficulty());
-                totalXP.setString(encounter.getTotalEnemyXP());
             }
+
+            // delete player
+            if(encounter.playerDeleteClicked(mouseClick))
+            {
+                std::cout << "player to be deleted\n";
+                instructions.setString("Click on the player you want to delete.");
+                drawInstructions = true;
+                deletePlayer();
+            }
+
+            // delete enemy
+            if(encounter.enemyDeleteClicked(mouseClick))
+            {
+                std::cout << "enemy to be deleted\n";
+                instructions.setString("Click on the enemy you want to delete.");
+                drawInstructions = true;
+                deleteEnemy();
+            }
+
+            // update encounter
 
             // run encounter
             if(startInitiative.isClicked(mouseClick))
@@ -530,9 +538,13 @@ void App::editEncounter(sf::Vector2f &mouseClick)
     }
 }
 
-void App::encounterProcess()
+void App::encounterUpdate()
 {
+    encounter.calculateEncounterDifficulty();
+    encounterDifficulty.setString(encounter.getEncounterDifficulty());
+    totalXP.setString(encounter.getTotalEnemyXP());
 
+    encounter.sort();
 }
 
 void App::encounterDraw()
@@ -558,6 +570,7 @@ void App::encounterDraw()
     window.draw(exitButton);
     window.draw(saveButton);
     window.draw(startInitiative);
+    if(drawInstructions) window.draw(instructions);
     window.display();
 }
 
@@ -639,6 +652,75 @@ void App::editCreatureText(float x, float y)
                 }
 
                 newCreature.edit(pos, tempString);
+            }
+
+            encounterDraw();
+        }
+    }
+}
+
+void App::deleteEnemy()
+{
+    std::cout << "delete enemy\n";
+    instructions.setTextBoxPosition(50, 50);
+    while(window.isOpen())
+    {
+        sf::Event event;
+        while(window.pollEvent(event))
+        {
+            // close window
+            if(event.type == sf::Event::Closed)
+            {
+                window.close();
+            }
+            
+            if(event.type == sf::Event::MouseButtonPressed)
+            {
+                std::cout << "mouse button pressed\n";
+                float x = event.mouseButton.x;
+                float y = event.mouseButton.y;
+                sf::Vector2f mouseClick(x, y);
+
+                if(encounter.isClicked(mouseClick))
+                {
+                    std::cout << "enemy clicked\n";
+                    encounter.deleteEnemy(mouseClick);
+                    drawInstructions = false;
+                    return;
+                }
+                else return;
+            }
+
+            encounterDraw();
+        }
+    }
+}
+
+void App::deletePlayer()
+{
+    instructions.setTextBoxPosition(50, 380);
+    while(window.isOpen())
+    {
+        sf::Event event;
+        while(window.pollEvent(event))
+        {
+            // close window
+            if(event.type == sf::Event::Closed)
+            {
+                window.close();
+            }
+            
+            if(event.type == sf::Event::MouseButtonPressed)
+            {
+                sf::Vector2f mouseClick(event.mouseButton.x, event.mouseButton.y);
+
+                if(encounter.isClicked(mouseClick))
+                {
+                    encounter.deletePlayer(mouseClick);
+                    drawInstructions = false;
+                    return;
+                }
+                else return;
             }
 
             encounterDraw();
