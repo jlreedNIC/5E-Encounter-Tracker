@@ -48,6 +48,12 @@ void Encounter::addEnemy(Creature enemy)
     clearTextTexture();
 }
 
+void Encounter::addInitiative(Creature creature)
+{
+    initiativeList.addNodeInOrder(creature);
+    clearTextTexture();
+}
+
 void Encounter::deletePlayer(const sf::Vector2f &mouseClick)
 {
     // delete from playerList
@@ -58,6 +64,11 @@ void Encounter::deleteEnemy(const sf::Vector2f &mouseClick)
 {
     // delete from enemyList
     enemyList.deleteNode(mouseClick);
+}
+
+void Encounter::deleteInitiative(const sf::Vector2f &mouseClick)
+{
+    initiativeList.deleteNode(mouseClick);
 }
 
 void Encounter::sort()
@@ -323,4 +334,6 @@ void Encounter::drawEncounter(sf::RenderWindow &window)
 void Encounter::drawInitiative(sf::RenderWindow &window)
 {
     initiativeList.drawList(window);
+    window.draw(playerAdd);
+    window.draw(playerDelete);
 }

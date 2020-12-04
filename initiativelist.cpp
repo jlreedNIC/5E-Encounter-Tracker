@@ -251,22 +251,6 @@ void Initiative::clear()
     mHead = nullptr;
     mStart = nullptr;
     size = 0;
-
-
-    // Node *prevPtr = ptr;
-
-    // if(ptr != nullptr)
-    // {
-    //     do
-    //     {
-    //         ptr = ptr->next;
-    //         deleteNode(prevPtr->character.name);
-    //         prevPtr = ptr;
-    //     }while(ptr != nullptr && ptr != mHead);
-    // }
-    // ptr = prevPtr = mHead = nullptr;
-    // round = 0;
-    // mStart = nullptr;
 }
 
 void Initiative::sort()

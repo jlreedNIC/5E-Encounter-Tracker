@@ -427,7 +427,6 @@ void App::encounterInput()
             if(startInitiative.isClicked(mouseClick))
             {
                 // start initiative order/run encounter
-                encounter.startInitiative();
                 initiative();
             }
         }
@@ -699,6 +698,7 @@ void App::deletePlayer()
 
 void App::initiative()
 {
+    encounter.startInitiative();
     encounter.setInitiativePosition(sf::Vector2f(50, 80));
     bool initClicked = false;
     std::string tempString;
@@ -721,6 +721,7 @@ void App::initiative()
                 mouseClick = {posX, posY};
                 if(exitButton.isClicked(mouseClick))
                 {
+                    encounter.startInitiative();
                     return;
                 }
 
@@ -733,6 +734,30 @@ void App::initiative()
                     tempString += "|";
                     encounter.editInitiative(mouseClick, tempString);
                 }
+
+                // add creature to initiative
+                if(encounter.playerAddClicked(mouseClick))
+                {
+                    // create new creature and add to player list
+                    newCreature.setPosition(50, 80);
+                    encounter.setInitiativePosition(sf::Vector2f(50, 115));
+
+                    drawNewCreature = true;
+                    editNewInitCreature(50, 80);
+                    encounter.addInitiative(newCreature);
+                    encounter.setInitiativePosition(sf::Vector2f(50, 80));
+                    drawNewCreature = false;
+                }
+
+                // delete creature from initiative
+                // delete player
+                if(encounter.playerDeleteClicked(mouseClick))
+                {
+                    std::cout << "player to be deleted\n";
+                    instructions.setString("Click on the creature you want to delete.");
+                    drawInstructions = true;
+                    deleteInitCreature();
+                }
             }
 
             if(initClicked)
@@ -740,25 +765,18 @@ void App::initiative()
                 editInitiative(event, initClicked, mouseClick, tempString);
             }
 
-            window.clear(sf::Color::White);
-
-            window.draw(exitButton);
-            window.draw(exitButton.getText());
-            for(int i=0; i<7; i++)
-            {
-                window.draw(playerHeaders[i]);
-            }
-            encounter.drawInitiative(window);
-            window.display();
+            initiativeDraw();
         }
     }
 }
 
 void App::editInitiative(sf::Event &event, bool &initClicked, sf::Vector2f &mouseClick, std::string &tempString)
 {
-    while(window.pollEvent(event))
-    {
+    // while(window.pollEvent(event))
+    // {
         // if click off of the node
+        // FIX: these events are useless. the mouse button event
+        // is entered into the main loop, not here
         if(event.type == sf::Event::MouseButtonPressed)
         {
             float posX = event.mouseButton.x;
@@ -775,7 +793,9 @@ void App::editInitiative(sf::Event &event, bool &initClicked, sf::Vector2f &mous
 
             if(mouseClick != mouseClick2)
             {
+                std::cout << tempString << " ";
                 tempString = tempString.substr(0, tempString.size()-1);
+                std::cout << tempString << "\n";
                 encounter.editInitiative(mouseClick, tempString);
                 initClicked = false;
                 return;
@@ -813,5 +833,136 @@ void App::editInitiative(sf::Event &event, bool &initClicked, sf::Vector2f &mous
 
             encounter.editInitiative(mouseClick, tempString);
         }
+    // }
+}
+
+void App::editNewInitCreature(float x, float y)
+{
+    editInitCreatureText(x, y);
+    editInitCreatureText(x+100, y);
+    editInitCreatureText(x+200, y);
+    editInitCreatureText(x+250, y);
+    editInitCreatureText(x+325, y);
+    editInitCreatureText(x+425, y);
+    editInitCreatureText(x+625, y);
+}
+
+void App::editInitCreatureText(float x, float y)
+{
+    // get string to edit
+    sf::Vector2f pos(x, y);
+    std::string tempString = newCreature.getString(pos);
+    tempString += "|";
+    newCreature.edit(pos, tempString);
+
+    sf::Event event;
+    while(window.isOpen())
+    {
+        while(window.pollEvent(event))
+        {
+            if(event.type == sf::Event::Closed)
+            {
+                window.close();
+            }
+
+            if(event.type == sf::Event::MouseButtonPressed)
+            {
+                float posX = event.mouseButton.x;
+                float posY = event.mouseButton.y;
+                sf::Vector2f mouseClick2 = {posX, posY};
+
+                if(exitButton.isClicked(mouseClick2))
+                {
+                    tempString = tempString.substr(0, tempString.size()-1);
+                    newCreature.edit(pos, tempString);
+                    return;
+                }
+
+                if(pos != mouseClick2)
+                {
+                    tempString = tempString.substr(0, tempString.size()-1);
+                    newCreature.edit(pos, tempString);
+                    return;
+                }
+            }
+
+            if(event.type == sf::Event::TextEntered)
+            {
+                // get rid of cursor
+                tempString = tempString.substr(0, tempString.size()-1);
+                // add new text
+                tempString += event.text.unicode;
+                // add cursor back
+                tempString += "|";
+
+                // size of tempString
+                unsigned int size = tempString.size();
+
+                // if backspace pressed
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
+                {
+                    tempString = tempString.substr(0, size-3);
+                    tempString += "|";
+                }
+
+                // if enter pressed
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+                {
+                    tempString = tempString.substr(0, size-2);
+                    newCreature.edit(pos, tempString);
+                    return;
+                }
+
+                newCreature.edit(pos, tempString);
+            }
+
+            initiativeDraw();
+        }
     }
+}
+
+void App::deleteInitCreature()
+{
+    instructions.setTextBoxPosition(50, 380);
+    while(window.isOpen())
+    {
+        sf::Event event;
+        while(window.pollEvent(event))
+        {
+            // close window
+            if(event.type == sf::Event::Closed)
+            {
+                window.close();
+            }
+            
+            if(event.type == sf::Event::MouseButtonPressed)
+            {
+                sf::Vector2f mouseClick(event.mouseButton.x, event.mouseButton.y);
+
+                if(encounter.initIsClicked(mouseClick))
+                {
+                    encounter.deleteInitiative(mouseClick);
+                    drawInstructions = false;
+                    return;
+                }
+                else return;
+            }
+
+            initiativeDraw();
+        }
+    }
+}
+
+void App::initiativeDraw()
+{
+    window.clear(sf::Color::White);
+    window.draw(exitButton);
+    for(int i=0; i<7; i++)
+    {
+        window.draw(playerHeaders[i]);
+    }
+    encounter.drawInitiative(window);
+    if(drawNewCreature) newCreature.draw(window);
+    if(drawInstructions) window.draw(instructions);
+    window.display();
 }

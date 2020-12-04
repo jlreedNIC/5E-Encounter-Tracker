@@ -26,6 +26,7 @@ class App
 
         void initiative();
         void editInitiative(sf::Event &event, bool &initClicked, sf::Vector2f &mouseClick, std::string &tempString);
+        void initiativeDraw();
 
     private:
         sf::RenderWindow window;
@@ -69,11 +70,15 @@ class App
         void editNewCreature(float x, float y);
         void editCreatureText(float x, float y);
 
+        void editNewInitCreature(float x, float y);
+        void editInitCreatureText(float x, float y);
+
         void loadSave();
         void newSave();
 
         void deleteEnemy();
         void deletePlayer();
+        void deleteInitCreature();
 
         DiceRoller dice;
 };

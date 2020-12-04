@@ -15,10 +15,12 @@ class Encounter
         // add to list/encounter
         void addPlayer(Creature player);
         void addEnemy(Creature enemy);
+        void addInitiative(Creature creature);
 
         // delete from list/encounter
         void deletePlayer(const sf::Vector2f &mouseClick);
         void deleteEnemy(const sf::Vector2f &mouseClick);
+        void deleteInitiative(const sf::Vector2f &mouseClick);
 
         void sort();
 
