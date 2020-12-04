@@ -85,8 +85,9 @@ class Initiative
 
         void drawInitiativeList(sf::RenderWindow &window);
 
-        string advanceTurn();
+        void advanceTurn();
         void resetStart();
+        void setRoundIndicatorPosition();
 
     private:
         Node* mHead;
@@ -100,6 +101,9 @@ class Initiative
         void drawNode(sf::RenderWindow &window, Node* &ptr);
 
         void drawInitNode(sf::RenderWindow &window, Node* &ptr);
+
+        sf::CircleShape roundIndicator;
+        
 
         sf::Text headers[6];
         sf::Text roundText;

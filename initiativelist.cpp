@@ -4,26 +4,15 @@
  * @brief Construct a new circularly linked list
  * 
  */
-Initiative::Initiative()
+Initiative::Initiative() : roundIndicator(15, 3)
 {
     mHead = nullptr;
     mStart = mHead;
     round = 0;
     size = 0;
 
-    for(int i=0; i<6; i++)
-    {
-        headers[i].setCharacterSize(20);
-        headers[i].setStyle(sf::Text::Bold);
-        headers[i].setFillColor(sf::Color::Black);
-    }
-
-    headers[0].setString("Name");
-    headers[1].setString("Initiative");
-    headers[2].setString("AC");
-    headers[3].setString("Health");
-    headers[4].setString("Temp HP");
-    headers[5].setString("Status/Notes");
+    roundIndicator.setFillColor(sf::Color::Black);
+    roundIndicator.rotate(90);
 
     roundText.setCharacterSize(20);
     roundText.setFillColor(sf::Color::Black);
@@ -618,6 +607,7 @@ void Initiative::setListFont(const sf::Font &font)
 void Initiative::setPosition(sf::Vector2f pos)
 {
     sf::Vector2f curPos = pos;
+    roundIndicator.setPosition(pos);
     
     Node* ptr = mHead;
     if(ptr != nullptr)
@@ -693,25 +683,34 @@ bool Initiative::isNodeClicked(const sf::Vector2f &mouseClick)
  * 
  * @return string 
  */
-string Initiative::advanceTurn()
-{
-    if(mHead == nullptr) return "";
-    else
-    {
-        ostringstream ostr;
+// string Initiative::advanceTurn()
+// {
+//     if(mHead == nullptr) return "";
+//     else
+//     {
+//         ostringstream ostr;
         
-        Node* ptr = mStart;
-        do
-        {
-            ostr << nodeToString(ptr);
-            ptr = ptr->next;
-        }while(ptr != mStart);
+//         Node* ptr = mStart;
+//         do
+//         {
+//             ostr << nodeToString(ptr);
+//             ptr = ptr->next;
+//         }while(ptr != mStart);
 
-        if(mStart == mHead) round++;
-        mStart = mStart->next;
+//         if(mStart == mHead) round++;
+//         mStart = mStart->next;
         
-        return ostr.str();
-    }
+//         return ostr.str();
+//     }
+// }
+
+void Initiative::advanceTurn()
+{
+    if(mHead == nullptr) return;
+
+    if(mStart == mHead) round++;
+    mStart = mStart->next;
+    setRoundIndicatorPosition();
 }
 
 /**
@@ -722,6 +721,7 @@ void Initiative::resetStart()
 {
     mStart = mHead;
     round = 0;
+    setRoundIndicatorPosition();
 }
 
 /**
@@ -905,6 +905,7 @@ void Initiative::drawInitiativeList(sf::RenderWindow &window)
     }
 
     window.draw(roundText);
+    window.draw(roundIndicator);
 }
 
 void Initiative::drawInitNode(sf::RenderWindow &window, Node* &ptr)
@@ -913,4 +914,12 @@ void Initiative::drawInitNode(sf::RenderWindow &window, Node* &ptr)
     {
         ptr->character.drawInit(window);
     }
+}
+
+void Initiative::setRoundIndicatorPosition()
+{
+    if(mStart == nullptr) return;
+    sf::Vector2f currentPos = mStart->character.nameText.getPosition();
+    // currentPos.x -= 20;
+    roundIndicator.setPosition(currentPos);
 }
