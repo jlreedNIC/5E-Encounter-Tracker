@@ -60,6 +60,7 @@ class Creature //: sf::Drawable
         bool isClicked(const sf::Vector2f &mouseClick);
 
         void draw(sf::RenderWindow &window);
+        void drawInit(sf::RenderWindow &window);
         // void draw(sf::RenderTarget& target, sf::RenderStates state) const
         // {
         //     target.draw(nameText);

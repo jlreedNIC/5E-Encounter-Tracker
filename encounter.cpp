@@ -346,7 +346,7 @@ void Encounter::drawEncounter(sf::RenderWindow &window)
 
 void Encounter::drawInitiative(sf::RenderWindow &window)
 {
-    initiativeList.drawList(window);
+    initiativeList.drawInitiativeList(window);
     window.draw(playerAdd);
     window.draw(playerDelete);
 }

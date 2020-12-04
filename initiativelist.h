@@ -83,6 +83,8 @@ class Initiative
         void drawList(sf::RenderWindow &window, sf::Vector2f pos);  // remove?
         void drawList(sf::RenderWindow &window);
 
+        void drawInitiativeList(sf::RenderWindow &window);
+
         string advanceTurn();
         void resetStart();
 
@@ -96,6 +98,8 @@ class Initiative
 
         void drawNode(sf::RenderWindow &window, sf::Vector2f pos, Node* &ptr); // remove?
         void drawNode(sf::RenderWindow &window, Node* &ptr);
+
+        void drawInitNode(sf::RenderWindow &window, Node* &ptr);
 
         sf::Text headers[6];
         sf::Text roundText;

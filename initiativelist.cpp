@@ -618,12 +618,6 @@ void Initiative::setListFont(const sf::Font &font)
 void Initiative::setPosition(sf::Vector2f pos)
 {
     sf::Vector2f curPos = pos;
-    headers[0].setPosition(pos.x, pos.y);
-    headers[1].setPosition(pos.x + 100, pos.y);
-    headers[2].setPosition(pos.x + 200, pos.y);
-    headers[3].setPosition(pos.x + 250, pos.y);
-    headers[4].setPosition(pos.x + 325, pos.y);
-    headers[5].setPosition(pos.x + 425, pos.y);
     
     Node* ptr = mHead;
     if(ptr != nullptr)
@@ -796,6 +790,7 @@ string Initiative::nodeToString(Node *ptr) const
     return ostr.str();
 }
 
+//obsolete
 /**
  * @brief Draws entire list to a window object by setting position of the nodes
  * 
@@ -814,6 +809,7 @@ void Initiative::drawList(sf::RenderWindow &window, sf::Vector2f pos)
     }while(ptr != mHead);
 }
 
+//obsolete
 /**
  * @brief Draws a specific node to a window object given a specific position
  * 
@@ -892,5 +888,29 @@ void Initiative::drawNode(sf::RenderWindow &window, Node* &ptr)
     if(ptr != nullptr)
     {
         ptr->character.draw(window);
+    }
+}
+
+void Initiative::drawInitiativeList(sf::RenderWindow &window)
+{
+    Node* ptr = mHead;
+
+    if(ptr != nullptr)
+    {
+        do
+        {
+            drawInitNode(window, ptr);
+            ptr = ptr->next;
+        }while(ptr != mHead);
+    }
+
+    window.draw(roundText);
+}
+
+void Initiative::drawInitNode(sf::RenderWindow &window, Node* &ptr)
+{
+    if(ptr != nullptr)
+    {
+        ptr->character.drawInit(window);
     }
 }

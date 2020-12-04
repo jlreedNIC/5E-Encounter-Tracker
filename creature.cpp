@@ -303,3 +303,13 @@ void Creature::draw(sf::RenderWindow &window)
     window.draw(statusText);
     window.draw(levelText);
 }
+
+void Creature::drawInit(sf::RenderWindow &window)
+{
+    window.draw(nameText);
+    window.draw(healthText);
+    window.draw(tempHealthText);
+    window.draw(initiativeText);
+    window.draw(armorClassText);
+    window.draw(statusText);
+}

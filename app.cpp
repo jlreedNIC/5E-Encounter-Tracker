@@ -707,7 +707,15 @@ void App::deletePlayer()
 void App::initiative()
 {
     encounter.startInitiative();
-    encounter.setInitiativePosition(sf::Vector2f(50, 80));
+    encounter.setInitiativePosition(sf::Vector2f(100, 80));
+
+    playerHeaders[0].setPosition(100, 45);
+    playerHeaders[1].setPosition(200, 45);
+    playerHeaders[2].setPosition(300, 45);
+    playerHeaders[3].setPosition(350, 45);
+    playerHeaders[4].setPosition(425, 45);
+    playerHeaders[5].setPosition(525, 45);
+
     bool initClicked = false;
     std::string tempString;
     sf::Vector2f mouseClick;
@@ -748,13 +756,13 @@ void App::initiative()
                 if(encounter.playerAddClicked(mouseClick))
                 {
                     // create new creature and add to player list
-                    newCreature.setPosition(50, 80);
-                    encounter.setInitiativePosition(sf::Vector2f(50, 115));
+                    newCreature.setPosition(100, 80);
+                    encounter.setInitiativePosition(sf::Vector2f(100, 115));
 
                     drawNewCreature = true;
-                    editNewInitCreature(50, 80);
+                    editNewInitCreature(100, 80);
                     encounter.addInitiative(newCreature);
-                    encounter.setInitiativePosition(sf::Vector2f(50, 80));
+                    encounter.setInitiativePosition(sf::Vector2f(100, 80));
                     drawNewCreature = false;
                 }
 
@@ -972,7 +980,7 @@ void App::initiativeDraw()
     window.clear(sf::Color::White);
     window.draw(exitButton);
     window.draw(sortButton);
-    for(int i=0; i<7; i++)
+    for(int i=0; i<6; i++)
     {
         window.draw(playerHeaders[i]);
     }
