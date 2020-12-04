@@ -230,21 +230,43 @@ void Initiative::append(const Initiative &copy)
 
 void Initiative::clear()
 {
+    // FIX: for one or two nodes only
     Node *ptr = mHead;
-    Node *prevPtr = ptr;
+    if(ptr == nullptr) return;
 
-    if(ptr != nullptr)
+    if(mHead->next != mHead)
     {
-        do
-        {
-            ptr = ptr->next;
-            deleteNode(prevPtr->character.name);
-            prevPtr = ptr;
-        }while(ptr != nullptr && ptr != mHead);
+        ptr->prev->next = nullptr;
+        ptr->next->prev = nullptr;
     }
-    ptr = prevPtr = mHead = nullptr;
-    round = 0;
+    while(ptr != nullptr)
+    {
+        mHead = mHead->next;
+        ptr->next = nullptr;
+        ptr->prev = nullptr;
+        if(mHead->next == nullptr) mHead = nullptr;
+        delete ptr;
+        ptr = mHead;
+    }
+    mHead = nullptr;
     mStart = nullptr;
+    size = 0;
+
+
+    // Node *prevPtr = ptr;
+
+    // if(ptr != nullptr)
+    // {
+    //     do
+    //     {
+    //         ptr = ptr->next;
+    //         deleteNode(prevPtr->character.name);
+    //         prevPtr = ptr;
+    //     }while(ptr != nullptr && ptr != mHead);
+    // }
+    // ptr = prevPtr = mHead = nullptr;
+    // round = 0;
+    // mStart = nullptr;
 }
 
 void Initiative::sort()
