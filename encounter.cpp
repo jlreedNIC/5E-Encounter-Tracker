@@ -56,26 +56,39 @@ void Encounter::addInitiative(Creature creature)
 
 void Encounter::deletePlayer(const sf::Vector2f &mouseClick)
 {
-    // delete from playerList
+    sf::Vector2f currentPos = playerList.getPosition();
     playerList.deleteNode(mouseClick);
+    playerList.setPosition(currentPos);
 }
 
 void Encounter::deleteEnemy(const sf::Vector2f &mouseClick)
 {
-    // delete from enemyList
+    sf::Vector2f currentPos = enemyList.getPosition();
     enemyList.deleteNode(mouseClick);
+    enemyList.setPosition(currentPos);
 }
 
 void Encounter::deleteInitiative(const sf::Vector2f &mouseClick)
 {
+    sf::Vector2f currentPos = initiativeList.getPosition();
     initiativeList.deleteNode(mouseClick);
+    initiativeList.setPosition(currentPos);
 }
 
 void Encounter::sort()
 {
+    sf::Vector2f currentPos = playerList.getPosition();
     playerList.sort();
+    playerList.setPosition(currentPos);
+
+    currentPos = enemyList.getPosition();
     enemyList.sort();
+    enemyList.setPosition(currentPos);
+
+    
+    currentPos = initiativeList.getPosition();
     initiativeList.sort();
+    initiativeList.setPosition(currentPos);
 }
 
 void Encounter::setPlayerPosition(const sf::Vector2f &pos)
