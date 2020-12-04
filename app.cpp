@@ -50,13 +50,16 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
     initiativeButton.setButtonPosition(300, 265);
 
     exitButton.createButton("back", buttonFont, buttonTexture);
-    exitButton.setButtonPosition(50, 700);
+    exitButton.setButtonPosition(50, 750);
 
     saveButton.createButton("save", buttonFont, buttonTexture);
-    saveButton.setButtonPosition(150, 700);
+    saveButton.setButtonPosition(250, 750);
 
     startInitiative.createButton("start initiative", buttonFont, buttonTexture);
-    startInitiative.setButtonPosition(250, 700);
+    startInitiative.setButtonPosition(350, 750);
+
+    sortButton.createButton("sort", buttonFont, buttonTexture);
+    sortButton.setButtonPosition(150, 750);
 
     // encounter save files
     std::fstream stream("encounter-saves", std::ios::in);
@@ -421,7 +424,11 @@ void App::encounterInput()
                 deleteEnemy();
             }
 
-            // update encounter
+            // sort lists
+            if(sortButton.isClicked(mouseClick))
+            {
+                encounter.sort();
+            }
 
             // run encounter
             if(startInitiative.isClicked(mouseClick))
@@ -538,6 +545,7 @@ void App::encounterDraw()
     window.draw(exitButton);
     window.draw(saveButton);
     window.draw(startInitiative);
+    window.draw(sortButton);
     if(drawInstructions) window.draw(instructions);
     window.display();
 }
@@ -725,6 +733,7 @@ void App::initiative()
                     return;
                 }
 
+                // edits the initiative node
                 if(encounter.initIsClicked(mouseClick))
                 {
                     initClicked = true;
@@ -750,13 +759,18 @@ void App::initiative()
                 }
 
                 // delete creature from initiative
-                // delete player
                 if(encounter.playerDeleteClicked(mouseClick))
                 {
                     std::cout << "player to be deleted\n";
                     instructions.setString("Click on the creature you want to delete.");
                     drawInstructions = true;
                     deleteInitCreature();
+                }
+
+                // sort lists
+                if(sortButton.isClicked(mouseClick))
+                {
+                    encounter.sort();
                 }
             }
 
@@ -957,6 +971,7 @@ void App::initiativeDraw()
 {
     window.clear(sf::Color::White);
     window.draw(exitButton);
+    window.draw(sortButton);
     for(int i=0; i<7; i++)
     {
         window.draw(playerHeaders[i]);

@@ -50,6 +50,7 @@ class App
         Button exitButton;
         Button saveButton;
         Button startInitiative;
+        Button sortButton;
         sf::Text headerText;
 
         // helper functions
