@@ -55,6 +55,8 @@ class Encounter
 
         // encounter actions
         void startInitiative();
+        void advanceInitiative();
+        void endInitiative();
         void calculateEncounterDifficulty();
         void drawEncounter(sf::RenderWindow &window);
         void drawInitiative(sf::RenderWindow &window);

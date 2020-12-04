@@ -233,7 +233,19 @@ void Encounter::startInitiative()
     initiativeList.append(playerList);
     initiativeList.append(enemyList);
 
-    initiativeList.setRoundIndicatorPosition();
+    initiativeList.setTurnIndicatorPosition();
+}
+
+void Encounter::advanceInitiative()
+{
+    initiativeList.advanceTurn();
+}
+
+void Encounter::endInitiative()
+{
+    initiativeList.clear();
+    initiativeList.resetStart();
+    initiativeList.setTurnIndicatorPosition();
 }
 
 void Encounter::calculateEncounterDifficulty()
