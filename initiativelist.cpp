@@ -4,15 +4,15 @@
  * @brief Construct a new circularly linked list
  * 
  */
-Initiative::Initiative() : roundIndicator(15, 3)
+Initiative::Initiative() : turnIndicator(15, 3)
 {
     mHead = nullptr;
     mStart = mHead;
-    round = 0;
+    round = 1;
     size = 0;
 
-    roundIndicator.setFillColor(sf::Color::Black);
-    roundIndicator.rotate(90);
+    turnIndicator.setFillColor(sf::Color::Black);
+    turnIndicator.rotate(90);
 
     roundText.setCharacterSize(20);
     roundText.setFillColor(sf::Color::Black);
@@ -33,14 +33,14 @@ Initiative::Initiative(const Initiative &copy)
     {
         mHead = nullptr;
         mStart = mHead;
-        round = 0;
+        round = 1;
         size = 0;
     }
     else
     {
         mHead = nullptr;
         mStart = mHead;
-        round = 0;
+        round = 1;
         size = 0;
 
         do
@@ -607,7 +607,7 @@ void Initiative::setListFont(const sf::Font &font)
 void Initiative::setPosition(sf::Vector2f pos)
 {
     sf::Vector2f curPos = pos;
-    roundIndicator.setPosition(pos);
+    turnIndicator.setPosition(pos);
     
     Node* ptr = mHead;
     if(ptr != nullptr)
@@ -708,9 +708,11 @@ void Initiative::advanceTurn()
 {
     if(mHead == nullptr) return;
 
-    if(mStart == mHead) round++;
+    
     mStart = mStart->next;
-    setRoundIndicatorPosition();
+    if(mStart == mHead) round++;
+    setTurnIndicatorPosition();
+    setRoundText();
 }
 
 /**
@@ -720,8 +722,8 @@ void Initiative::advanceTurn()
 void Initiative::resetStart()
 {
     mStart = mHead;
-    round = 0;
-    setRoundIndicatorPosition();
+    round = 1;
+    setTurnIndicatorPosition();
 }
 
 /**
@@ -905,7 +907,7 @@ void Initiative::drawInitiativeList(sf::RenderWindow &window)
     }
 
     window.draw(roundText);
-    window.draw(roundIndicator);
+    window.draw(turnIndicator);
 }
 
 void Initiative::drawInitNode(sf::RenderWindow &window, Node* &ptr)
@@ -916,10 +918,10 @@ void Initiative::drawInitNode(sf::RenderWindow &window, Node* &ptr)
     }
 }
 
-void Initiative::setRoundIndicatorPosition()
+void Initiative::setTurnIndicatorPosition()
 {
     if(mStart == nullptr) return;
     sf::Vector2f currentPos = mStart->character.nameText.getPosition();
     // currentPos.x -= 20;
-    roundIndicator.setPosition(currentPos);
+    turnIndicator.setPosition(currentPos);
 }
