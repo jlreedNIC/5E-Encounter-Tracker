@@ -341,6 +341,7 @@ void App::buildEncounter()
 
     while(window.isOpen())
     {
+        
         encounterInput();
         encounterUpdate();
         encounterDraw();
@@ -435,6 +436,15 @@ void App::encounterInput()
             {
                 // start initiative order/run encounter
                 initiative();
+
+                playerHeaders[0].setPosition(50, 45);
+                playerHeaders[1].setPosition(150, 45);
+                playerHeaders[2].setPosition(250, 45);
+                playerHeaders[3].setPosition(300, 45);
+                playerHeaders[4].setPosition(375, 45);
+                playerHeaders[5].setPosition(475, 45);
+                playerHeaders[6].setPosition(675, 45);
+                startInitiative.setString("start initiative");
             }
         }
     }
@@ -708,6 +718,7 @@ void App::initiative()
 {
     encounter.startInitiative();
     encounter.setInitiativePosition(sf::Vector2f(100, 80));
+    startInitiative.setString("Next Turn");
 
     playerHeaders[0].setPosition(100, 45);
     playerHeaders[1].setPosition(200, 45);
@@ -735,9 +746,12 @@ void App::initiative()
                 float posX = event.mouseButton.x;
                 float posY = event.mouseButton.y;
                 mouseClick = {posX, posY};
+
+                // do these if statements need to be in this loop??
+                // exit init
                 if(exitButton.isClicked(mouseClick))
                 {
-                    encounter.startInitiative();
+                    encounter.endInitiative();
                     return;
                 }
 
@@ -779,6 +793,12 @@ void App::initiative()
                 if(sortButton.isClicked(mouseClick))
                 {
                     encounter.sort();
+                }
+
+                // advance turn tracker
+                if(startInitiative.isClicked(mouseClick))
+                {
+                    encounter.advanceInitiative();
                 }
             }
 
@@ -980,6 +1000,7 @@ void App::initiativeDraw()
     window.clear(sf::Color::White);
     window.draw(exitButton);
     window.draw(sortButton);
+    window.draw(startInitiative);
     for(int i=0; i<6; i++)
     {
         window.draw(playerHeaders[i]);
