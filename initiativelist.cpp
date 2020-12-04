@@ -356,7 +356,11 @@ std::string Initiative::getString(sf::Vector2f &mouseClick)
 
 sf::Vector2f Initiative::getPosition() const
 {
-    return mHead->character.nameText.getPosition();
+    sf::Vector2f pos(0, 0);
+    
+    if(mHead != nullptr) pos = mHead->character.nameText.getPosition();
+
+    return pos;
 }
 
 /**
