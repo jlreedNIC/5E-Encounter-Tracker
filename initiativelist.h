@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iomanip>
 #include <iostream>
+#include <fstream>
 #include <SFML/Graphics.hpp>
 #include "creature.h"
 #include "diceroll.h"
@@ -35,10 +36,14 @@ class Initiative
         Initiative(const Initiative &copy);     // copy constructor
         ~Initiative();
 
+        void save(std::fstream &file, const std::string fileName);
+        void load(std::fstream &file);
+
         //list functions
         void addNodeInOrder(Creature character);    // add a creature to the initiative order
         void deleteNode(string name);               // delete a creature from the initiative order
         void deleteNode(const sf::Vector2f &mouseClick);
+        void deleteLast();
         void append(const Initiative &copy);        // copies the contents of one list into the main list
         void clear();
         void sort();
@@ -50,6 +55,7 @@ class Initiative
         std::string getLevel();
         std::string getString(sf::Vector2f &mouseClick);
         sf::Vector2f getPosition() const;
+        std::string getFirstName();
 
         // edit list by name search
         void editHealth(string name, int newHealth);

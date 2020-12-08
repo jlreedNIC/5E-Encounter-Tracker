@@ -100,6 +100,60 @@ Initiative::~Initiative()
     }
 }
 
+void Initiative::save(std::fstream &file, const std::string fileName)
+{
+    Node *ptr = mHead;
+
+    if(ptr == nullptr) return;
+
+    do
+    {
+        file << "-" << ptr->character.name << "," << ptr->character.health << ",";
+        file << ptr->character.maxHealth << "," << ptr->character.tempHealth << ",";
+        file << ptr->character.initiative << "," << ptr->character.armorClass << ",";
+        file << ptr->character.status << "," << ptr->character.level << "\n";
+        ptr = ptr->next;
+    }while(ptr != mHead);
+}
+
+void Initiative::load(std::fstream &file)
+{
+    char delim;
+    std::string name, status;
+    int health, maxHealth, tempHealth, initiative, armorClass, level;
+
+    while(!file.eof())
+    {
+        file.get(delim);
+        // if(delim != '-' && delim != '*')
+        // {
+        //     file.get(delim);
+        // }
+        if(delim == '*') 
+        {
+            getline(file, name);
+            break;
+        }
+        else
+        {
+            getline(file, name, ',');
+            // name = name.substr(1);
+            std::cout << name << " " << delim << "\n";
+            file >> health >> delim;
+            file >> maxHealth >> delim;
+            file >> tempHealth >> delim;
+            file >> initiative >> delim;
+            file >> armorClass >> delim;
+            getline(file, status, ',');
+            file >> level;
+            file.get(delim);
+
+            Creature newCreature(name, maxHealth, health, tempHealth, initiative, armorClass, status, level);
+            addNodeInOrder(newCreature);
+        }
+    }
+}
+
 /**
  * @brief Adds a new node to the list, sorted by initiative
  * 
@@ -193,6 +247,29 @@ void Initiative::deleteNode(const sf::Vector2f &mouseClick)
     ptr->prev = nullptr;
     if(mHead == ptr) mHead = mStart = nullptr;
     delete ptr;
+
+    size--;
+}
+
+void Initiative::deleteLast()
+{
+    Node *ptr = mHead;
+
+    if(ptr == nullptr) return;
+
+    ptr = mHead->prev;
+    ptr->prev->next = mHead;
+    ptr->next->prev = ptr->prev;
+
+    ptr->next = nullptr;
+    ptr->prev = nullptr;
+    if(ptr == mHead)
+    {
+        mHead = nullptr;
+        mStart = nullptr;
+    }
+    delete ptr;
+    ptr = nullptr;
 
     size--;
 }
@@ -350,6 +427,18 @@ sf::Vector2f Initiative::getPosition() const
     if(mHead != nullptr) pos = mHead->character.nameText.getPosition();
 
     return pos;
+}
+
+std::string Initiative::getFirstName()
+{
+    std::string value = "NA";
+
+    if(mHead != nullptr)
+    {
+        value = mHead->character.name;
+    }
+
+    return value;
 }
 
 /**
@@ -615,7 +704,7 @@ void Initiative::setPosition(sf::Vector2f pos)
         do
         {
             ptr->character.setPosition(pos);
-            pos.y += 35;
+            pos.y += 30;
             ptr = ptr->next;
         }while(ptr != mHead);
     }
