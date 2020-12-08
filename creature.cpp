@@ -79,6 +79,7 @@ void Creature::updateTextBoxes()
 void Creature::updateValues()
 {
     std::istringstream istr;
+    std::ostringstream ostr;
     std::string temp;
 
     name = nameText.getString();
@@ -86,35 +87,54 @@ void Creature::updateValues()
 
     temp = levelText.getString();
     // temp = "76hello";
-    std::cout << temp << "\n";
+    // std::cout << temp << "\n";
     istr.str(temp);
     istr >> level;
+    ostr << level;
+    istr.str(ostr.str());
+    istr >> level;
+    ostr.str("");
+    // std::cout << temp << istr.str() << " " << level << "\n";
 
     temp = initiativeText.getString();
-    // temp = "76hello";
     istr.str(temp);
-    std::cout << temp << " " << istr.str();
     istr >> initiative;
-    std::cout << istr.str() << " " << initiative << "\n";
+    ostr << initiative;
+    istr.str(ostr.str());
+    istr >> initiative;
+    ostr.str("");
 
     temp = tempHealthText.getString();
     istr.str(temp);
     istr >> tempHealth;
+    ostr << tempHealth;
+    istr.str(ostr.str());
+    istr >> tempHealth;
+    ostr.str("");
 
     temp = armorClassText.getString();
     istr.str(temp);
     istr >> armorClass;
+    ostr << armorClass;
+    istr.str(ostr.str());
+    istr >> armorClass;
+    ostr.str("");
 
     char delim;
     temp = healthText.getString();
     istr.str(temp);
     istr >> health >> delim >> maxHealth;
+    ostr << health << delim << maxHealth;
+    istr.str(ostr.str());
+    istr >> health >> delim >> maxHealth;
+    std::cout << temp << " " << istr.str() << " " << ostr.str() << " " << health << delim << maxHealth << "\n";
+    ostr.str("");
 }
 
 void Creature::setPosition(sf::Vector2f pos)
 {
     nameText.setTextBoxPosition(pos);
-    initiativeText.setTextBoxPosition(pos.x + 100, pos.y);
+    initiativeText.setTextBoxPosition(pos.x + 150, pos.y);
 
     // initiativeText.setTextBoxPosition(pos);
     // nameText.setTextBoxPosition(pos.x + 100, pos.y);
@@ -186,11 +206,20 @@ void Creature::clearTexture()
 std::string Creature::getString(const sf::Vector2f &mouseClick)
 {
     std::string value;
+    std::istringstream istr;
+    std::ostringstream ostr;
+    int number;
 
     if(nameText.isClicked(mouseClick))
         value = nameText.getString();
     else if(healthText.isClicked(mouseClick))
+    {
         value = healthText.getString();
+        istr.str(value);
+        istr >> number;
+        ostr << number;
+        value = ostr.str();
+    }
     else if(tempHealthText.isClicked(mouseClick))
         value = tempHealthText.getString();
     else if(initiativeText.isClicked(mouseClick))
