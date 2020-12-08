@@ -5,7 +5,6 @@ Encounter::Encounter() : playerList(), enemyList(), initiativeList()
     for(int i=0; i<4; i++)
         playerXpThreshhold[i] = 0;
     enemyXpThreshhold = 0;
-    encounterDifficulty = Difficulty::Easy;
     difficulty = "easy";
     totalEnemyXP = 0;
 
@@ -32,6 +31,46 @@ Encounter::Encounter() : playerList(), enemyList(), initiativeList()
 Encounter::~Encounter()
 {
 
+}
+
+// saves the encounter and returns the filename it is saved under
+std::string Encounter::save(long unsigned int size)
+{
+    std::ostringstream ostr;
+    std::fstream file;
+
+    ostr << "Encounter" << size + 1 << "-" << playerList.getFirstName() << "-" << enemyList.getFirstName() << "-" << totalEnemyXP << ".csv";
+
+    file.open(ostr.str(), std::ios::out);
+    playerList.save(file);
+    file << "*\n";
+    enemyList.save(file);
+    file.close();
+    return ostr.str();
+}
+
+void Encounter::load(const std::string &fileName)
+{
+    playerList.clear();
+    enemyList.clear();
+    initiativeList.clear();
+
+    std::fstream file;
+    file.open(fileName, std::ios::in);
+
+    if(!file)
+    {
+        std::cerr << "Error opening file.\n";
+    }
+
+    playerList.load(file);
+    enemyList.load(file);
+
+    file.close();
+    enemyList.deleteLast();
+
+    std::cout << playerList.listToString() << "\n";
+    std::cout << enemyList.listToString() << "\n";
 }
 
 void Encounter::addPlayer(Creature player)

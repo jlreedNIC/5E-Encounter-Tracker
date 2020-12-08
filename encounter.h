@@ -12,6 +12,9 @@ class Encounter
         Encounter();
         ~Encounter();
 
+        std::string save(long unsigned int size);
+        void load(const std::string &fileName);
+
         // add to list/encounter
         void addPlayer(Creature player);
         void addEnemy(Creature enemy);
@@ -74,7 +77,6 @@ class Encounter
 
         int playerXpThreshhold[4];
         float enemyXpThreshhold;
-        int encounterDifficulty;
 
         string difficulty;
         sf::Text difficultyText;
