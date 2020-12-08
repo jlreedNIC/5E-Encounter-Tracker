@@ -15,7 +15,7 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
                            sf::Text("AC", buttonFont, 20), sf::Text("Health", buttonFont, 20),
                            sf::Text("Temp HP", buttonFont, 20),sf::Text("Status/Notes", buttonFont, 20),
                            sf::Text("Level", buttonFont, 20)},
-             enemyHeaders{sf::Text("Name", buttonFont, 20), sf::Text("Initiative", buttonFont, 20),
+             enemyHeaders{sf::Text("Name", buttonFont, 20), sf::Text("Init.", buttonFont, 20),
                           sf::Text("AC", buttonFont, 20), sf::Text("Health", buttonFont, 20),
                           sf::Text("Temp HP", buttonFont, 20), sf::Text("Status/Notes", buttonFont, 20),
                           sf::Text("XP", buttonFont, 20)},
@@ -68,9 +68,6 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
         // no file created
         stream.open("encounter-saves", std::ios::out);
         stream.close();
-
-        for(int i=0; i<3; i++)
-            saves[i].setString("New File");
     }
     else
     {
@@ -78,20 +75,11 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
         while(!stream.eof())
         {
             std::string temp;
-            for(int i=0; i<3; i++)
-            {
-                getline(stream, temp);
-                saves[i].setString(temp);
-            }
+            getline(stream, temp);
+            saves.push_back(temp);
         }
         stream.close();
-    }
-
-    for(int i=0; i<3; i++)
-    {
-        saves[i].setFont(buttonFont);
-        saves[i].setCharacterSize(20);
-        saves[i].setFillColor(sf::Color::Black);
+        saves.pop_back();
     }
 
     encounter.setFont(buttonFont);
@@ -131,7 +119,7 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
         encounterTitles[i].setPosition(30, 10 + (i*300));
     }
     playerHeaders[0].setPosition(50, 45);
-    playerHeaders[1].setPosition(150, 45);
+    playerHeaders[1].setPosition(200, 45);
     playerHeaders[2].setPosition(250, 45);
     playerHeaders[3].setPosition(300, 45);
     playerHeaders[4].setPosition(375, 45);
@@ -139,7 +127,7 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
     playerHeaders[6].setPosition(675, 45);
 
     enemyHeaders[0].setPosition(50, 345);
-    enemyHeaders[1].setPosition(150, 345);
+    enemyHeaders[1].setPosition(200, 345);
     enemyHeaders[2].setPosition(250, 345);
     enemyHeaders[3].setPosition(300, 345);
     enemyHeaders[4].setPosition(375, 345);
@@ -236,6 +224,7 @@ void App::mainMenuDraw()
 
 void App::loadSave()
 {
+    long unsigned int i;
     sf::Text instructions;
     instructions.setString("Click on the save file you want to load.\n(to be implemented)");
     instructions.setFont(buttonFont);
@@ -243,10 +232,23 @@ void App::loadSave()
     instructions.setCharacterSize(20);
     instructions.setPosition(120, 200);
 
-    for(int i=0; i<3; i++)
+    int size = saves.size();
+    std::vector<TextBox> savesText;
+    for(int j = 0; j < size; j++)
     {
-        saves[i].setPosition(120, 240 + ((i+1)*25));
+        TextBox temp;
+        temp.setString(saves[j]);
+        savesText.push_back(temp);
     }
+
+    for(i=0; i < saves.size(); i++)
+    {
+        savesText[i].setTextBoxPosition(120, 240 + ((i+1)*35));
+        savesText[i].setFont(buttonFont);
+        savesText[i].setTextBoxSize(sf::Vector2f(100, 30));
+    }
+
+    std::string fileName;
 
     while(appIsOpen())
     {
@@ -259,9 +261,25 @@ void App::loadSave()
             }
             else if(event.type == sf::Event::MouseButtonPressed)
             {
+                sf::Vector2f mouseClick(event.mouseButton.x, event.mouseButton.y);
+                std::cout << "mouse x: " << mouseClick.x << " " << event.mouseButton.x << "\n";
+                std::cout << "mouse y: " << mouseClick.y << " " << event.mouseButton.y << "\n";
+                // exit
                 if(exitButton.isClicked(event.mouseButton.x, event.mouseButton.y))
                 {
                     return;
+                }
+                
+                // load file
+                for(i=0; i < saves.size(); i++)
+                {
+                    if(savesText[i].isClicked(mouseClick)) 
+                    {
+                        fileName = saves[i];
+                        std::cout << "save clicked\n";
+                        encounter.load(fileName);
+                        return;
+                    }
                 }
             }
         }
@@ -270,67 +288,47 @@ void App::loadSave()
         window.clear(sf::Color::White);
         window.draw(headerText);
         window.draw(instructions);
-        for(int i=0; i<3; i++)
-            window.draw(saves[i]);
+        for(i=0; i < saves.size(); i++)
+            window.draw(savesText[i]);
         window.draw(exitButton);
-        window.draw(exitButton.getText());
         window.display();
     }
 }
 
 void App::newSave()
 {
-    sf::Text instructions;
-    instructions.setString("Click on where you want to save to.\n(to be implemented)");
+    std::string saveFile;
+    long unsigned int size = saves.size();
+    saveFile = encounter.save(size);
+    saves.push_back(saveFile);
+
+    std::fstream file;
+    file.open("encounter-saves", std::ios::out);
+    for(long unsigned int i = 0; i < saves.size(); i++)
+    {
+        std::string temp = saves[i];
+        file << temp << "\n";
+    }
+    file.close();
+
+    instructions.setString("Encounter saved");
     instructions.setFont(buttonFont);
-    instructions.setFillColor(sf::Color::Black);
-    instructions.setCharacterSize(20);
-    instructions.setPosition(120, 200);
-
-    for(int i=0; i<3; i++)
-    {
-        saves[i].setPosition(120, 240 + ((i+1)*25));
-    }
-
-    while(appIsOpen())
-    {
-        sf::Event event;
-        while(window.pollEvent(event))
-        {
-            if(event.type == sf::Event::Closed)
-            {
-                window.close();
-            }
-            else if(event.type == sf::Event::MouseButtonPressed)
-            {
-                if(exitButton.isClicked(event.mouseButton.x, event.mouseButton.y))
-                {
-                    return;
-                }
-            }
-        }
-
-        // draw
-        window.clear(sf::Color::White);
-        window.draw(headerText);
-        window.draw(instructions);
-        for(int i=0; i<3; i++)
-            window.draw(saves[i]);
-        window.draw(exitButton);
-        window.draw(exitButton.getText());
-        window.display();
-    }
+    // instructions.setFillColor(sf::Color::Black);
+    // instructions.setCharacterSize(20);
+    instructions.setTextBoxPosition(120, 200);
+    drawInstructions = true;
 }
 
 void App::buildEncounter()
 {
     // creature(string name, maxhealth, health, temphealth, initiative, armorclass, string status, level/cr);
-    encounter.addPlayer(Creature("Rihala", 33, 33, 24, dice.rollDice(20), 11, "bear form", 4));
-    encounter.addPlayer(Creature("Garth", 47, 47, 0, dice.rollDice(20), 14, "raging", 4));
-    encounter.addPlayer(Creature("Gravane", 37, 5, 0, dice.rollDice(20), 18, "bleeding out", 4));
-    encounter.addPlayer(Creature("Robinton", 30, 30, 0, dice.rollDice(20), 13, "NA", 4));
-    encounter.addEnemy(Creature("Spectator", 39, 39, 0, dice.rollDice(20, 2), 14, "NA", 700));
-    encounter.addEnemy(Creature("Bugbear", 27, 27, 0, dice.rollDice(20), 16, "NA", 200));
+    // encounter.addPlayer(Creature("Rihala", 33, 33, 34, dice.rollDice(20), 11, "NA", 4));
+    // encounter.addPlayer(Creature("Garth", 47, 47, 0, dice.rollDice(20), 13, "NA", 4));
+    // encounter.addPlayer(Creature("Gravane", 50, 50, 0, dice.rollDice(20), 18, "NA", 4));
+    // encounter.addPlayer(Creature("Robinton", 31, 31, 0, dice.rollDice(20), 14, "NA", 4));
+    // encounter.addPlayer(Creature("Rose", 28, 28, 0, dice.rollDice(20, 2), 14, "NA", 4));
+    // encounter.addPlayer(Creature("Chaos", 27, 27, 0, dice.rollDice(20), 12, "NA", 4));
+    // encounter.addPlayer(Creature("Grey Bush", 27, 27, 0, dice.rollDice(20), 18, "NA", 4));
     encounter.setPlayerPosition(sf::Vector2f(50, 80));
     encounter.setEnemyPosition(sf::Vector2f(50, 380));
     encounter.setFont(buttonFont);
@@ -350,6 +348,15 @@ void App::buildEncounter()
 
 void App::encounterInput()
 {
+    playerHeaders[0].setPosition(50, 45);
+    playerHeaders[1].setPosition(200, 45);
+    playerHeaders[2].setPosition(250, 45);
+    playerHeaders[3].setPosition(300, 45);
+    playerHeaders[4].setPosition(375, 45);
+    playerHeaders[5].setPosition(475, 45);
+    playerHeaders[6].setPosition(675, 45);
+    startInitiative.setString("start initiative");
+
     sf::Event event;
     while(window.pollEvent(event))
     {
@@ -362,6 +369,7 @@ void App::encounterInput()
             float posX = event.mouseButton.x;
             float posY = event.mouseButton.y;
             sf::Vector2f mouseClick = {posX, posY};
+            drawInstructions = false;
 
             // exit to main menu
             if(exitButton.isClicked(mouseClick))
@@ -369,6 +377,13 @@ void App::encounterInput()
                 // FIX: this to return to main screen
                 mainMenu();
                 return;
+            }
+
+            // save encounter
+            if(saveButton.isClicked(mouseClick))
+            {
+                std::cout << "saved\n";
+                newSave();
             }
 
             // edit encounter
@@ -438,7 +453,7 @@ void App::encounterInput()
                 initiative();
 
                 playerHeaders[0].setPosition(50, 45);
-                playerHeaders[1].setPosition(150, 45);
+                playerHeaders[1].setPosition(200, 45);
                 playerHeaders[2].setPosition(250, 45);
                 playerHeaders[3].setPosition(300, 45);
                 playerHeaders[4].setPosition(375, 45);
@@ -534,7 +549,15 @@ void App::encounterUpdate()
 
 void App::encounterDraw()
 {
+    sf::Text *header = new sf::Text;
+    header->setString("Encounter");
+    header->setFont(headerFont);
+    header->setCharacterSize(40);
+    header->setPosition(625, 2);
+    header->setFillColor(sf::Color::Black);
+
     window.clear(sf::Color::White);
+    window.draw(*header);
     for(int i=0; i<3; i++)
     {
         window.draw(encounterTitles[i]);
@@ -558,12 +581,13 @@ void App::encounterDraw()
     window.draw(sortButton);
     if(drawInstructions) window.draw(instructions);
     window.display();
+    delete header;
 }
 
 void App::editNewCreature(float x, float y)
 {
     editCreatureText(x, y);
-    editCreatureText(x+100, y);
+    editCreatureText(x+150, y);
     editCreatureText(x+200, y);
     editCreatureText(x+250, y);
     editCreatureText(x+325, y);
@@ -721,7 +745,7 @@ void App::initiative()
     startInitiative.setString("Next Turn");
 
     playerHeaders[0].setPosition(100, 45);
-    playerHeaders[1].setPosition(200, 45);
+    playerHeaders[1].setPosition(250, 45);
     playerHeaders[2].setPosition(300, 45);
     playerHeaders[3].setPosition(350, 45);
     playerHeaders[4].setPosition(425, 45);
@@ -997,7 +1021,15 @@ void App::deleteInitCreature()
 
 void App::initiativeDraw()
 {
+    sf::Text *header = new sf::Text;
+    header->setString("Initiative");
+    header->setFont(headerFont);
+    header->setCharacterSize(40);
+    header->setPosition(650, 2);
+    header->setFillColor(sf::Color::Black);
+
     window.clear(sf::Color::White);
+    window.draw(*header);
     window.draw(exitButton);
     window.draw(sortButton);
     window.draw(startInitiative);
@@ -1009,4 +1041,6 @@ void App::initiativeDraw()
     if(drawNewCreature) newCreature.draw(window);
     if(drawInstructions) window.draw(instructions);
     window.display();
+
+    delete header;
 }

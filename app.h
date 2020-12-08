@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <vector>
 #include "button.h"
 #include "textbox.h"
 #include "initiativelist.h"
@@ -32,7 +33,8 @@ class App
         sf::RenderWindow window;
         Encounter encounter;
 
-        sf::Text saves[3];  // change to vector of textboxes
+        std::vector<std::string> saves;
+        // sf::Text saves[3];  // change to vector of textboxes
 
         sf::Font headerFont;
         sf::Font buttonFont;
