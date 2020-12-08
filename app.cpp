@@ -62,11 +62,11 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
     sortButton.setButtonPosition(150, 750);
 
     // encounter save files
-    std::fstream stream("encounter-saves", std::ios::in);
+    std::fstream stream("Saves/encounter-saves", std::ios::in);
     if(!stream)
     {
         // no file created
-        stream.open("encounter-saves", std::ios::out);
+        stream.open("Saves/encounter-saves", std::ios::out);
         stream.close();
     }
     else
@@ -303,7 +303,7 @@ void App::newSave()
     saves.push_back(saveFile);
 
     std::fstream file;
-    file.open("encounter-saves", std::ios::out);
+    file.open("Saves/encounter-saves", std::ios::out);
     for(long unsigned int i = 0; i < saves.size(); i++)
     {
         std::string temp = saves[i];
@@ -654,7 +654,8 @@ void App::editCreatureText(float x, float y)
                 }
 
                 // if enter pressed
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) || 
+                   sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
                 {
                     tempString = tempString.substr(0, size-2);
                     newCreature.edit(pos, tempString);
