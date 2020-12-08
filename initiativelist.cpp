@@ -170,14 +170,14 @@ void Initiative::addNodeInOrder(Creature character)
     {
         do
         {
-            if(character.initiative >= ptr->character.initiative) found = true;
+            if(character.initiative > ptr->character.initiative) found = true;
             else ptr = ptr->next;
         }while(ptr != mHead && !found);
 
         Node* nodePtr = new Node(character, ptr->prev, ptr);
         ptr->prev->next = nodePtr;
         ptr->prev = nodePtr;
-        if(ptr == mHead && mHead->prev->character.initiative >= mHead->character.initiative) mHead = mStart = ptr->prev;
+        if(ptr == mHead && mHead->prev->character.initiative > mHead->character.initiative) mHead = mStart = ptr->prev;
         nodePtr->character.updateTextBoxes();
     }
     
