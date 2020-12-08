@@ -36,7 +36,7 @@ class Initiative
         Initiative(const Initiative &copy);     // copy constructor
         ~Initiative();
 
-        void save(std::fstream &file, const std::string fileName);
+        void save(std::fstream &file);
         void load(std::fstream &file);
 
         //list functions

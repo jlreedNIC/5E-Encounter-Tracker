@@ -100,7 +100,7 @@ Initiative::~Initiative()
     }
 }
 
-void Initiative::save(std::fstream &file, const std::string fileName)
+void Initiative::save(std::fstream &file)
 {
     Node *ptr = mHead;
 
@@ -125,10 +125,6 @@ void Initiative::load(std::fstream &file)
     while(!file.eof())
     {
         file.get(delim);
-        // if(delim != '-' && delim != '*')
-        // {
-        //     file.get(delim);
-        // }
         if(delim == '*') 
         {
             getline(file, name);
@@ -137,7 +133,6 @@ void Initiative::load(std::fstream &file)
         else
         {
             getline(file, name, ',');
-            // name = name.substr(1);
             std::cout << name << " " << delim << "\n";
             file >> health >> delim;
             file >> maxHealth >> delim;
