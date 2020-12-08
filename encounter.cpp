@@ -39,9 +39,9 @@ std::string Encounter::save(long unsigned int size)
     std::ostringstream ostr;
     std::fstream file;
 
-    ostr << "Encounter" << size + 1 << "-" << playerList.getFirstName() << "-" << enemyList.getFirstName() << "-" << totalEnemyXP << ".csv";
+    ostr << "Encounter" << size + 1 << "-" << playerList.getFirstName() << "-" << enemyList.getFirstName() << "-" << totalEnemyXP;
 
-    file.open(ostr.str(), std::ios::out);
+    file.open("Saves/" + ostr.str() + ".csv", std::ios::out);
     playerList.save(file);
     file << "*\n";
     enemyList.save(file);
@@ -49,6 +49,7 @@ std::string Encounter::save(long unsigned int size)
     return ostr.str();
 }
 
+// FIX: issue with load file
 void Encounter::load(const std::string &fileName)
 {
     playerList.clear();
@@ -56,11 +57,12 @@ void Encounter::load(const std::string &fileName)
     initiativeList.clear();
 
     std::fstream file;
-    file.open(fileName, std::ios::in);
+    file.open("Saves/" + fileName + ".csv", std::ios::in);
 
     if(!file)
     {
         std::cerr << "Error opening file.\n";
+        exit(0); // FIX: change to exception handling try/catch block
     }
 
     playerList.load(file);
