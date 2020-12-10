@@ -2,13 +2,14 @@
  * @file button.cpp
  * @author Jordan Reed
  * @brief Program to track encounters for D&D 5E
- * @date 2020-11-04
+ * @date 2020-12-10
  * 
  */
+
 #include "button.h"
 
 /**
- * @brief Default constructor for a button object. Initializes an empty button. Calls a constructor to RectangleShape
+ * @brief Default constructor for a button object. Initializes an empty button. Calls a constructor to RectangleShape and Text
  *        Sets an empty string, character size color and style of string. Sets the default button size and text position
  *        to the middle.
  * 
@@ -26,10 +27,13 @@ Button::Button() : text(), rectangle()
 }
 
 /**
- * @brief Constructs a new button object using a string for the text. Calls a constructor to RectangleShape
+ * @brief Constructs a new button object using a string for the text, and a font for the text. 
+ *        Calls a constructor to RectangleShape and Text
  * 
  * @param buttonString String to initialize button text with
+ * @param font Font to initialize the text with
  */
+ // FIX: do I need to change to not a reference??
 Button::Button(const std::string &buttonString, const sf::Font &font) : text(), rectangle()
 {
     this->buttonString = buttonString;
@@ -48,7 +52,7 @@ Button::Button(const std::string &buttonString, const sf::Font &font) : text(), 
  * 
  * @param buttonString String to use in the button text
  * @param font Font to apply to button text
- * @param texture Texture to apply to button
+ * @param texture Texture to apply to rectangle object
  */
 Button::Button(const std::string &buttonString, const sf::Font &font, const sf::Texture &texture) : text(), rectangle()
 {
@@ -138,6 +142,11 @@ void Button::setFont(const sf::Font &font)
     text.setFont(font);
 }
 
+/**
+ * @brief Sets the texture for the rectangle object to use
+ * 
+ * @param texture Texture to apply to the button rectangle
+ */
 void Button::setTexture(const sf::Texture &texture)
 {
     rectangle.setTexture(&texture);
@@ -147,15 +156,20 @@ void Button::setTexture(const sf::Texture &texture)
  * @brief Sets the size of the button relative to the string, so the button is bigger than the Text.
  * 
  */
+ // FIX: potential issue here. size not working 
 void Button::setButtonSize()
 {
     sf::FloatRect textBound = text.getGlobalBounds();
-    sf::Vector2f textSize = {textBound.width + 10, textBound.height};
+    sf::Vector2f textSize = {textBound.width, textBound.height};
     textSize.x = std::max(textBound.width + 20, 0.f);
-    textSize.y = std::max(textBound.height + 30, 0.f);
+    textSize.y = std::max(textBound.height + 20, 0.f);
     rectangle.setSize(textSize);
 }
 
+/**
+ * @brief Clears the texture from the rectangle object
+ * 
+ */
 void Button::clearTexture()
 {
     rectangle.setTexture(nullptr);
@@ -188,11 +202,12 @@ void Button::setButtonPosition(const sf::Vector2f &position)
  * @brief Sets the position of the text relative to the button. Will be in the middle of the button
  * 
  */
+ // FIX: position not in middle of button. rough approximation
 void Button::setTextPositionMiddle()
 {
     sf::Vector2f rectanglePos = rectangle.getPosition();
-    rectanglePos.x += 10;
-    rectanglePos.y += 10;
+    rectanglePos.x += 5;
+    rectanglePos.y += 5;
     text.setPosition(rectanglePos);
 }
 
@@ -228,9 +243,9 @@ void Button::setButtonSize(const sf::Vector2f &size)
  * 
  * @return std::string A copy of the string for the button
  */
+ // FIX: underlying issue of buttonString being empty
 std::string Button::getString()
 {
-    // need to fix underlying issue
     buttonString = text.getString();
     return buttonString;
 }
@@ -245,6 +260,11 @@ sf::Text& Button::getText()
     return text;
 }
 
+/**
+ * @brief Returns the position of the rectangle object
+ * 
+ * @return sf::Vector2f Position of the rectangle in vector format
+ */
 sf::Vector2f Button::getPosition() const
 {
     return rectangle.getPosition();
@@ -294,6 +314,12 @@ bool Button::isClicked(const sf::Vector2f &point)
     return buttonBound.contains(point);
 }
 
+/**
+ * @brief Draws both the text object and rectangle object to the target
+ * 
+ * @param target Target that the object is being drawn too
+ * @param state 
+ */
 void Button::draw(sf::RenderTarget& target, sf::RenderStates state) const
 {
     target.draw(rectangle, state);
