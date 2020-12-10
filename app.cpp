@@ -184,6 +184,11 @@ void App::mainMenuInput()
         {
             window.close();
         }
+        if(event.type == sf::Event::Resized)
+        {
+            sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+            window.setView(sf::View(visibleArea));
+        }
         if(event.type == sf::Event::MouseButtonPressed)
         {
             if(newEncounter.isClicked(event.mouseButton.x, event.mouseButton.y))
@@ -259,6 +264,11 @@ void App::loadSave()
             if(event.type == sf::Event::Closed)
             {
                 window.close();
+            }
+            else if(event.type == sf::Event::Resized)
+            {
+                sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+                window.setView(sf::View(visibleArea));
             }
             else if(event.type == sf::Event::MouseButtonPressed)
             {
@@ -368,7 +378,12 @@ bool App::encounterInput()
         {
             window.close();
         }
-         if(event.type == sf::Event::MouseButtonPressed)
+        if(event.type == sf::Event::Resized)
+        {
+            sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+            window.setView(sf::View(visibleArea));
+        }
+        if(event.type == sf::Event::MouseButtonPressed)
         {
             float posX = event.mouseButton.x;
             float posY = event.mouseButton.y;
@@ -772,6 +787,12 @@ void App::initiative()
                 window.close();
             }
 
+            if(event.type == sf::Event::Resized)
+            {
+                sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+                window.setView(sf::View(visibleArea));
+            }
+
             if(event.type == sf::Event::MouseButtonPressed)
             {
                 float posX = event.mouseButton.x;
@@ -938,6 +959,12 @@ void App::editInitCreatureText(float x, float y)
                 window.close();
             }
 
+            if(event.type == sf::Event::Resized)
+            {
+                sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+                window.setView(sf::View(visibleArea));
+            }
+
             if(event.type == sf::Event::MouseButtonPressed)
             {
                 float posX = event.mouseButton.x;
@@ -1006,6 +1033,12 @@ void App::deleteInitCreature()
             if(event.type == sf::Event::Closed)
             {
                 window.close();
+            }
+
+            if(event.type == sf::Event::Resized)
+            {
+                sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+                window.setView(sf::View(visibleArea));
             }
             
             if(event.type == sf::Event::MouseButtonPressed)
