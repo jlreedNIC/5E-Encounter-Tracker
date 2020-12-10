@@ -1,5 +1,5 @@
 /**
- * @file button.cpp
+ * @file textbox.cpp
  * @author Jordan Reed
  * @brief Program to track encounters for D&D 5E
  * @date 2020-12-10

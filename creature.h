@@ -1,3 +1,11 @@
+/**
+ * @file creature.h
+ * @author Jordan Reed
+ * @brief Program to track encounters for D&D 5E
+ * @date 2020-12-10
+ * 
+ */
+
 #ifndef CREATURE_H
 #define CREATURE_H
 
@@ -9,9 +17,11 @@
 // using std::string;
 // using std::ostringstream;
 
-class Creature //: sf::Drawable
+class Creature
 {
     public:
+        // base values of the creature
+
         std::string name;
         TextBox nameText;
 
@@ -22,6 +32,7 @@ class Creature //: sf::Drawable
         int tempHealth;
         TextBox tempHealthText;
 
+        // change to float
         int initiative;
         TextBox initiativeText;
 
@@ -34,53 +45,34 @@ class Creature //: sf::Drawable
         int level;
         TextBox levelText;
 
+        // constructor
         Creature(std::string name="BOB", int maxHealth=0, 
                  int health=0, int tempHealth=0, int initiative=0, 
                  int armorClass=0, std::string status="NA", int level=1);
 
-        void updateTextBoxes();
-        void updateValues();
+        void updateTextBoxes();     // update the string value of the textboxes to the corresponding variable
+        void updateValues();        // update the different variables from the corresponding textbox
 
         // setters
-        void setPosition(sf::Vector2f pos);
-        void setPosition(float x, float y);
-        void setTexture(const sf::Texture &texture);
-        void setFont(const sf::Font &font);
+        void setPosition(sf::Vector2f pos);             // sets the position of the creature textboxes
+        void setPosition(float x, float y);             // sets the position of the creature textboxes
+        void setTexture(const sf::Texture &texture);    // sets the texture for the textboxes
+        void setFont(const sf::Font &font);             // sets the font for the textboxes
 
-        void clearTexture();
+        void clearTexture();                            // clears the texture from the textboxes
 
-        TextBox& getTextBox(const float &x, const float &y);
-        std::string getString(const sf::Vector2f &mouseClick);
-        int getLevel();
+        // getters
+        std::string getString(const sf::Vector2f &mouseClick);  // gets the string value of the text box at a certain position
+        int getLevel();                                         // gets the level of the creature
         
-        void edit(const float &x, const float &y, const std::string &tempValue);
-        void edit(const sf::Vector2f &mouseClick, const std::string &tempValue);
+        void edit(const float &x, const float &y, const std::string &tempValue); // edits the string value at a certain position
+        void edit(const sf::Vector2f &mouseClick, const std::string &tempValue); // edits the string value at a certain position
 
-        bool isClicked(const float &x, const float &y);
-        bool isClicked(const sf::Vector2f &mouseClick);
+        bool isClicked(const float &x, const float &y);     // checks to see if any text box in the creature object was clicked
+        bool isClicked(const sf::Vector2f &mouseClick);     // checks to see if any text box in the creature object was clicked
 
-        void draw(sf::RenderWindow &window);
-        void drawInit(sf::RenderWindow &window);
-        // void draw(sf::RenderTarget& target, sf::RenderStates state) const
-        // {
-        //     target.draw(nameText);
-        //     // target.draw(nameText.getText());
-
-        //     target.draw(healthText);
-        //     // target.draw(healthText.getText());
-
-        //     target.draw(tempHealthText);
-        //     // target.draw(tempHealthText.getText());
-
-        //     target.draw(initiativeText);
-        //     // target.draw(initiativeText.getText());
-
-        //     target.draw(armorClassText);
-        //     // target.draw(armorClassText.getText());
-
-        //     target.draw(statusText);
-        //     // target.draw(statusText.getText());
-        // }
+        void draw(sf::RenderWindow &window);        // draws the creature object to the render window
+        void drawInit(sf::RenderWindow &window);    // draws only the textboxes needed for the initiative screen
     private:
 };
 
