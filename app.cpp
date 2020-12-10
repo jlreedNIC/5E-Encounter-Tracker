@@ -196,6 +196,7 @@ void App::mainMenuInput()
             {
                 std::cout << "Load Encounter\n";
                 loadSave();
+                buildEncounter();
             }
             if(initiativeButton.isClicked(event.mouseButton.x, event.mouseButton.y))
             {
@@ -339,14 +340,15 @@ void App::buildEncounter()
 
     while(window.isOpen())
     {
-        
-        encounterInput();
+        bool exitClicked = encounterInput();
         encounterUpdate();
         encounterDraw();
+
+        if(exitClicked) return;
     }
 }
 
-void App::encounterInput()
+bool App::encounterInput()
 {
     playerHeaders[0].setPosition(50, 45);
     playerHeaders[1].setPosition(200, 45);
@@ -356,6 +358,8 @@ void App::encounterInput()
     playerHeaders[5].setPosition(475, 45);
     playerHeaders[6].setPosition(675, 45);
     startInitiative.setString("start initiative");
+
+    bool exitClicked = false;
 
     sf::Event event;
     while(window.pollEvent(event))
@@ -375,8 +379,7 @@ void App::encounterInput()
             if(exitButton.isClicked(mouseClick))
             {
                 // FIX: this to return to main screen
-                mainMenu();
-                return;
+                exitClicked = true;
             }
 
             // save encounter
@@ -463,6 +466,8 @@ void App::encounterInput()
             }
         }
     }
+
+    return exitClicked;
 }
 
 void App::editEncounter(sf::Vector2f &mouseClick)
@@ -739,6 +744,7 @@ void App::deletePlayer()
     }
 }
 
+// FIX: not urgent. split into init input
 void App::initiative()
 {
     encounter.startInitiative();

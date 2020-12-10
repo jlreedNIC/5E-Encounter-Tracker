@@ -60,7 +60,7 @@ class App
         void mainMenuUpdate();
         void mainMenuDraw();
 
-        void encounterInput();
+        bool encounterInput();
         void encounterUpdate();
         void encounterDraw();
         //encounter headers
