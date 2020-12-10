@@ -719,9 +719,6 @@ void Initiative::setListFont(const sf::Font &font)
 {
     Node* ptr = mHead;
 
-    for(int i=0; i<6; i++)
-        headers[i].setFont(font);
-
     roundText.setFont(font);
     
     if(mHead != nullptr)
