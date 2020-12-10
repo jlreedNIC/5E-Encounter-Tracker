@@ -1,10 +1,16 @@
+/**
+ * @file encounter.h
+ * @author Jordan Reed
+ * @brief Program to track encounters for D&D 5E
+ * @date 2020-12-10
+ * 
+ */
+
 #ifndef ENCOUNTER_H
 #define ENCOUNTER_H
 
 #include <fstream>
 #include "initiativelist.h"
-
-enum Difficulty {Easy, Medium, Hard, Deadly};
 
 class Encounter
 {
@@ -80,6 +86,7 @@ class Encounter
 
         string difficulty;
         sf::Text difficultyText;
+        
         int totalEnemyXP;
         sf::Text totalEnemyXPText;
 
