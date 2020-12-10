@@ -1,7 +1,15 @@
+/**
+ * @file initiativelist.cpp
+ * @author Jordan Reed
+ * @brief Program to track encounters for D&D 5E
+ * @date 2020-12-10
+ * 
+ */
+
 #include "initiativelist.h"
 
 /**
- * @brief Construct a new circularly linked list
+ * @brief Construct a new circularly linked list, as well as a turn indicator and the text for each round
  * 
  */
 Initiative::Initiative() : turnIndicator(15, 3)
@@ -25,7 +33,7 @@ Initiative::Initiative() : turnIndicator(15, 3)
  * 
  * @param copy List to be copied
  */
-Initiative::Initiative(const Initiative &copy)
+Initiative::Initiative(const Initiative &copy) : turnIndicator(15, 3)
 {
     Node* copyPtr = copy.mHead;
 
@@ -50,19 +58,8 @@ Initiative::Initiative(const Initiative &copy)
         }while(copyPtr != copy.mHead);
     }
 
-    for(int i=0; i<6; i++)
-    {
-        headers[i].setCharacterSize(20);
-        headers[i].setStyle(sf::Text::Bold);
-        headers[i].setFillColor(sf::Color::Black);
-    }
-
-    headers[0].setString("Name");
-    headers[1].setString("Initiative");
-    headers[2].setString("AC");
-    headers[3].setString("Health");
-    headers[4].setString("Temp HP");
-    headers[5].setString("Status/Notes");
+    turnIndicator.setFillColor(sf::Color::Black);
+    turnIndicator.rotate(90);
 
     roundText.setCharacterSize(20);
     roundText.setFillColor(sf::Color::Black);
@@ -100,6 +97,12 @@ Initiative::~Initiative()
     }
 }
 
+/**
+ * @brief Saves the info in the list to a file. Designed to be paired with 
+ *        other save functions, so does not close the file.
+ * 
+ * @param file File to save info to
+ */
 void Initiative::save(std::fstream &file)
 {
     Node *ptr = mHead;
@@ -116,6 +119,12 @@ void Initiative::save(std::fstream &file)
     }while(ptr != mHead);
 }
 
+/**
+ * @brief Loads the info from a file into a list. Designed to be paired with other
+ *        load functions, so does not close the file.
+ * 
+ * @param file File to load info from
+ */
 void Initiative::load(std::fstream &file)
 {
     char delim;
@@ -152,7 +161,7 @@ void Initiative::load(std::fstream &file)
 /**
  * @brief Adds a new node to the list, sorted by initiative
  * 
- * @param character 
+ * @param character Creature object to be added
  */
 void Initiative::addNodeInOrder(Creature character)
 {
@@ -185,7 +194,7 @@ void Initiative::addNodeInOrder(Creature character)
 }
 
 /**
- * @brief Deletes a specific node
+ * @brief Deletes a specific node using the name to search by
  * 
  * @param name Parameter to search for the node to delete
  */
@@ -217,6 +226,11 @@ void Initiative::deleteNode(string name)
     size--;
 }
 
+/**
+ * @brief Deletes a specific node based off of its position
+ * 
+ * @param mouseClick Position of node to be deleted
+ */
 void Initiative::deleteNode(const sf::Vector2f &mouseClick)
 {
     Node *ptr = mHead;
@@ -229,8 +243,6 @@ void Initiative::deleteNode(const sf::Vector2f &mouseClick)
         if(ptr->character.isClicked(mouseClick)) found = true;
         else ptr = ptr->next;
     }while(ptr != mHead && !found);
-
-    
 
     if(!found) return;
 
@@ -246,6 +258,10 @@ void Initiative::deleteNode(const sf::Vector2f &mouseClick)
     size--;
 }
 
+/**
+ * @brief Deletes the node right before mHead
+ * 
+ */
 void Initiative::deleteLast()
 {
     Node *ptr = mHead;
@@ -289,9 +305,12 @@ void Initiative::append(const Initiative &copy)
     size += copy.size;
 }
 
+/**
+ * @brief Deletes each node in the list
+ * 
+ */
 void Initiative::clear()
 {
-    // FIX: for one or two nodes only
     Node *ptr = mHead;
     if(ptr == nullptr) return;
 
@@ -314,6 +333,10 @@ void Initiative::clear()
     size = 0;
 }
 
+/**
+ * @brief Sorts the entire list by initiative order. Stable
+ * 
+ */
 void Initiative::sort()
 {
     // if list is empty or has 1 element
@@ -353,18 +376,29 @@ void Initiative::sort()
 /**
  * @brief Returns the round counter
  * 
- * @return int 
+ * @return int Round the initiative is in
  */
 int Initiative::getRound() const
 {
     return round;
 }
 
+/**
+ * @brief Returns a number based on how many nodes are in the list
+ * 
+ * @return int Size of the list
+ */
 int Initiative::getSize() const
 {
     return size;
 }
 
+/**
+ * @brief Returns a string containing all the levels/XP ratings of all the creatures.
+          Returns an empty string if list is empty.
+ * 
+ * @return std::string Contains the levels of all the creatures in the list
+ */
 std::string Initiative::getLevel()
 {
     ostringstream ostr;
@@ -381,20 +415,13 @@ std::string Initiative::getLevel()
     return ostr.str();
 }
 
-// TextBox& Initiative::getTextBox(const float &x, const float &y)
-// {
-//     Node *ptr = mHead;
-//     if(mHead != nullptr)
-//     {
-//         do
-//         {
-//             if(ptr->character.isClicked(x, y)) 
-//                 return ptr->character.getTextBox(x, y);
-//             else ptr = ptr->next;
-//         }while(ptr != mHead);
-//     }
-// }
-
+/**
+ * @brief Returns the string from the textbox at a specific position
+ * 
+ * @param mouseClick Position of the textbox
+ * @return std::string String of the textbox at the position. Empty 
+ *                     if no textbox at that position.
+ */
 std::string Initiative::getString(sf::Vector2f &mouseClick)
 {
     Node *ptr = mHead;
@@ -415,6 +442,12 @@ std::string Initiative::getString(sf::Vector2f &mouseClick)
     return value;
 }
 
+/**
+ * @brief Gets the position of the first node in the list. Returns (0,0) if
+ *        list is empty.
+ * 
+ * @return sf::Vector2f Position of the first textbox of the first node
+ */
 sf::Vector2f Initiative::getPosition() const
 {
     sf::Vector2f pos(0, 0);
@@ -424,6 +457,12 @@ sf::Vector2f Initiative::getPosition() const
     return pos;
 }
 
+/**
+ * @brief Gets the name of the creature that is first in the list. If
+ *        list is empty, returns "NA"
+ * 
+ * @return std::string Name of the first creature in the list, or "NA"
+ */
 std::string Initiative::getFirstName()
 {
     std::string value = "NA";
@@ -618,11 +657,24 @@ void Initiative::editTempHealth(string name, int newTempHealth)
     }
 }
 
+/**
+ * @brief Updates the textbox at a certain position
+ * 
+ * @param x X coordinate of the position
+ * @param y Y coordinate of the position
+ * @param tempValue Value to update the string to
+ */
 void Initiative::edit(const float &x, const float &y, const std::string &tempValue)
 {
     edit(sf::Vector2f(x, y), tempValue);
 }
 
+/**
+ * @brief Updates the textbox at a certain position
+ * 
+ * @param mouseClick Position of textbox to be edited
+ * @param tempValue Value to update the string to
+ */
 void Initiative::edit(const sf::Vector2f &mouseClick, const std::string &tempValue)
 {
     Node *ptr = mHead;
@@ -683,8 +735,8 @@ void Initiative::setListFont(const sf::Font &font)
 }
 
 /**
- * @brief Sets the position of the linked list with a starting point in the top left corner. Position of the headers and textboxes
- *        are automatically set.
+ * @brief Sets the position of the linked list with a starting point in the top left corner. Position of the textboxes,
+ *         round text, and the turn indicator are automatically set.
  * 
  * @param pos Starting point of the list
  */
@@ -709,8 +761,8 @@ void Initiative::setPosition(sf::Vector2f pos)
 }
 
  /**
-  * @brief Sets the position of the linked list with a starting point in the top left corner. Position of the headers and textboxes
-  *        are automatically set.
+  * @brief Sets the position of the linked list with a starting point in the top left corner. Position of the textboxes,
+ *         round text, and the turn indicator are automatically set.
   * 
   * @param x Starting x coordiante of the list
   * @param y Starting y coordiante of the list
@@ -721,6 +773,10 @@ void Initiative::setPosition(float x, float y)
     setPosition(pos);
 }
 
+/**
+ * @brief Sets the text object for the round with the actual round
+ * 
+ */
 void Initiative::setRoundText()
 {
     ostringstream ostr;
@@ -728,6 +784,10 @@ void Initiative::setRoundText()
     roundText.setString(ostr.str());
 }
 
+/**
+ * @brief Clears the texture from all nodes in the list
+ * 
+ */
 void Initiative::clearTexture()
 {
     Node *ptr = mHead;
@@ -742,11 +802,26 @@ void Initiative::clearTexture()
     }
 }
 
+/**
+ * @brief Checks to see if a node was clicked
+ * 
+ * @param x X coordinate of mouse click
+ * @param y Y coordinate of mouse click
+ * @return true If a textbox in the nodes was clicked
+ * @return false If no textbox in the nodes was clicked
+ */
 bool Initiative::isNodeClicked(const float &x, const float &y)
 {
     return isNodeClicked(sf::Vector2f(x, y));
 }
 
+/**
+ * @brief Checks to see if a node was clicked
+ * 
+ * @param mouseClick Position of the mouse click
+ * @return true If a textbox in the nodes was clicked
+ * @return false If no textbox in the nodes was clicked
+ */
 bool Initiative::isNodeClicked(const sf::Vector2f &mouseClick)
 {
     Node* ptr = mHead;
@@ -767,32 +842,17 @@ bool Initiative::isNodeClicked(const sf::Vector2f &mouseClick)
  * 
  * @return string 
  */
-// string Initiative::advanceTurn()
-// {
-//     if(mHead == nullptr) return "";
-//     else
-//     {
-//         ostringstream ostr;
-        
-//         Node* ptr = mStart;
-//         do
-//         {
-//             ostr << nodeToString(ptr);
-//             ptr = ptr->next;
-//         }while(ptr != mStart);
 
-//         if(mStart == mHead) round++;
-//         mStart = mStart->next;
-        
-//         return ostr.str();
-//     }
-// }
-
+/**
+ * @brief Advances the mStart pointer to the next node in the list. If mStart is at the 
+ *        head pointer, increment the round counter. Updates the position of the turn
+ *        indicator to follow mStart.
+ * 
+ */
 void Initiative::advanceTurn()
 {
     if(mHead == nullptr) return;
 
-    
     mStart = mStart->next;
     if(mStart == mHead) round++;
     setTurnIndicatorPosition();
@@ -800,7 +860,7 @@ void Initiative::advanceTurn()
 }
 
 /**
- * @brief Resets the start position to the beginning of the list
+ * @brief Resets the start position to the beginning of the list. Resets the round and turn indicator
  * 
  */
 void Initiative::resetStart()
@@ -813,7 +873,7 @@ void Initiative::resetStart()
 /**
  * @brief Converts the contents of the list to a string
  * 
- * @return string 
+ * @return string Contains the contents of the list
  */
 string Initiative::listToString() const
 {
@@ -837,7 +897,7 @@ string Initiative::listToString() const
  * @brief Converts the contents of a specific node to a string
  * 
  * @param name Parameter to search for
- * @return string 
+ * @return string Contains the contents of the list
  */
 string Initiative::nodeToString(string name) const
 {
@@ -859,7 +919,7 @@ string Initiative::nodeToString(string name) const
  * @brief Converts the contents of a specific node to a string
  * 
  * @param ptr Parameter to search for
- * @return string 
+ * @return string Contains the contents of the list
  */
 string Initiative::nodeToString(Node *ptr) const
 {
@@ -876,69 +936,6 @@ string Initiative::nodeToString(Node *ptr) const
     return ostr.str();
 }
 
-//obsolete
-/**
- * @brief Draws entire list to a window object by setting position of the nodes
- * 
- * @param window Window to be drawn to
- * @param pos position of nodes to be drawn
- */
-void Initiative::drawList(sf::RenderWindow &window, sf::Vector2f pos)
-{
-    Node *ptr = mHead;
-
-    do
-    {
-        drawNode(window, pos, ptr);
-        ptr = ptr->next;
-        pos.y += 40;
-    }while(ptr != mHead);
-}
-
-//obsolete
-/**
- * @brief Draws a specific node to a window object given a specific position
- * 
- * @param window 
- * @param pos 
- * @param ptr 
- */
-void Initiative::drawNode(sf::RenderWindow &window, sf::Vector2f pos, Node* &ptr)
-{
-    if(ptr != nullptr)
-    {
-        sf::Font font;
-        font.loadFromFile("Fonts/Roboto-Thin.ttf");
-
-        ptr->character.setPosition(pos);
-
-        ptr->character.nameText.getText().setFont(font);
-        ptr->character.armorClassText.getText().setFont(font);
-        ptr->character.healthText.getText().setFont(font);
-        ptr->character.initiativeText.getText().setFont(font);
-        ptr->character.statusText.getText().setFont(font);
-        ptr->character.tempHealthText.getText().setFont(font);
-        
-        window.draw(ptr->character.nameText);
-        window.draw(ptr->character.nameText.getText());
-
-        window.draw(ptr->character.armorClassText);
-        window.draw(ptr->character.armorClassText.getText());
-
-        window.draw(ptr->character.healthText);
-        window.draw(ptr->character.healthText.getText());
-
-        window.draw(ptr->character.initiativeText);
-        window.draw(ptr->character.initiativeText.getText());
-
-        window.draw(ptr->character.statusText);
-        window.draw(ptr->character.statusText.getText());
-
-        window.draw(ptr->character.tempHealthText);
-        window.draw(ptr->character.tempHealthText.getText());
-    }
-}
-
 /**
  * @brief Draws the entire list to the window object
  * 
@@ -948,9 +945,6 @@ void Initiative::drawList(sf::RenderWindow &window)
 {
     Node *ptr = mHead;
 
-    // for(int i=0; i<6; i++)
-    //     window.draw(headers[i]);
-
     if(ptr != nullptr)
     {
         do
@@ -959,8 +953,6 @@ void Initiative::drawList(sf::RenderWindow &window)
             ptr = ptr->next;
         }while(ptr != mHead);
     }
-
-    // window.draw(roundText);
 }
 
 /**
@@ -977,6 +969,12 @@ void Initiative::drawNode(sf::RenderWindow &window, Node* &ptr)
     }
 }
 
+/**
+ * @brief Draws the list to the window for use in the initiative screen.
+ *        Will draw the turn indicator, the round text, and not the levels of creatures.
+ * 
+ * @param window Window to be drawn to
+ */
 void Initiative::drawInitiativeList(sf::RenderWindow &window)
 {
     Node* ptr = mHead;
@@ -994,6 +992,12 @@ void Initiative::drawInitiativeList(sf::RenderWindow &window)
     window.draw(turnIndicator);
 }
 
+/**
+ * @brief Draws a specific node to the window for use in the initiative screen.
+ * 
+ * @param window Window to be drawn to.
+ * @param ptr Pointer to a node that will be drawn
+ */
 void Initiative::drawInitNode(sf::RenderWindow &window, Node* &ptr)
 {
     if(ptr != nullptr)
@@ -1002,10 +1006,13 @@ void Initiative::drawInitNode(sf::RenderWindow &window, Node* &ptr)
     }
 }
 
+/**
+ * @brief Sets the position of the turn indicator to follow mStart
+ * 
+ */
 void Initiative::setTurnIndicatorPosition()
 {
     if(mStart == nullptr) return;
     sf::Vector2f currentPos = mStart->character.nameText.getPosition();
-    // currentPos.x -= 20;
     turnIndicator.setPosition(currentPos);
 }
