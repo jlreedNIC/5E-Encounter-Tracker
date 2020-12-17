@@ -1,3 +1,11 @@
+/**
+ * @file app.h
+ * @author Jordan Reed
+ * @brief Program to track encounters for D&D 5E
+ * @date 2020-12-10
+ * 
+ */
+
 #ifndef APP_H
 #define APP_H
 
@@ -18,23 +26,22 @@ class App
         App();
         ~App();
 
-        bool appIsOpen();
+        bool appIsOpen();       // checks to see if app/window is still running
 
-        void mainMenu();
+        void mainMenu();        // starts the main menu
 
-        void buildEncounter();
-        void editEncounter(sf::Vector2f &mouseclick);
+        void buildEncounter();  // starts the encounter screen
+        void editEncounter(sf::Vector2f &mouseclick);   // allows a user to edit a string on the encounter screen
 
-        void initiative();
-        void editInitiative(sf::Event &event, bool &initClicked, sf::Vector2f &mouseClick, std::string &tempString);
-        void initiativeDraw();
+        void initiative();      // starts the initiative screen
+        void editInitiative(sf::Event &event, bool &initClicked, sf::Vector2f &mouseClick, std::string &tempString);    // edits string on initiative
+        void initiativeDraw();  // draws the initiative screen
 
     private:
         sf::RenderWindow window;
         Encounter encounter;
 
         std::vector<std::string> saves;
-        // sf::Text saves[3];  // change to vector of textboxes
 
         sf::Font headerFont;
         sf::Font buttonFont;
@@ -56,13 +63,12 @@ class App
         sf::Text headerText;
 
         // helper functions
-        void mainMenuInput();
-        void mainMenuUpdate();
-        void mainMenuDraw();
+        void mainMenuInput();   // handles input on main menu screen
+        void mainMenuDraw();    // draws the main menu screen
 
-        bool encounterInput();
-        void encounterUpdate();
-        void encounterDraw();
+        bool encounterInput();  // handles input on encounter screen
+        void encounterUpdate(); // updates the encounter screen
+        void encounterDraw();   // draws the encounter screen
         //encounter headers
         sf::Text encounterTitles[3];
         sf::Text playerHeaders[7], enemyHeaders[7], encounterHeaders[2];

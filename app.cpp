@@ -1,12 +1,19 @@
+/**
+ * @file app.cpp
+ * @author Jordan Reed
+ * @brief Program to track encounters for D&D 5E
+ * @date 2020-12-10
+ * 
+ */
+
 #include "app.h"
 
+/**
+ * @brief Construct a new App object. Sets the window, fonts and textures
+ * 
+ */
 App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"), 
-             encounter(), 
-            //  newEncounter(), 
-            //  loadEncounter(), 
-            //  initiativeButton(),
-            //  exitButton(),
-            //  saveButton(),
+             encounter(),
              instructions("Not Implemented", buttonFont),
              headerText("Encounter Tracker", headerFont, 80), 
              encounterTitles{sf::Text("Players", buttonFont, 30), sf::Text("Enemies", buttonFont, 30), 
@@ -41,25 +48,25 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
 
     // buttons
     newEncounter.createButton("new encounter", buttonFont, buttonTexture);
-    newEncounter.setButtonPosition(300, 365);
+    newEncounter.setPosition(300, 365);
     
     loadEncounter.createButton("load encounter", buttonFont, buttonTexture);
-    loadEncounter.setButtonPosition(300, 465);
+    loadEncounter.setPosition(300, 465);
 
     initiativeButton.createButton("initiative", buttonFont, buttonTexture);
-    initiativeButton.setButtonPosition(300, 265);
+    initiativeButton.setPosition(300, 265);
 
     exitButton.createButton("back", buttonFont, buttonTexture);
-    exitButton.setButtonPosition(50, 750);
+    exitButton.setPosition(50, 750);
 
     saveButton.createButton("save", buttonFont, buttonTexture);
-    saveButton.setButtonPosition(250, 750);
+    saveButton.setPosition(250, 750);
 
     startInitiative.createButton("start initiative", buttonFont, buttonTexture);
-    startInitiative.setButtonPosition(350, 750);
+    startInitiative.setPosition(350, 750);
 
     sortButton.createButton("sort", buttonFont, buttonTexture);
-    sortButton.setButtonPosition(150, 750);
+    sortButton.setPosition(150, 750);
 
     // encounter save files
     std::fstream stream("Saves/encounter-saves", std::ios::in);
@@ -150,15 +157,29 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
     instructions.setOutline();
 }
 
+/**
+ * @brief Destroy the App object
+ * 
+ */
 App::~App()
 {
 }
 
+/**
+ * @brief Checks to see if the window is still running
+ * 
+ * @return true If the window is still open
+ * @return false If the window has been closed
+ */
 bool App::appIsOpen()
 {
     return window.isOpen();
 }
 
+/**
+ * @brief Main loop for main menu screen
+ * 
+ */
 void App::mainMenu()
 {
     while(appIsOpen())
@@ -166,15 +187,15 @@ void App::mainMenu()
         //process input
         mainMenuInput();
         
-        //update screen
-        //not needed?
-        mainMenuUpdate();
-        
         //render screen
         mainMenuDraw();  
     }
 }
 
+/**
+ * @brief Handles the input on the main menu screen. Calls other functions based on user input.
+ * 
+ */
 void App::mainMenuInput()
 {
     sf::Event event;
@@ -212,11 +233,10 @@ void App::mainMenuInput()
     }
 }
 
-void App::mainMenuUpdate()
-{
-
-}
-
+/**
+ * @brief Draws the main menu to the window
+ * 
+ */
 void App::mainMenuDraw()
 {
     window.clear(sf::Color::White);
@@ -228,6 +248,10 @@ void App::mainMenuDraw()
     window.display();
 }
 
+/**
+ * @brief Handles the load save screen. Allows users to load a save file into the encounter builder.
+ * 
+ */
 void App::loadSave()
 {
     long unsigned int i;
@@ -249,7 +273,7 @@ void App::loadSave()
 
     for(i=0; i < saves.size(); i++)
     {
-        savesText[i].setTextBoxPosition(120, 240 + ((i+1)*35));
+        savesText[i].setPosition(120, 240 + ((i+1)*35));
         savesText[i].setFont(buttonFont);
         savesText[i].setTextBoxSize(sf::Vector2f(100, 30));
     }
@@ -306,6 +330,10 @@ void App::loadSave()
     }
 }
 
+/**
+ * @brief Saves the current encounter to a new file.
+ * 
+ */
 void App::newSave()
 {
     std::string saveFile;
@@ -324,22 +352,16 @@ void App::newSave()
 
     instructions.setString("Encounter saved");
     instructions.setFont(buttonFont);
-    // instructions.setFillColor(sf::Color::Black);
-    // instructions.setCharacterSize(20);
-    instructions.setTextBoxPosition(120, 200);
+    instructions.setPosition(120, 200);
     drawInstructions = true;
 }
 
+/**
+ * @brief Handles the main encounter screen and encounter loop
+ * 
+ */
 void App::buildEncounter()
 {
-    // creature(string name, maxhealth, health, temphealth, initiative, armorclass, string status, level/cr);
-    // encounter.addPlayer(Creature("Rihala", 33, 33, 34, dice.rollDice(20), 11, "NA", 4));
-    // encounter.addPlayer(Creature("Garth", 47, 47, 0, dice.rollDice(20), 13, "NA", 4));
-    // encounter.addPlayer(Creature("Gravane", 50, 50, 0, dice.rollDice(20), 18, "NA", 4));
-    // encounter.addPlayer(Creature("Robinton", 31, 31, 0, dice.rollDice(20), 14, "NA", 4));
-    // encounter.addPlayer(Creature("Rose", 28, 28, 0, dice.rollDice(20, 2), 14, "NA", 4));
-    // encounter.addPlayer(Creature("Chaos", 27, 27, 0, dice.rollDice(20), 12, "NA", 4));
-    // encounter.addPlayer(Creature("Grey Bush", 27, 27, 0, dice.rollDice(20), 18, "NA", 4));
     encounter.setPlayerPosition(sf::Vector2f(50, 80));
     encounter.setEnemyPosition(sf::Vector2f(50, 380));
     encounter.setFont(buttonFont);
@@ -358,6 +380,12 @@ void App::buildEncounter()
     }
 }
 
+/**
+ * @brief Handles the input for the encounter screen. Will return a boolean value on whether or not the back button was clicked.
+ * 
+ * @return true If the back button is clicked.
+ * @return false If the back button is not clicked.
+ */
 bool App::encounterInput()
 {
     playerHeaders[0].setPosition(50, 45);
@@ -393,7 +421,6 @@ bool App::encounterInput()
             // exit to main menu
             if(exitButton.isClicked(mouseClick))
             {
-                // FIX: this to return to main screen
                 exitClicked = true;
             }
 
@@ -485,6 +512,11 @@ bool App::encounterInput()
     return exitClicked;
 }
 
+/**
+ * @brief Allows the user to edit the content on the encounter screen.
+ * 
+ * @param mouseClick The location of a mouseclick (and string to edit)
+ */
 void App::editEncounter(sf::Vector2f &mouseClick)
 {
     // get string to edit
@@ -558,6 +590,10 @@ void App::editEncounter(sf::Vector2f &mouseClick)
     }
 }
 
+/**
+ * @brief Updates the information on the encounter page, mainly the encounter difficulty and total XP
+ * 
+ */
 void App::encounterUpdate()
 {
     encounter.calculateEncounterDifficulty();
@@ -567,6 +603,10 @@ void App::encounterUpdate()
     encounter.sort();
 }
 
+/**
+ * @brief Draws the encounter screen to the window
+ * 
+ */
 void App::encounterDraw()
 {
     sf::Text *header = new sf::Text;
@@ -604,6 +644,12 @@ void App::encounterDraw()
     delete header;
 }
 
+/**
+ * @brief Edits a new creature object on the encounter screen
+ * 
+ * @param x X coordinate of the new creature object
+ * @param y Y coordinate of the new creature object
+ */
 void App::editNewCreature(float x, float y)
 {
     editCreatureText(x, y);
@@ -615,6 +661,12 @@ void App::editNewCreature(float x, float y)
     editCreatureText(x+625, y);
 }
 
+/**
+ * @brief Edits a specific string of a new creature object on the encounter page
+ * 
+ * @param x X coordinate of the string to edit
+ * @param y Y coordinate of the string to edit
+ */
 void App::editCreatureText(float x, float y)
 {
     // get string to edit
@@ -690,10 +742,14 @@ void App::editCreatureText(float x, float y)
     }
 }
 
+/**
+ * @brief Deletes a creature object from the enemy list on the encounter page. Handles input
+ * 
+ */
 void App::deleteEnemy()
 {
     std::cout << "delete enemy\n";
-    instructions.setTextBoxPosition(50, 50);
+    instructions.setPosition(50, 50);
     while(window.isOpen())
     {
         sf::Event event;
@@ -727,9 +783,13 @@ void App::deleteEnemy()
     }
 }
 
+/**
+ * @brief Deletes a creature object from the player list on the encounter page. Handles input.
+ * 
+ */
 void App::deletePlayer()
 {
-    instructions.setTextBoxPosition(50, 380);
+    instructions.setPosition(50, 380);
     while(window.isOpen())
     {
         sf::Event event;
@@ -760,6 +820,10 @@ void App::deletePlayer()
 }
 
 // FIX: not urgent. split into init input
+/**
+ * @brief Handles the initiative screen. Starts initiative on the encounter currently built.
+ * 
+ */
 void App::initiative()
 {
     encounter.startInitiative();
@@ -864,6 +928,14 @@ void App::initiative()
     }
 }
 
+/**
+ * @brief Allows a user to edit a string on the initiative screen.
+ * 
+ * @param event The event that was polled in the input loop for initiative
+ * @param initClicked Checks whether a node on the initiative screen was clicked, and if it's done being edited
+ * @param mouseClick Location of string to be edited
+ * @param tempString New string to update old string
+ */
 void App::editInitiative(sf::Event &event, bool &initClicked, sf::Vector2f &mouseClick, std::string &tempString)
 {
     // while(window.pollEvent(event))
@@ -930,6 +1002,12 @@ void App::editInitiative(sf::Event &event, bool &initClicked, sf::Vector2f &mous
     // }
 }
 
+/**
+ * @brief Edits a creature object on the initiative screen
+ * 
+ * @param x X coordinate of the creature
+ * @param y Y coordinate of the creature
+ */
 void App::editNewInitCreature(float x, float y)
 {
     editInitCreatureText(x, y);
@@ -941,6 +1019,12 @@ void App::editNewInitCreature(float x, float y)
     editInitCreatureText(x+625, y);
 }
 
+/**
+ * @brief Edits a specific string of a creature on the initiative screen
+ * 
+ * @param x X coordinate of the specific string
+ * @param y Y coordinate of the specific string
+ */
 void App::editInitCreatureText(float x, float y)
 {
     // get string to edit
@@ -1021,9 +1105,13 @@ void App::editInitCreatureText(float x, float y)
     }
 }
 
+/**
+ * @brief Handles deleting a creature object off the initiative screen
+ * 
+ */
 void App::deleteInitCreature()
 {
-    instructions.setTextBoxPosition(50, 380);
+    instructions.setPosition(50, 380);
     while(window.isOpen())
     {
         sf::Event event;
@@ -1059,6 +1147,10 @@ void App::deleteInitCreature()
     }
 }
 
+/**
+ * @brief Draws the initiative screen to the window
+ * 
+ */
 void App::initiativeDraw()
 {
     sf::Text *header = new sf::Text;
