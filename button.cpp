@@ -176,23 +176,23 @@ void Button::clearTexture()
 }
 
 /**
- * @brief Sets the position of both button and text given 2 float values
+ * @brief Sets the position of both button and text given 2 float values. Text will be in the middle of the button.
  * 
  * @param x X coordinate of the button
  * @param y Y coordinate of the button
  */
-void Button::setButtonPosition(float x, float y)
+void Button::setPosition(float x, float y)
 {
     rectangle.setPosition(x, y);
     setTextPositionMiddle();
 }
 
 /**
- * @brief Sets the position of both button and text given a vector of floats
+ * @brief Sets the position of both button and text given a vector of floats. Text will be in the middle of the button.
  * 
  * @param position X and Y coordinates in a vector
  */
-void Button::setButtonPosition(const sf::Vector2f &position)
+void Button::setPosition(const sf::Vector2f &position)
 {
     rectangle.setPosition(position);
     setTextPositionMiddle();
@@ -205,6 +205,17 @@ void Button::setButtonPosition(const sf::Vector2f &position)
  // FIX: position not in middle of button. rough approximation
 void Button::setTextPositionMiddle()
 {
+    // sf::FloatRect rectangleBounds = rectangle.getLocalBounds();
+    // rectangle.setOrigin(rectangleBounds.width/2, rectangleBounds.height/2);
+
+    // sf::FloatRect textBounds = text.getLocalBounds();
+    // text.setOrigin(textBounds.width/2, textBounds.height/2);
+
+    // text.setPosition(rectangle.getPosition());
+
+    // rectangle.setOrigin(0,0);
+    // text.setOrigin(0,0);
+    
     sf::Vector2f rectanglePos = rectangle.getPosition();
     rectanglePos.x += 5;
     rectanglePos.y += 5;

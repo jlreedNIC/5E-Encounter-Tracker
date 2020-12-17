@@ -144,13 +144,13 @@ void Creature::updateValues()
  */
 void Creature::setPosition(sf::Vector2f pos)
 {
-    nameText.setTextBoxPosition(pos);
-    initiativeText.setTextBoxPosition(pos.x + 150, pos.y);
-    armorClassText.setTextBoxPosition(pos.x + 200, pos.y);
-    healthText.setTextBoxPosition(pos.x + 250, pos.y);
-    tempHealthText.setTextBoxPosition(pos.x + 325, pos.y);
-    statusText.setTextBoxPosition(pos.x + 425, pos.y);
-    levelText.setTextBoxPosition(pos.x + 625, pos.y);
+    nameText.setPosition(pos);
+    initiativeText.setPosition(pos.x + 150, pos.y);
+    armorClassText.setPosition(pos.x + 200, pos.y);
+    healthText.setPosition(pos.x + 250, pos.y);
+    tempHealthText.setPosition(pos.x + 325, pos.y);
+    statusText.setPosition(pos.x + 425, pos.y);
+    levelText.setPosition(pos.x + 625, pos.y);
 }
 
 /**
@@ -255,6 +255,7 @@ std::string Creature::getString(const sf::Vector2f &mouseClick)
  * 
  * @return int Copy of the level/XP in int format
  */
+ // FIX: return a string instead??
 int Creature::getLevel()
 {
     std::string tempLevel = levelText.getString();

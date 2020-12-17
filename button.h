@@ -33,9 +33,8 @@ class Button : public sf::Drawable
 
         void clearTexture();                                    // clears the texture on the button
 
-        //want to overwrite to setPosition
-        void setButtonPosition(float x, float y);               // sets the position of both button and text
-        void setButtonPosition(const sf::Vector2f &position);   // sets the position of both button and text
+        virtual void setPosition(float x, float y);               // sets the position of both button and text
+        virtual void setPosition(const sf::Vector2f &position);   // sets the position of both button and text
         
         // getters
         std::string getString();            // gets the string that is on the button

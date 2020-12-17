@@ -24,9 +24,9 @@ class TextBox : public Button
         void setTextBoxSize(const sf::Vector2f &size);              // sets the textbox size
         void setString(const std::string &tstring);                 // sets the textbox string
 
-        void setTextBoxPosition(const sf::Vector2f &size);          // sets the position of textbox
-        void setTextBoxPosition(const float &x, const float &y);    // sets the position of textbox
-        void setTextBoxPosition(const int &x, const int &y);        // sets the position of textbox
+        virtual void setPosition(const sf::Vector2f &size);          // sets the position of textbox
+        virtual void setPosition(const float &x, const float &y);    // sets the position of textbox
+        virtual void setPosition(const int &x, const int &y);        // sets the position of textbox
 
         void setOutline();      // sets a generic outline for the textbox
                                 // used in debugging

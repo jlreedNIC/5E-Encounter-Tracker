@@ -86,7 +86,7 @@ void TextBox::setString(const std::string &tstring)
  * 
  * @param size Position of the rectangle
  */
-void TextBox::setTextBoxPosition(const sf::Vector2f &size)
+void TextBox::setPosition(const sf::Vector2f &size)
 {
     rectangle.setPosition(size);
     setTextPositionLeft();
@@ -98,7 +98,7 @@ void TextBox::setTextBoxPosition(const sf::Vector2f &size)
  * @param x X coordinate of the position desired
  * @param y Y coordinate of the position desired
  */
-void TextBox::setTextBoxPosition(const float &x, const float &y)
+void TextBox::setPosition(const float &x, const float &y)
 {
     rectangle.setPosition(x, y);
     setTextPositionLeft();
@@ -110,7 +110,7 @@ void TextBox::setTextBoxPosition(const float &x, const float &y)
  * @param x X coordinate of the position desired
  * @param y Y coordinate of the position desired
  */
-void TextBox::setTextBoxPosition(const int &x, const int &y)
+void TextBox::setPosition(const int &x, const int &y)
 {
     rectangle.setPosition(x, y);
     setTextPositionLeft();
