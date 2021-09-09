@@ -57,16 +57,16 @@ App::App() : window(sf::VideoMode(800,800), "D&D 5E Encounter Tracker"),
     initiativeButton.setPosition(300, 265);
 
     exitButton.createButton("back", buttonFont, buttonTexture);
-    exitButton.setPosition(50, 750);
+    exitButton.setPosition(50, 650);
 
     saveButton.createButton("save", buttonFont, buttonTexture);
-    saveButton.setPosition(250, 750);
+    saveButton.setPosition(250, 650);
 
     startInitiative.createButton("start initiative", buttonFont, buttonTexture);
-    startInitiative.setPosition(350, 750);
+    startInitiative.setPosition(350, 650);
 
     sortButton.createButton("sort", buttonFont, buttonTexture);
-    sortButton.setPosition(150, 750);
+    sortButton.setPosition(150, 650);
 
     // encounter save files
     std::fstream stream("Saves/encounter-saves", std::ios::in);
