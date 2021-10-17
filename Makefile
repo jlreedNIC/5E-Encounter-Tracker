@@ -17,7 +17,7 @@ $(obj)/%.o : $(src)/%.cpp
 
 # Dependencies
 
-$(exec) : 
+$(exec) : $(allOBJ)
 	$(cxx) $(cxxflags) $(allOBJ) -o $@ $(sfml)
 
 main.o : initiative.h diceroll.h button.h app.h
@@ -28,6 +28,8 @@ creature.o : textbox.h
 
 textbox.o : button.h
 
+# Commands
+
 run:
 	./$(exec)
 
@@ -36,3 +38,4 @@ all:
 
 clean:
 	rm -rf $(obj)
+	rm -rf $(exec)
