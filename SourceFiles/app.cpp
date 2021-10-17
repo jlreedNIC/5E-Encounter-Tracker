@@ -6,6 +6,11 @@
  * 
  */
 
+/*
+ * Need to fix code so it will scale the screen to fit each individual computer.
+ * Also take code out to print to terminal.
+ */
+
 #include "app.h"
 
 /**
